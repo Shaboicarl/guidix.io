@@ -1,8 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
 import { BookOpen, Clock, Users, Star, Play } from 'lucide-react';
+import { useAuth } from '../components/Layout';
 
 export default function Courses() {
+  const { showSignupModal } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState("All Courses");
   const [visibleCourses, setVisibleCourses] = useState(6);
 
@@ -231,7 +233,10 @@ export default function Courses() {
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">by {course.instructor}</span>
-                  <button className="px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
+                  <button 
+                    onClick={showSignupModal}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
+                  >
                     Enroll Now
                   </button>
                 </div>

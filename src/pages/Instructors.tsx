@@ -1,7 +1,10 @@
 import React from 'react';
 import { Star, Users, BookOpen, Award } from 'lucide-react';
+import { useAuth } from '../components/Layout';
 
 export default function Instructors() {
+  const { showSignupModal } = useAuth();
+
   const instructors = [
     {
       id: 1,
@@ -182,7 +185,10 @@ export default function Instructors() {
                     <Award size={16} className="mr-1" />
                     <span>{instructor.experience}</span>
                   </div>
-                  <button className="px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
+                  <button 
+                    onClick={showSignupModal}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
+                  >
                     View Courses
                   </button>
                 </div>
@@ -199,7 +205,10 @@ export default function Instructors() {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Turn your knowledge into income. Create and sell courses on Guidix and reach students globally while building your educational business.
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
+          <button 
+            onClick={showSignupModal}
+            className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
+          >
             Start Teaching Today
           </button>
         </div>

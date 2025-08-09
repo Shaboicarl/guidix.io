@@ -1,7 +1,10 @@
 import React from 'react';
 import { Users, MessageCircle, Heart, Share2, Calendar, Trophy, Star, BookOpen } from 'lucide-react';
+import { useAuth } from '../components/Layout';
 
 export default function Community() {
+  const { showSignupModal } = useAuth();
+
   const communityStats = [
     { icon: Users, label: "Active Members", value: "50K+" },
     { icon: MessageCircle, label: "Discussions", value: "25K+" },
@@ -131,7 +134,10 @@ export default function Community() {
             <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-800">Recent Discussions</h2>
-                <button className="px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transition-all duration-200">
+                <button 
+                  onClick={showSignupModal}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transition-all duration-200"
+                >
                   New Post
                 </button>
               </div>
@@ -210,6 +216,10 @@ export default function Community() {
                       </div>
                     </div>
                     <button className="w-full mt-3 px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-500 hover:to-purple-600 transition-all duration-200">
+                    <button 
+                      onClick={showSignupModal}
+                      className="w-full mt-3 px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-500 hover:to-purple-600 transition-all duration-200"
+                    >
                       Join Event
                     </button>
                   </div>
@@ -261,10 +271,16 @@ export default function Community() {
             Connect with thousands of learners, share your knowledge, and get help when you need it.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
+            <button 
+              onClick={showSignupModal}
+              className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
+            >
               Join Community
             </button>
-            <button className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl text-lg border-2 border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-all duration-200">
+            <button 
+              onClick={showSignupModal}
+              className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl text-lg border-2 border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-all duration-200"
+            >
               Browse Discussions
             </button>
           </div>

@@ -6,6 +6,21 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
+interface AuthContextType {
+  showLoginModal: () => void;
+  showSignupModal: () => void;
+}
+
+const AuthContext = React.createContext<AuthContextType | null>(null);
+
+export const useAuth = () => {
+  const context = React.useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider');
+  }
+  return context;
+};
+
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -15,6 +30,11 @@ export default function Layout({ children }: LayoutProps) {
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  const authContextValue = {
+    showLoginModal: () => setShowLoginModal(true),
+    showSignupModal: () => setShowSignupModal(true)
+  };
 
   const LoginModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -146,88 +166,90 @@ export default function Layout({ children }: LayoutProps) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-blue-100 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
-                <BookOpen className="text-white" size={24} />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                guidix.io
-              </span>
-            </Link>
-            
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowLoginModal(true)}
-                className="px-6 py-2 text-gray-700 font-semibold hover:text-blue-600 transition-colors"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => setShowSignupModal(true)}
-                className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
-              >
-                Get Started
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main>{children}</main>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <Link to="/" className="flex items-center space-x-2 mb-4">
+    <AuthContext.Provider value={authContextValue}>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+        {/* Navigation */}
+        <nav className="bg-white/80 backdrop-blur-md border-b border-blue-100 sticky top-0 z-40">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              <Link to="/" className="flex items-center space-x-2">
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
                   <BookOpen className="text-white" size={24} />
                 </div>
-                <span className="text-2xl font-bold">guidix.io</span>
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  guidix.io
+                </span>
               </Link>
-              <p className="text-gray-400 mb-4 max-w-md">
-                Empowering learners worldwide with accessible, high-quality online education. 
-                Your success is our mission.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="font-bold mb-4">Platform</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/courses" className="hover:text-white transition-colors">Courses</Link></li>
-                <li><Link to="/instructors" className="hover:text-white transition-colors">Instructors</Link></li>
-                <li><Link to="/certificates" className="hover:text-white transition-colors">Certificates</Link></li>
-                <li><Link to="/community" className="hover:text-white transition-colors">Community</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-bold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              </ul>
+              
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="px-6 py-2 text-gray-700 font-semibold hover:text-blue-600 transition-colors"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={() => setShowSignupModal(true)}
+                  className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
+                >
+                  Get Started
+                </button>
+              </div>
             </div>
           </div>
-          
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Guidix.io. All rights reserved. Empowering education worldwide.</p>
-          </div>
-        </div>
-      </footer>
+        </nav>
 
-      {/* Modals */}
-      {showLoginModal && <LoginModal />}
-      {showSignupModal && <SignupModal />}
-    </div>
+        {/* Main Content */}
+        <main>{children}</main>
+
+        {/* Footer */}
+        <footer className="bg-gray-800 text-white py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="col-span-1 md:col-span-2">
+                <Link to="/" className="flex items-center space-x-2 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
+                    <BookOpen className="text-white" size={24} />
+                  </div>
+                  <span className="text-2xl font-bold">guidix.io</span>
+                </Link>
+                <p className="text-gray-400 mb-4 max-w-md">
+                  Empowering learners worldwide with accessible, high-quality online education. 
+                  Your success is our mission.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-bold mb-4">Platform</h4>
+                <ul className="space-y-2 text-gray-400">
+                  <li><Link to="/courses" className="hover:text-white transition-colors">Courses</Link></li>
+                  <li><Link to="/instructors" className="hover:text-white transition-colors">Instructors</Link></li>
+                  <li><Link to="/certificates" className="hover:text-white transition-colors">Certificates</Link></li>
+                  <li><Link to="/community" className="hover:text-white transition-colors">Community</Link></li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-bold mb-4">Support</h4>
+                <ul className="space-y-2 text-gray-400">
+                  <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
+                  <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+                  <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                  <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+              <p>&copy; 2025 Guidix.io. All rights reserved. Empowering education worldwide.</p>
+            </div>
+          </div>
+        </footer>
+
+        {/* Modals */}
+        {showLoginModal && <LoginModal />}
+        {showSignupModal && <SignupModal />}
+      </div>
+    </AuthContext.Provider>
   );
 }

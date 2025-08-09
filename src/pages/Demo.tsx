@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, SkipForward, Volume2, Maximize, User, BookOpen, Award, MessageCircle, BarChart3, Settings, Bell, Search } from 'lucide-react';
+import { useAuth } from '../components/Layout';
 
 export default function Demo() {
+  const { showSignupModal } = useAuth();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -356,7 +358,10 @@ export default function Demo() {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Join thousands of students who are already transforming their careers with Guidix.
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
+          <button 
+            onClick={showSignupModal}
+            className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
+          >
             Get Started Free
           </button>
         </div>

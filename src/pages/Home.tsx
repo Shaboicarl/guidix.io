@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Users, Zap, Shield, Star, ChevronRight, Play, CheckCircle, Globe } from 'lucide-react';
+import { useAuth } from '../components/Layout';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { showSignupModal } = useAuth();
 
   const features = [
     {
@@ -71,7 +73,10 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center space-x-2">
+              <button 
+                onClick={showSignupModal}
+                className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
+              >
                 <span>Start Learning Now</span>
                 <ChevronRight size={20} />
               </button>
@@ -188,7 +193,10 @@ export default function Home() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2">
+            <button 
+              onClick={showSignupModal}
+              className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
+            >
               <span>Get Started</span>
               <CheckCircle size={20} />
             </button>

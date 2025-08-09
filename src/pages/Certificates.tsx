@@ -1,7 +1,10 @@
 import React from 'react';
 import { Award, CheckCircle, Download, Share2, Star, Users } from 'lucide-react';
+import { useAuth } from '../components/Layout';
 
 export default function Certificates() {
+  const { showSignupModal } = useAuth();
+
   const certificateTypes = [
     {
       id: 1,
@@ -217,7 +220,10 @@ export default function Certificates() {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Begin documenting your personal growth and skill development with our comprehensive courses.
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
+          <button 
+            onClick={showSignupModal}
+            className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
+          >
             Browse Courses
           </button>
         </div>
