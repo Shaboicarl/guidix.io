@@ -89,30 +89,30 @@ export default function Instructors() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            Meet Our <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Expert Instructors</span>
+            Teach on <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Guidix</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Learn from industry professionals with years of real-world experience at top companies.
+            Join our platform of educators and professors who are monetizing their expertise by teaching online courses.
           </p>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 bg-white rounded-2xl p-8 shadow-lg">
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
-            <div className="text-gray-600 font-semibold">Expert Instructors</div>
+            <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
+            <div className="text-gray-600 font-semibold">Course Creators</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">15+</div>
-            <div className="text-gray-600 font-semibold">Years Avg Experience</div>
+            <div className="text-3xl font-bold text-purple-600 mb-2">$2M+</div>
+            <div className="text-gray-600 font-semibold">Earned by Instructors</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-blue-600 mb-2">4.8</div>
-            <div className="text-gray-600 font-semibold">Average Rating</div>
+            <div className="text-gray-600 font-semibold">Instructor Rating</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-600 mb-2">100K+</div>
-            <div className="text-gray-600 font-semibold">Students Taught</div>
+            <div className="text-3xl font-bold text-purple-600 mb-2">50K+</div>
+            <div className="text-gray-600 font-semibold">Students Reached</div>
           </div>
         </div>
 
@@ -194,13 +194,13 @@ export default function Instructors() {
         {/* CTA Section */}
         <div className="text-center mt-16 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            Want to Become an Instructor?
+            Ready to Monetize Your Expertise?
           </h2>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Share your expertise with thousands of students worldwide. Join our community of expert instructors.
+            Turn your knowledge into income. Create and sell courses on Guidix and reach students globally while building your educational business.
           </p>
           <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
-            Apply to Teach
+            Start Teaching Today
           </button>
         </div>
       </div>

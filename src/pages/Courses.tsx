@@ -1,7 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import { BookOpen, Clock, Users, Star, Play } from 'lucide-react';
 
 export default function Courses() {
+  const [selectedCategory, setSelectedCategory] = useState("All Courses");
+  const [visibleCourses, setVisibleCourses] = useState(6);
+
   const courses = [
     {
       id: 1,
@@ -13,7 +17,8 @@ export default function Courses() {
       level: "Beginner to Advanced",
       price: "$89",
       image: "https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "Master HTML, CSS, JavaScript, React, Node.js, and more in this comprehensive bootcamp."
+      description: "Master HTML, CSS, JavaScript, React, Node.js, and more in this comprehensive bootcamp.",
+      category: "Web Development"
     },
     {
       id: 2,
@@ -25,7 +30,8 @@ export default function Courses() {
       level: "Intermediate",
       price: "$79",
       image: "https://images.pexels.com/photos/590020/pexels-photo-590020.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "Learn data analysis, machine learning, and visualization with Python and popular libraries."
+      description: "Learn data analysis, machine learning, and visualization with Python and popular libraries.",
+      category: "Data Science"
     },
     {
       id: 3,
@@ -37,7 +43,8 @@ export default function Courses() {
       level: "Beginner",
       price: "$69",
       image: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "Master SEO, social media marketing, content strategy, and paid advertising campaigns."
+      description: "Master SEO, social media marketing, content strategy, and paid advertising campaigns.",
+      category: "Digital Marketing"
     },
     {
       id: 4,
@@ -49,7 +56,8 @@ export default function Courses() {
       level: "Beginner to Intermediate",
       price: "$75",
       image: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "Learn user experience design principles, wireframing, prototyping, and design tools."
+      description: "Learn user experience design principles, wireframing, prototyping, and design tools.",
+      category: "Design"
     },
     {
       id: 5,
@@ -61,7 +69,8 @@ export default function Courses() {
       level: "Intermediate to Advanced",
       price: "$95",
       image: "https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "Build cross-platform mobile apps for iOS and Android using React Native."
+      description: "Build cross-platform mobile apps for iOS and Android using React Native.",
+      category: "Mobile Development"
     },
     {
       id: 6,
@@ -73,7 +82,47 @@ export default function Courses() {
       level: "Intermediate",
       price: "$85",
       image: "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=400",
-      description: "Master Amazon Web Services, cloud architecture, and deployment strategies."
+      description: "Master Amazon Web Services, cloud architecture, and deployment strategies.",
+      category: "Cloud Computing"
+    },
+    {
+      id: 7,
+      title: "Business Strategy Fundamentals",
+      instructor: "Robert Kim",
+      rating: 4.7,
+      students: 4200,
+      duration: "20 hours",
+      level: "Beginner",
+      price: "$59",
+      image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400",
+      description: "Learn essential business strategy concepts and frameworks for entrepreneurial success.",
+      category: "Business"
+    },
+    {
+      id: 8,
+      title: "Portrait Photography Mastery",
+      instructor: "Anna Martinez",
+      rating: 4.9,
+      students: 3800,
+      duration: "28 hours",
+      level: "Intermediate",
+      price: "$79",
+      image: "https://images.pexels.com/photos/1264210/pexels-photo-1264210.jpeg?auto=compress&cs=tinysrgb&w=400",
+      description: "Master the art of portrait photography with lighting, composition, and editing techniques.",
+      category: "Photography"
+    },
+    {
+      id: 9,
+      title: "Advanced Excel for Business",
+      instructor: "David Chen",
+      rating: 4.6,
+      students: 6200,
+      duration: "15 hours",
+      level: "Intermediate",
+      price: "$49",
+      image: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=400",
+      description: "Master advanced Excel functions, pivot tables, and data analysis for business applications.",
+      category: "Business"
     }
   ];
 
@@ -88,6 +137,18 @@ export default function Courses() {
     "Business",
     "Photography"
   ];
+
+  const filteredCourses = selectedCategory === "All Courses" 
+    ? courses 
+    : courses.filter(course => course.category === selectedCategory);
+
+  const displayedCourses = filteredCourses.slice(0, visibleCourses);
+
+  const handleLoadMore = () => {
+    setVisibleCourses(prev => Math.min(prev + 6, filteredCourses.length));
+  };
+
+  const hasMoreCourses = visibleCourses < filteredCourses.length;
 
   return (
     <div className="py-12">
@@ -107,8 +168,12 @@ export default function Courses() {
           {categories.map((category, index) => (
             <button
               key={index}
+              onClick={() => {
+                setSelectedCategory(category);
+                setVisibleCourses(6);
+              }}
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                index === 0
+                selectedCategory === category
                   ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white'
                   : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200'
               }`}
@@ -120,7 +185,7 @@ export default function Courses() {
 
         {/* Courses Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {courses.map((course) => (
+          {displayedCourses.map((course) => (
             <div
               key={course.id}
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
@@ -177,9 +242,14 @@ export default function Courses() {
 
         {/* Load More */}
         <div className="text-center mt-12">
-          <button className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl text-lg border-2 border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-all duration-200">
-            Load More Courses
-          </button>
+          {hasMoreCourses && (
+            <button 
+              onClick={handleLoadMore}
+              className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl text-lg border-2 border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-all duration-200"
+            >
+              Load More Courses
+            </button>
+          )}
         </div>
       </div>
     </div>
