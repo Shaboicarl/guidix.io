@@ -215,7 +215,6 @@ export default function Community() {
                         <span>{event.attendees} attending</span>
                       </div>
                     </div>
-                    <button className="w-full mt-3 px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-500 hover:to-purple-600 transition-all duration-200">
                     <button 
                       onClick={showSignupModal}
                       className="w-full mt-3 px-4 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-500 hover:to-purple-600 transition-all duration-200"
