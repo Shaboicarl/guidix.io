@@ -20,33 +20,6 @@ import {
   ChevronDown
 } from 'lucide-react';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  BookOpen, 
-  Users, 
-  BarChart3, 
-  Settings, 
-  Palette, 
-  CreditCard, 
-  User, 
-  Bell, 
-  LogOut,
-  Crown,
-  Award,
-  Calendar,
-  Edit2,
-  Save,
-  X,
-  Upload,
-  ChevronDown,
-  Menu,
-  Globe,
-  Mail,
-  Phone,
-  MapPin
-} from 'lucide-react';
-
 // Main Website Header Component
 const MainHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
