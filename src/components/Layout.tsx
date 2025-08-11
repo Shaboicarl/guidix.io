@@ -324,7 +324,6 @@ export default function Layout({ children }: LayoutProps) {
                   guidix.io
                 </span>
               </Link>
-              </Link>
             </div>
             
             <div className="flex items-center space-x-4">
