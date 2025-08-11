@@ -1022,8 +1022,7 @@ export default function StudentCampus() {
                 <div className="flex-1">
                   <div className={`flex items-center space-x-2 ${appearance.compactMode ? 'mb-0' : 'mb-1'}`}>
                     <span className={`font-semibold ${
-                      message.role === 'instructor' ? 'text-yellow-400' : 
-                      appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                      message.role === 'instructor' ? 'text-yellow-400' : appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
                     }`}>
                       {message.user}
                     </span>
@@ -1121,18 +1120,28 @@ export default function StudentCampus() {
         </div>
 
         {/* Members List */}
-        <div className="w-60 bg-gray-700 border-l border-gray-600">
+        <div className={\`w-60 border-l transition-colors duration-300 ${
+          appearance.theme === 'light' 
+            ? 'bg-gray-50 border-gray-200' 
+            : 'bg-gray-700 border-gray-600'
+        }`}>
           <div className="p-4">
-            <h3 className="text-white font-semibold mb-4">
+            <h3 className={\`font-semibold mb-4 transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}>
               {showDMs ? 'Friends' : \`${currentCourse?.name} Members`}
             </h3>
             
             <div className="space-y-4">
               <div>
-                <div className="text-gray-400 text-xs font-semibold mb-2">INSTRUCTORS — 1</div>
+                <div className={\`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                }`}>INSTRUCTORS — 1</div>
                 <div 
                   onClick={() => handleProfileClick('Sarah Johnson')}
-                  className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer"
+                  className={\`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                    appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
+                  }`}
                 >
                   <div className="relative">
                     <img
@@ -1147,7 +1156,9 @@ export default function StudentCampus() {
               </div>
 
               <div>
-                <div className="text-gray-400 text-xs font-semibold mb-2">STUDENTS — 24</div>
+                <div className={\`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                }`}>STUDENTS — 24</div>
                 <div className="space-y-1">
                   {[
                     { name: 'Mike Student', status: 'online' },
@@ -1159,7 +1170,9 @@ export default function StudentCampus() {
                     <div 
                       key={index} 
                       onClick={() => handleProfileClick(student.name)}
-                      className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer"
+                      className={\`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                        appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
+                      }`}
                     >
                       <div className="relative">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
@@ -1172,7 +1185,9 @@ export default function StudentCampus() {
                           student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
                         }`}></div>
                       </div>
-                      <span className="text-gray-300 text-sm">{student.name}</span>
+                      <span className={\`text-sm transition-colors duration-300 ${
+                        appearance.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                      }`}>{student.name}</span>
                     </div>
                   ))}
                 </div>
