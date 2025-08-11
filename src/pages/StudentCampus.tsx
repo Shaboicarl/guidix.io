@@ -435,9 +435,13 @@ export default function StudentCampus() {
                 <div className="bg-gray-700 rounded-lg p-6">
                   <h4 className="text-white font-semibold mb-4">Profile Picture</h4>
                   <div className="flex items-center space-x-4">
-                    <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                      <User className="text-white" size={32} />
-                    </div>
+                    {profileData.avatar ? (
+                      <img src={profileData.avatar} alt="Profile" className="w-20 h-20 rounded-full object-cover" />
+                    ) : (
+                      <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                        <User className="text-white" size={32} />
+                      </div>
+                    )}
                     <div className="space-y-2">
                       <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                         Change Avatar
