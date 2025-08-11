@@ -184,22 +184,6 @@ export default function Layout({ children }: LayoutProps) {
                   guidix.io
                 </span>
               </Link>
-              
-              <div className="hidden md:flex items-center space-x-6">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`font-medium transition-colors ${
-                      location.pathname === item.path
-                        ? `text-${portalColor}-600`
-                        : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
             </div>
             
             <div className="flex items-center space-x-4">
