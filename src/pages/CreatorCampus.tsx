@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hash, Users, Settings, Mic, MicOff, Headphones, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, Crown, Shield, Edit, Trash2, Pin, MoreHorizontal, X, Mail, Calendar, MapPin, Award, BarChart3, Clock, TrendingUp, AlertTriangle, Ban, UserX, Volume2, VolumeX, BookOpen, FileText, Download, Eye } from 'lucide-react';
+import { Hash, Users, Crown, Settings, MessageCircle, Bell, Search, Plus, Smile, Paperclip, Send, Mic, Video, Phone, UserPlus, Shield, BarChart3, BookOpen, Mail, Calendar, FileText, Download, TrendingUp, Award, Eye, Edit, Trash2, X, LogOut, User, ChevronDown, Save, Upload, Moon, Sun, Monitor, Type, Clock, MessageSquare, Zap } from 'lucide-react';
 
 export default function CreatorCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
@@ -12,6 +12,34 @@ export default function CreatorCampus() {
   const [showStudentAnalytics, setShowStudentAnalytics] = useState(false);
   const [showCreatorTools, setShowCreatorTools] = useState(false);
   const [showCourseSettings, setShowCourseSettings] = useState(false);
+  
+  // Profile and Settings States
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [activeSettingsTab, setActiveSettingsTab] = useState('account');
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  
+  // Appearance Settings
+  const [theme, setTheme] = useState('dark');
+  const [fontSize, setFontSize] = useState('medium');
+  const [compactMode, setCompactMode] = useState(false);
+  const [showTimestamps, setShowTimestamps] = useState(true);
+  const [animatedEmojis, setAnimatedEmojis] = useState(true);
+  
+  // Profile Data
+  const [profileData, setProfileData] = useState({
+    name: 'Sarah Creator',
+    username: 'sarahcreator',
+    email: 'sarah.creator@example.com',
+    bio: 'Passionate educator and course creator. I love helping students achieve their learning goals through engaging content.',
+    joinDate: 'September 2023',
+    coursesCreated: 8,
+    totalStudents: 1247,
+    certificatesIssued: 456,
+    avatar: null as string | null
+  });
+  
+  const [editProfileData, setEditProfileData] = useState(profileData);
   const [showCertificateManager, setShowCertificateManager] = useState(false);
   const [showAnnouncementPanel, setShowAnnouncementPanel] = useState(false);
   const [showEmailPanel, setShowEmailPanel] = useState(false);

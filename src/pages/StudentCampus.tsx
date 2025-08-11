@@ -25,6 +25,13 @@ export default function StudentCampus() {
     };
   });
 
+  const [profileData, setProfileData] = useState({
+    bio: 'Passionate learner focused on web development and data science.',
+    avatar: null as string | null
+  });
+
+  const [editProfileData, setEditProfileData] = useState(profileData);
+
   // Save appearance settings to localStorage whenever they change
   React.useEffect(() => {
     localStorage.setItem('guidix-appearance', JSON.stringify(appearance));
@@ -35,11 +42,18 @@ export default function StudentCampus() {
     document.documentElement.setAttribute('data-font-size', appearance.fontSize);
   }, [appearance]);
 
-  // Apply theme on component mount
   React.useEffect(() => {
+    const savedProfileData = localStorage.getItem('campus-profile-data');
+
+    // Apply theme on component mount
     document.documentElement.setAttribute('data-theme', appearance.theme);
     document.documentElement.setAttribute('data-compact', appearance.compactMode.toString());
     document.documentElement.setAttribute('data-font-size', appearance.fontSize);
+    if (savedProfileData) {
+      const parsed = JSON.parse(savedProfileData);
+      setProfileData(parsed);
+      setEditProfileData(parsed);
+    }
   }, []);
 
   const updateAppearance = (updates) => {
@@ -156,7 +170,7 @@ export default function StudentCampus() {
   const currentCourse = courses.find(course => course.id === selectedCourse);
   const currentChannel = currentCourse?.channels.find(channel => channel.id === selectedChannel);
 
-  const profileData = {
+  const profileDataMap = {
     'Sarah Johnson': {
       name: 'Sarah Johnson',
       role: 'instructor',
@@ -196,7 +210,7 @@ export default function StudentCampus() {
   };
 
   const handleProfileClick = (userName) => {
-    setSelectedProfile(profileData[userName] || null);
+    setSelectedProfile(profileDataMap[userName] || null);
   };
 
   const ProfileModal = ({ profile, onClose }: { profile: any; onClose: () => void }) => (
@@ -1057,13 +1071,13 @@ export default function StudentCampus() {
           </div>
 
           {/* Message Input */}
-          <div className={\`p-4 transition-colors duration-300 ${
+          <div className={`p-4 transition-colors duration-300 ${
             appearance.theme === 'light' ? 'bg-white' : 'bg-gray-700'
           }`}>
-            <div className={\`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
+            <div className={`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
               appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-600'
             }`}>
-              <button className={\`mr-3 transition-colors ${
+              <button className={`mr-3 transition-colors ${
                 appearance.theme === 'light' 
                   ? 'text-gray-600 hover:text-gray-900' 
                   : 'text-gray-400 hover:text-white'
@@ -1075,29 +1089,29 @@ export default function StudentCampus() {
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder={\`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
-                className={\`flex-1 bg-transparent outline-none transition-colors duration-300 ${
+                placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
+                className={`flex-1 bg-transparent outline-none transition-colors duration-300 ${
                   appearance.theme === 'light' 
                     ? 'text-gray-900 placeholder-gray-500' 
                     : 'text-white placeholder-gray-400'
                 }`}
               />
               <div className="flex items-center space-x-2 ml-3">
-                <button className={\`transition-colors ${
+                <button className={`transition-colors ${
                   appearance.theme === 'light' 
                     ? 'text-gray-600 hover:text-gray-900' 
                     : 'text-gray-400 hover:text-white'
                 }`}>
                   <Gift size={20} />
                 </button>
-                <button className={\`transition-colors ${
+                <button className={`transition-colors ${
                   appearance.theme === 'light' 
                     ? 'text-gray-600 hover:text-gray-900' 
                     : 'text-gray-400 hover:text-white'
                 }`}>
                   <Paperclip size={20} />
                 </button>
-                <button className={\`transition-colors ${
+                <button className={`transition-colors ${
                   appearance.theme === 'light' 
                     ? 'text-gray-600 hover:text-gray-900' 
                     : 'text-gray-400 hover:text-white'
@@ -1106,7 +1120,7 @@ export default function StudentCampus() {
                 </button>
                 <button
                   onClick={handleSendMessage}
-                  className={\`transition-colors ${
+                  className={`transition-colors ${
                     appearance.theme === 'light' 
                       ? 'text-gray-600 hover:text-gray-900' 
                       : 'text-gray-400 hover:text-white'
@@ -1120,26 +1134,26 @@ export default function StudentCampus() {
         </div>
 
         {/* Members List */}
-        <div className={\`w-60 border-l transition-colors duration-300 ${
+        <div className={`w-60 border-l transition-colors duration-300 ${
           appearance.theme === 'light' 
             ? 'bg-gray-50 border-gray-200' 
             : 'bg-gray-700 border-gray-600'
         }`}>
           <div className="p-4">
-            <h3 className={\`font-semibold mb-4 transition-colors duration-300 ${
+            <h3 className={`font-semibold mb-4 transition-colors duration-300 ${
               appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}>
-              {showDMs ? 'Friends' : \`${currentCourse?.name} Members`}
+              {showDMs ? 'Friends' : `${currentCourse?.name} Members`}
             </h3>
             
             <div className="space-y-4">
               <div>
-                <div className={\`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
                   appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
                 }`}>INSTRUCTORS — 1</div>
                 <div 
                   onClick={() => handleProfileClick('Sarah Johnson')}
-                  className={\`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                  className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
                     appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
                   }`}
                 >
@@ -1156,7 +1170,7 @@ export default function StudentCampus() {
               </div>
 
               <div>
-                <div className={\`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
                   appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
                 }`}>STUDENTS — 24</div>
                 <div className="space-y-1">
@@ -1170,7 +1184,7 @@ export default function StudentCampus() {
                     <div 
                       key={index} 
                       onClick={() => handleProfileClick(student.name)}
-                      className={\`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                      className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
                         appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
                       }`}
                     >
@@ -1180,12 +1194,12 @@ export default function StudentCampus() {
                             {student.name.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
-                        <div className={\`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
+                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
                           student.status === 'online' ? 'bg-green-400' : 
                           student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
                         }`}></div>
                       </div>
-                      <span className={\`text-sm transition-colors duration-300 ${
+                      <span className={`text-sm transition-colors duration-300 ${
                         appearance.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
                       }`}>{student.name}</span>
                     </div>
