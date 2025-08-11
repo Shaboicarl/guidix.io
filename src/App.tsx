@@ -11,6 +11,9 @@ import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Demo from './pages/Demo';
+import CampusSelect from './pages/CampusSelect';
+import StudentCampus from './pages/StudentCampus';
+import CreatorCampus from './pages/CreatorCampus';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/demo" element={<Demo />} />
+        <Route path="/campus-select" element={<CampusSelect />} />
+        <Route path="/student-campus" element={<StudentCampus />} />
+        <Route path="/creator-campus" element={<CreatorCampus />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/instructors" element={<Instructors />} />
         <Route path="/certificates" element={<Certificates />} />

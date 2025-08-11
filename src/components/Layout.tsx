@@ -161,18 +161,12 @@ export default function Layout({ children }: LayoutProps) {
             </Link>
             
             <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowLoginModal(true)}
-                className="px-6 py-2 text-gray-700 font-semibold hover:text-blue-600 transition-colors"
-              >
-                Login
-              </button>
-              <button
-                onClick={() => setShowSignupModal(true)}
+              <Link
+                to="/campus-select"
                 className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
               >
-                Get Started
-              </button>
+                Open Guidix.io
+              </Link>
             </div>
           </div>
         </div>
@@ -226,8 +220,6 @@ export default function Layout({ children }: LayoutProps) {
       </footer>
 
       {/* Modals */}
-      {showLoginModal && <LoginModal />}
-      {showSignupModal && <SignupModal />}
     </div>
   );
 }

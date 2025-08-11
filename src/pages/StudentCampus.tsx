@@ -11,7 +11,8 @@ export default function StudentCampus() {
     {
       id: 'web-development',
       name: 'Web Development',
-      color: 'bg-blue-500',
+      color: 'from-blue-400 to-blue-600',
+      icon: '💻',
       channels: [
         { id: 'general', name: 'general', type: 'text' },
         { id: 'announcements', name: 'announcements', type: 'text' },
@@ -25,7 +26,8 @@ export default function StudentCampus() {
     {
       id: 'data-science',
       name: 'Data Science',
-      color: 'bg-purple-500',
+      color: 'from-purple-400 to-purple-600',
+      icon: '📊',
       channels: [
         { id: 'general', name: 'general', type: 'text' },
         { id: 'python-basics', name: 'python-basics', type: 'text' },
@@ -37,7 +39,8 @@ export default function StudentCampus() {
     {
       id: 'digital-marketing',
       name: 'Digital Marketing',
-      color: 'bg-green-500',
+      color: 'from-green-400 to-green-600',
+      icon: '📈',
       channels: [
         { id: 'general', name: 'general', type: 'text' },
         { id: 'seo-tips', name: 'seo-tips', type: 'text' },
@@ -49,7 +52,8 @@ export default function StudentCampus() {
     {
       id: 'ux-design',
       name: 'UX Design',
-      color: 'bg-pink-500',
+      color: 'from-pink-400 to-pink-600',
+      icon: '🎨',
       channels: [
         { id: 'general', name: 'general', type: 'text' },
         { id: 'design-critique', name: 'design-critique', type: 'text' },
@@ -122,53 +126,72 @@ export default function StudentCampus() {
   };
 
   return (
-    <div className="h-screen bg-gray-800 flex">
-      {/* Course Sidebar */}
-      <div className="w-20 bg-gray-900 flex flex-col items-center py-4 space-y-3">
-        <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center mb-4">
-          <span className="text-white font-bold text-lg">G</span>
+    <div className="h-screen bg-gray-800 flex flex-col">
+      {/* Top Navigation Bar */}
+      <div className="bg-gray-900 border-b border-gray-700 px-4 py-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">G</span>
+              </div>
+              <span className="text-white font-bold text-lg">Guidix Campus</span>
+            </div>
+            
+            {/* Course Tabs */}
+            <div className="flex items-center space-x-2">
+              {courses.map((course) => (
+                <button
+                  key={course.id}
+                  onClick={() => {
+                    setSelectedCourse(course.id);
+                    setSelectedChannel('general');
+                    setShowDMs(false);
+                  }}
+                  className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-all duration-200 ${
+                    selectedCourse === course.id 
+                      ? `bg-gradient-to-r ${course.color} text-white shadow-lg` 
+                      : 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white'
+                  }`}
+                >
+                  <span className="text-lg">{course.icon}</span>
+                  <span className="font-medium text-sm">{course.name}</span>
+                </button>
+              ))}
+              
+              <button
+                onClick={() => setShowDMs(!showDMs)}
+                className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-all duration-200 ${
+                  showDMs 
+                    ? 'bg-green-500 text-white shadow-lg' 
+                    : 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white'
+                }`}
+              >
+                <MessageCircle size={16} />
+                <span className="font-medium text-sm">Direct Messages</span>
+              </button>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <button className="p-2 text-gray-400 hover:text-white transition-colors">
+              <Bell size={18} />
+            </button>
+            <button className="p-2 text-gray-400 hover:text-white transition-colors">
+              <Search size={18} />
+            </button>
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                <User className="text-white" size={16} />
+              </div>
+              <span className="text-white text-sm font-medium">Student User</span>
+            </div>
+          </div>
         </div>
-        
-        {courses.map((course) => (
-          <button
-            key={course.id}
-            onClick={() => {
-              setSelectedCourse(course.id);
-              setSelectedChannel('general');
-              setShowDMs(false);
-            }}
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-200 ${
-              selectedCourse === course.id 
-                ? `${course.color} text-white` 
-                : 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white hover:rounded-xl'
-            }`}
-            title={course.name}
-          >
-            <span className="font-bold text-sm">
-              {course.name.split(' ').map(word => word[0]).join('')}
-            </span>
-          </button>
-        ))}
-
-        <div className="w-8 h-px bg-gray-700 my-2"></div>
-
-        <button
-          onClick={() => setShowDMs(!showDMs)}
-          className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-200 ${
-            showDMs 
-              ? 'bg-green-500 text-white' 
-              : 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white hover:rounded-xl'
-          }`}
-          title="Direct Messages"
-        >
-          <MessageCircle size={20} />
-        </button>
-
-        <button className="w-12 h-12 bg-gray-700 hover:bg-gray-600 rounded-2xl flex items-center justify-center text-gray-300 hover:text-white transition-all duration-200 hover:rounded-xl">
-          <Plus size={20} />
-        </button>
       </div>
 
+      {/* Main Content Area */}
+      <div className="flex-1 flex">
       {/* Channels Sidebar */}
       <div className="w-60 bg-gray-700 flex flex-col">
         <div className="p-4 border-b border-gray-600">
