@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, X, Mail, Lock, User } from 'lucide-react';
+import { BookOpen, X, Mail, Lock, User, Users } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -86,43 +86,6 @@ export default function Layout({ children }: LayoutProps) {
       </div>
     </div>
   );
-          </div>
-          
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-400 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
-          >
-            Sign In
-          </button>
-        </form>
-
-        <div className="text-center mt-6">
-          <p className="text-gray-600">
-            Don't have an account?{' '}
-            <button
-              onClick={() => {
-                setShowLoginModal(false);
-                setShowSignupModal(true);
-              }}
-              className="text-purple-500 font-semibold hover:text-purple-600 transition-colors"
-            >
-              Sign up
-            </button>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-
 
   return (
     <AuthContext.Provider value={authContextValue}>
