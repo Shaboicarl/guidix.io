@@ -20,6 +20,168 @@ import {
   ChevronDown
 } from 'lucide-react';
 
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { 
+  BookOpen, 
+  Users, 
+  BarChart3, 
+  Settings, 
+  Palette, 
+  CreditCard, 
+  User, 
+  Bell, 
+  LogOut,
+  Crown,
+  Award,
+  Calendar,
+  Edit2,
+  Save,
+  X,
+  Upload,
+  ChevronDown,
+  Menu,
+  Globe,
+  Mail,
+  Phone,
+  MapPin
+} from 'lucide-react';
+
+// Main Website Header Component
+const MainHeader = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <header className="bg-white shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center">
+              <BookOpen className="text-white" size={24} />
+            </div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              guidix.io
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Home
+            </Link>
+            <Link to="/demo" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Demo
+            </Link>
+            <Link to="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Contact
+            </Link>
+            <Link 
+              to="/campus-select" 
+              className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transition-all duration-200"
+            >
+              Get Started
+            </Link>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          >
+            <Menu size={24} className="text-gray-700" />
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-200">
+            <div className="flex flex-col space-y-4">
+              <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Home
+              </Link>
+              <Link to="/demo" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Demo
+              </Link>
+              <Link to="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Contact
+              </Link>
+              <Link 
+                to="/campus-select" 
+                className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transition-all duration-200 text-center"
+              >
+                Get Started
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+};
+
+// Main Website Footer Component
+const MainFooter = () => {
+  return (
+    <footer className="bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid md:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div className="md:col-span-2">
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center">
+                <BookOpen className="text-white" size={24} />
+              </div>
+              <span className="text-2xl font-bold">guidix.io</span>
+            </div>
+            <p className="text-gray-300 mb-6 max-w-md">
+              Empowering learners worldwide with interactive online courses, expert instructors, 
+              and a supportive community. Start your learning journey today.
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Globe size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Mail size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Phone size={20} />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
+              <li><Link to="/demo" className="text-gray-300 hover:text-white transition-colors">Demo</Link></li>
+              <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
+              <li><Link to="/campus-select" className="text-gray-300 hover:text-white transition-colors">Get Started</Link></li>
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Legal</h3>
+            <ul className="space-y-2">
+              <li><Link to="/privacy" className="text-gray-300 hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-gray-300 hover:text-white transition-colors">Terms of Service</Link></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+          <p className="text-gray-400">
+            © 2025 Guidix.io. All rights reserved. Built with ❤️ for learners everywhere.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -143,7 +305,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       location.pathname === '/campus-select' ||
       location.pathname === '/student-campus' || 
       location.pathname === '/creator-campus') {
-    return <>{children}</>;
+    return (
+      <>
+        <MainHeader />
+        <main>{children}</main>
+        <MainFooter />
+      </>
+    );
   }
 
   const isCreatorPortal = location.pathname.startsWith('/org/admin');
