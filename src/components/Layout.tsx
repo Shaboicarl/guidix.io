@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, X, User, Users, GraduationCap, Settings } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { BookOpen, X, User, Users, GraduationCap, Settings, Crown } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -23,8 +23,8 @@ export const useAuth = () => {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const [showSignupModal, setShowSignupModal] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const navigate = useNavigate();
+  const [showCampusModal, setShowCampusModal] = useState(false);
 
   // Check if we're in a campus
   const isInCampus = location.pathname.startsWith('/campus/');
@@ -34,139 +34,61 @@ export default function Layout({ children }: LayoutProps) {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  const SignupModal = () => (
+  const CampusModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-8 w-full max-w-md relative animate-bounce-in">
         <button
-          onClick={() => setShowSignupModal(false)}
+          onClick={() => setShowCampusModal(false)}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
         >
           <X size={24} />
         </button>
         
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Get Started</h2>
-          <p className="text-gray-600">Create your account and start learning today</p>
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="text-white" size={32} />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome to Guidix Campus</h2>
+          <p className="text-gray-600">Choose your role to access the platform</p>
         </div>
 
-        <form className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
-            <input
-              type="text"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-              placeholder="Enter your full name"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-            <input
-              type="email"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-              placeholder="Enter your email"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-            <input
-              type="password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-              placeholder="Create a password"
-            />
-          </div>
+        <div className="space-y-4">
+          <button
+            onClick={() => {
+              setShowCampusModal(false);
+              navigate('/campus/student');
+            }}
+            className="w-full p-6 bg-gradient-to-r from-blue-400 to-purple-500 text-white rounded-2xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center space-x-4"
+          >
+            <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+              <GraduationCap size={24} />
+            </div>
+            <div className="text-left">
+              <div className="text-xl font-bold">Student Portal</div>
+              <div className="text-blue-100">Access courses, chat with peers, and track your progress</div>
+            </div>
+          </button>
 
           <button
-            type="submit"
-            className="w-full px-6 py-3 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
+            onClick={() => {
+              setShowCampusModal(false);
+              navigate('/campus/creator');
+            }}
+            className="w-full p-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-2xl hover:from-yellow-500 hover:to-orange-600 transform hover:scale-105 transition-all duration-200 flex items-center space-x-4"
           >
-            Create Account
+            <div className="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+              <Crown size={24} />
+            </div>
+            <div className="text-left">
+              <div className="text-xl font-bold">Creator Portal</div>
+              <div className="text-yellow-100">Manage courses, moderate discussions, and track student progress</div>
+            </div>
           </button>
-        </form>
-
-        <div className="text-center mt-6">
-          <p className="text-gray-600">
-            Already have an account?{' '}
-            <button
-              onClick={() => {
-                setShowSignupModal(false);
-                setShowLoginModal(true);
-              }}
-              className="text-blue-600 hover:text-blue-700 font-semibold"
-            >
-              Sign In
-            </button>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-
-  const LoginModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-8 w-full max-w-md relative animate-bounce-in">
-        <button
-          onClick={() => setShowLoginModal(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          <X size={24} />
-        </button>
-        
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
-          <p className="text-gray-600">Sign in to continue your learning journey</p>
         </div>
 
-        <form className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-            <input
-              type="email"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-              placeholder="Enter your email"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-            <input
-              type="password"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <label className="flex items-center">
-              <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-300" />
-              <span className="ml-2 text-sm text-gray-600">Remember me</span>
-            </label>
-            <button type="button" className="text-sm text-blue-600 hover:text-blue-700">
-              Forgot password?
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full px-6 py-3 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
-          >
-            Sign In
-          </button>
-        </form>
-
         <div className="text-center mt-6">
-          <p className="text-gray-600">
-            Don't have an account?{' '}
-            <button
-              onClick={() => {
-                setShowLoginModal(false);
-                setShowSignupModal(true);
-              }}
-              className="text-blue-600 hover:text-blue-700 font-semibold"
-            >
-              Sign Up
-            </button>
+          <p className="text-gray-500 text-sm">
+            This is a demo environment. No registration required.
           </p>
         </div>
       </div>
@@ -179,8 +101,8 @@ export default function Layout({ children }: LayoutProps) {
   }
 
   const authContextValue = {
-    showSignupModal: () => setShowSignupModal(true),
-    showLoginModal: () => setShowLoginModal(true)
+    showSignupModal: () => setShowCampusModal(true),
+    showLoginModal: () => setShowCampusModal(true)
   };
 
   return (
@@ -201,16 +123,10 @@ export default function Layout({ children }: LayoutProps) {
               
               <div className="flex items-center space-x-4">
                 <button
-                  onClick={() => setShowLoginModal(true)}
-                  className="px-6 py-2 text-gray-700 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-200"
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() => setShowSignupModal(true)}
+                  onClick={() => setShowCampusModal(true)}
                   className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
                 >
-                  Get Started
+                  Open Guidix.io
                 </button>
               </div>
             </div>
@@ -273,9 +189,8 @@ export default function Layout({ children }: LayoutProps) {
           </div>
         </footer>
 
-        {/* Modals */}
-        {showSignupModal && <SignupModal />}
-        {showLoginModal && <LoginModal />}
+        {/* Campus Modal */}
+        {showCampusModal && <CampusModal />}
       </div>
     </AuthContext.Provider>
   );
