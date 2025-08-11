@@ -1022,8 +1022,9 @@ export default function StudentCampus() {
                 <div className="flex-1">
                   <div className={`flex items-center space-x-2 ${appearance.compactMode ? 'mb-0' : 'mb-1'}`}>
                     <span className={`font-semibold ${
-                      message.role === 'instructor' ? 'text-yellow-400' : 'text-white'
+                      message.role === 'instructor' ? 'text-yellow-400' : 
                       appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
                       {message.user}
                     </span>
                     {message.role === 'instructor' && (
@@ -1047,9 +1048,7 @@ export default function StudentCampus() {
             ))}
             
             {showDMs && (
-              <div className={`text-center py-8 transition-colors duration-300 ${
-                appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-              }`}>
+              <div className="text-center text-gray-400 py-8">
                 <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
                 <p>Select a conversation to start messaging</p>
               </div>
@@ -1057,17 +1056,9 @@ export default function StudentCampus() {
           </div>
 
           {/* Message Input */}
-          <div className={`p-4 transition-colors duration-300 ${
-            appearance.theme === 'light' ? 'bg-white' : 'bg-gray-700'
-          }`}>
-            <div className={`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
-              appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-600'
-            }`}>
-              <button className={`mr-3 transition-colors ${
-                appearance.theme === 'light' 
-                  ? 'text-gray-600 hover:text-gray-900' 
-                  : 'text-gray-400 hover:text-white'
-              }`}>
+          <div className="p-4 bg-gray-700">
+            <div className="flex items-center bg-gray-600 rounded-lg px-4 py-3">
+              <button className="text-gray-400 hover:text-white transition-colors mr-3">
                 <Plus size={20} />
               </button>
               <input
@@ -1076,41 +1067,21 @@ export default function StudentCampus() {
                 onChange={(e) => setMessageInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
-                className={`flex-1 bg-transparent outline-none transition-colors duration-300 ${
-                  appearance.theme === 'light' 
-                    ? 'text-gray-900 placeholder-gray-500' 
-                    : 'text-white placeholder-gray-400'
-                }`}
+                className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
               />
               <div className="flex items-center space-x-2 ml-3">
-                <button className={`transition-colors ${
-                  appearance.theme === 'light' 
-                    ? 'text-gray-600 hover:text-gray-900' 
-                    : 'text-gray-400 hover:text-white'
-                }`}>
+                <button className="text-gray-400 hover:text-white transition-colors">
                   <Gift size={20} />
                 </button>
-                <button className={`transition-colors ${
-                  appearance.theme === 'light' 
-                    ? 'text-gray-600 hover:text-gray-900' 
-                    : 'text-gray-400 hover:text-white'
-                }`}>
+                <button className="text-gray-400 hover:text-white transition-colors">
                   <Paperclip size={20} />
                 </button>
-                <button className={`transition-colors ${
-                  appearance.theme === 'light' 
-                    ? 'text-gray-600 hover:text-gray-900' 
-                    : 'text-gray-400 hover:text-white'
-                }`}>
+                <button className="text-gray-400 hover:text-white transition-colors">
                   <Smile size={20} />
                 </button>
                 <button
                   onClick={handleSendMessage}
-                  className={`transition-colors ${
-                    appearance.theme === 'light' 
-                      ? 'text-gray-600 hover:text-gray-900' 
-                      : 'text-gray-400 hover:text-white'
-                  }`}
+                  className="text-gray-400 hover:text-white transition-colors"
                 >
                   <Send size={20} />
                 </button>
@@ -1120,28 +1091,18 @@ export default function StudentCampus() {
         </div>
 
         {/* Members List */}
-        <div className={`w-60 border-l transition-colors duration-300 ${
-          appearance.theme === 'light' 
-            ? 'bg-gray-50 border-gray-200' 
-            : 'bg-gray-700 border-gray-600'
-        }`}>
+        <div className="w-60 bg-gray-700 border-l border-gray-600">
           <div className="p-4">
-            <h3 className={`font-semibold mb-4 transition-colors duration-300 ${
-              appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-            }`}>
-              {showDMs ? 'Friends' : `${currentCourse?.name} Members`}
+            <h3 className="text-white font-semibold mb-4">
+              {showDMs ? 'Friends' : \`${currentCourse?.name} Members`}
             </h3>
             
             <div className="space-y-4">
               <div>
-                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
-                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                }`}>INSTRUCTORS — 1</div>
+                <div className="text-gray-400 text-xs font-semibold mb-2">INSTRUCTORS — 1</div>
                 <div 
                   onClick={() => handleProfileClick('Sarah Johnson')}
-                  className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
-                    appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
-                  }`}
+                  className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer"
                 >
                   <div className="relative">
                     <img
@@ -1156,9 +1117,7 @@ export default function StudentCampus() {
               </div>
 
               <div>
-                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
-                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                }`}>STUDENTS — 24</div>
+                <div className="text-gray-400 text-xs font-semibold mb-2">STUDENTS — 24</div>
                 <div className="space-y-1">
                   {[
                     { name: 'Mike Student', status: 'online' },
@@ -1170,9 +1129,7 @@ export default function StudentCampus() {
                     <div 
                       key={index} 
                       onClick={() => handleProfileClick(student.name)}
-                      className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
-                        appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
-                      }`}
+                      className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer"
                     >
                       <div className="relative">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
@@ -1180,14 +1137,12 @@ export default function StudentCampus() {
                             {student.name.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
-                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
+                        <div className={\`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
                           student.status === 'online' ? 'bg-green-400' : 
                           student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
                         }`}></div>
                       </div>
-                      <span className={`text-sm transition-colors duration-300 ${
-                        appearance.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-                      }`}>{student.name}</span>
+                      <span className="text-gray-300 text-sm">{student.name}</span>
                     </div>
                   ))}
                 </div>
