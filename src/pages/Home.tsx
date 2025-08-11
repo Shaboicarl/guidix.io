@@ -1,53 +1,50 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Users, Zap, Shield, Star, ChevronRight, Play, CheckCircle, Globe, X } from 'lucide-react';
-import { useAuth } from '../components/Layout';
+import { useNavigate } from 'react-router-dom';
+import { BookOpen, Users, Zap, Shield, Star, ChevronRight, Play, CheckCircle, BarChart3, Palette, Globe2 } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { showSignupModal } = useAuth();
-  const [showCampusModal, setShowCampusModal] = useState(false);
 
   const features = [
     {
-      icon: BookOpen,
-      title: "Interactive Learning",
-      description: "Engage with dynamic content, quizzes, and hands-on projects designed to make learning stick."
+      icon: Palette,
+      title: "White-Label Branding",
+      description: "Complete customization with your logo, colors, domain, and email templates. Make it truly yours."
     },
     {
-      icon: Users,
-      title: "Expert Instructors",
-      description: "Learn from industry professionals with years of real-world experience in their fields."
+      icon: BarChart3,
+      title: "Powerful Analytics",
+      description: "Track student progress, course performance, and engagement with detailed insights and reports."
     },
     {
       icon: Zap,
-      title: "Fast-Track Progress",
-      description: "Accelerate your learning with our proven methodology and personalized learning paths."
+      title: "Multi-Role Access",
+      description: "Students learn, creators build courses, and admins manage everything with role-based permissions."
     },
     {
-      icon: Shield,
-      title: "Certified Learning",
-      description: "Earn recognized certificates and credentials that boost your career prospects."
+      icon: Globe2,
+      title: "Multi-Tenant Architecture",
+      description: "One platform, multiple organizations. Isolated data and branding for each tenant."
     }
   ];
 
   const testimonials = [
     {
-      name: "Sarah Chen",
-      role: "Software Developer",
-      content: "Guidix transformed my career! The courses are incredibly well-structured and the community support is amazing.",
+      name: "TechCorp University",
+      role: "Corporate Training",
+      content: "Guidix helped us launch our employee training academy in just 2 weeks. The white-label features are perfect.",
       rating: 5
     },
     {
-      name: "Marcus Johnson",
-      role: "Digital Marketer",
-      content: "The interactive learning approach made complex topics easy to understand. Highly recommend!",
+      name: "EduMaster Institute",
+      role: "Online Education",
+      content: "Our students love the seamless learning experience. The analytics help us improve course completion rates.",
       rating: 5
     },
     {
-      name: "Elena Rodriguez",
-      role: "UX Designer",
-      content: "Best online learning platform I've used. The instructors are top-notch and always available to help.",
+      name: "Coach Sarah",
+      role: "Course Creator",
+      content: "Finally, a platform that lets me focus on creating content while handling all the technical aspects beautifully.",
       rating: 5
     }
   ];
@@ -56,90 +53,42 @@ export default function Home() {
     navigate('/demo');
   };
 
-  const CampusModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-8 w-full max-w-lg relative animate-bounce-in">
-        <button
-          onClick={() => setShowCampusModal(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          <X size={24} />
-        </button>
-        
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome to Guidix Campus</h2>
-          <p className="text-gray-600">Choose your role to access the platform</p>
-        </div>
-
-        <div className="space-y-4">
-          <Link
-            to="/campus/student"
-            onClick={() => setShowCampusModal(false)}
-            className="w-full p-6 bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-200 rounded-xl hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all duration-200 block"
-          >
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
-                <BookOpen className="text-white" size={24} />
-              </div>
-              <div className="text-left">
-                <h3 className="text-xl font-bold text-gray-800">Student</h3>
-                <p className="text-gray-600">Access courses, join discussions, and learn from experts</p>
-              </div>
-            </div>
-          </Link>
-          
-          <Link
-            to="/campus/creator"
-            onClick={() => setShowCampusModal(false)}
-            className="w-full p-6 bg-gradient-to-r from-purple-50 to-purple-100 border-2 border-purple-200 rounded-xl hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 transition-all duration-200 block"
-          >
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl flex items-center justify-center">
-                <Users className="text-white" size={24} />
-              </div>
-              <div className="text-left">
-                <h3 className="text-xl font-bold text-gray-800">Creator</h3>
-                <p className="text-gray-600">Create courses, manage students, and build your educational business</p>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+  const handleTryDemo = () => {
+    navigate('/demo-login');
+  };
 
   return (
-    <>
+    <div>
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
           <div className="text-center">
             <h1 className="text-5xl md:text-7xl font-bold text-gray-800 mb-6 leading-tight">
-              Learn <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Anything</span>
+              Your Branded <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Online Academy</span>
               <br />
-              <span className="bg-gradient-to-r from-purple-500 to-blue-400 bg-clip-text text-transparent">Anywhere</span>
+              <span className="bg-gradient-to-r from-purple-500 to-blue-400 bg-clip-text text-transparent">in Minutes</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Join thousands of students mastering new skills with our interactive online courses. 
-              Expert-led content, hands-on projects, and a supportive community await.
+              Host your courses, engage your students, track progress — all under your own brand. 
+              The complete white-label solution for organizations of any size.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button 
-                onClick={() => setShowCampusModal(true)}
+                onClick={handleTryDemo}
                 className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
               >
-                <span>Open Guidix.io</span>
+                <span>Try the Demo</span>
                 <ChevronRight size={20} />
               </button>
               
               <button 
-                onClick={handleWatchDemo}
+                onClick={() => window.open('mailto:hello@guidix.io', '_blank')}
                 className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl text-lg border-2 border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-all duration-200 flex items-center space-x-2"
               >
-                <Play size={20} />
-                <span>Watch Demo</span>
+                <Users size={20} />
+                <span>Book a Call</span>
               </button>
             </div>
           </div>
@@ -156,16 +105,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">50K+</div>
+              <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">500+</div>
+              <div className="text-gray-600 font-semibold">Organizations</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-purple-600 mb-2">50K+</div>
               <div className="text-gray-600 font-semibold">Active Students</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-purple-600 mb-2">200+</div>
-              <div className="text-gray-600 font-semibold">Expert Courses</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">98%</div>
-              <div className="text-gray-600 font-semibold">Success Rate</div>
+              <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">99.9%</div>
+              <div className="text-gray-600 font-semibold">Uptime</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-purple-600 mb-2">24/7</div>
@@ -180,10 +129,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              Why Choose <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Guidix?</span>
+              Everything You Need for <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Success</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We've reimagined online learning to be more engaging, effective, and accessible than ever before.
+              Launch your branded online academy with all the features you need to engage students and grow your organization.
             </p>
           </div>
 
@@ -209,7 +158,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-              What Our <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Students Say</span>
+              Trusted by <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Organizations</span>
             </h2>
           </div>
 
@@ -239,25 +188,23 @@ export default function Home() {
       <section className="py-20">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
-            Ready to Start Your <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Learning Journey?</span>
+            Ready to Launch Your <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Academy?</span>
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Join our community of learners and unlock your potential with world-class courses.
+            See how easy it is to create your own branded online learning platform. Try our demo today.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              onClick={() => setShowCampusModal(true)}
+              onClick={handleTryDemo}
               className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
             >
-              <span>Open Guidix.io</span>
+              <span>Try the Demo</span>
               <CheckCircle size={20} />
             </button>
           </div>
         </div>
       </section>
-      
-      {showCampusModal && <CampusModal />}
-    </>
+    </div>
   );
 }
