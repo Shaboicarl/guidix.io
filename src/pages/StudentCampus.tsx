@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hash, Users, Settings, Mic, MicOff, Headphones, HeadphonesIcon, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, X, Mail, Calendar, MapPin, Award, LogOut, Edit, Palette, Shield, HelpCircle, Download } from 'lucide-react';
+import { Hash, Users, Settings, Mic, MicOff, Headphones, HeadphonesIcon, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, X, Mail, Calendar, MapPin, Award, Edit, LogOut, Palette, Shield, HelpCircle, Download } from 'lucide-react';
 
 export default function StudentCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
@@ -9,6 +9,8 @@ export default function StudentCampus() {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [isInVoiceChannel, setIsInVoiceChannel] = useState(false);
   const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   const courses = [
     {
@@ -232,6 +234,401 @@ export default function StudentCampus() {
     </div>
   );
 
+  const UserProfileDropdown = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 z-50" onClick={onClose}>
+      <div 
+        className="absolute top-16 right-4 bg-gray-800 rounded-lg shadow-xl border border-gray-700 w-80 animate-bounce-in"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Profile Header */}
+        <div className="p-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-t-lg">
+          <div className="flex items-center space-x-3">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+              <User className="text-white" size={24} />
+            </div>
+            <div>
+              <h3 className="text-white font-bold text-lg">Student User</h3>
+              <p className="text-blue-100 text-sm">#1234</p>
+              <div className="flex items-center mt-1">
+                <div className="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
+                <span className="text-blue-100 text-sm">Online</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Profile Info */}
+        <div className="p-4 border-b border-gray-700">
+          <div className="mb-3">
+            <h4 className="text-white font-semibold mb-2">About Me</h4>
+            <p className="text-gray-300 text-sm">
+              Passionate learner focused on web development and data science. Always eager to learn new technologies!
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div>
+              <span className="text-gray-400">Joined:</span>
+              <p className="text-white">Jan 2024</p>
+            </div>
+            <div>
+              <span className="text-gray-400">Courses:</span>
+              <p className="text-white">8 enrolled</p>
+            </div>
+            <div>
+              <span className="text-gray-400">Certificates:</span>
+              <p className="text-white">3 earned</p>
+            </div>
+            <div>
+              <span className="text-gray-400">Hours:</span>
+              <p className="text-white">47 learned</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Certificates */}
+        <div className="p-4 border-b border-gray-700">
+          <h4 className="text-white font-semibold mb-3">Recent Certificates</h4>
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <Award className="text-yellow-400" size={16} />
+              <span className="text-gray-300 text-sm">Web Development Bootcamp</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Award className="text-yellow-400" size={16} />
+              <span className="text-gray-300 text-sm">Digital Marketing Mastery</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Award className="text-yellow-400" size={16} />
+              <span className="text-gray-300 text-sm">UX/UI Design Fundamentals</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="p-4">
+          <div className="space-y-2">
+            <button className="w-full flex items-center space-x-3 p-2 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <Edit size={16} />
+              <span>Edit Profile</span>
+            </button>
+            <button 
+              onClick={() => {
+                onClose();
+                setShowSettings(true);
+              }}
+              className="w-full flex items-center space-x-3 p-2 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors"
+            >
+              <Settings size={16} />
+              <span>Settings</span>
+            </button>
+            <button className="w-full flex items-center space-x-3 p-2 text-red-400 hover:bg-red-900/20 rounded-lg transition-colors">
+              <LogOut size={16} />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const SettingsModal = ({ onClose }: { onClose: () => void }) => {
+    const [activeTab, setActiveTab] = useState('profile');
+    const [profileData, setProfileData] = useState({
+      displayName: 'Student User',
+      username: 'studentuser',
+      email: 'student@example.com',
+      bio: 'Passionate learner focused on web development and data science. Always eager to learn new technologies!',
+      avatar: '',
+      banner: ''
+    });
+    const [appearance, setAppearance] = useState({
+      theme: 'dark',
+      fontSize: 'medium',
+      compactMode: false,
+      showTimestamps: true,
+      animatedEmojis: true
+    });
+    const [notifications, setNotifications] = useState({
+      courseUpdates: true,
+      directMessages: true,
+      mentions: true,
+      emailNotifications: false,
+      pushNotifications: true
+    });
+
+    const tabs = [
+      { id: 'profile', name: 'My Account', icon: User },
+      { id: 'appearance', name: 'Appearance', icon: Palette },
+      { id: 'notifications', name: 'Notifications', icon: Bell },
+      { id: 'privacy', name: 'Privacy & Safety', icon: Shield },
+      { id: 'help', name: 'Help & Support', icon: HelpCircle }
+    ];
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-800 rounded-2xl w-full max-w-4xl h-[80vh] flex overflow-hidden animate-bounce-in">
+          {/* Sidebar */}
+          <div className="w-64 bg-gray-900 p-4">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-white font-bold text-lg">Settings</h2>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <nav className="space-y-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                    activeTab === tab.id
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  <tab.icon size={18} />
+                  <span>{tab.name}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1 p-6 overflow-y-auto">
+            {activeTab === 'profile' && (
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-white mb-6">My Account</h3>
+                
+                {/* Profile Picture */}
+                <div className="bg-gray-700 rounded-lg p-6">
+                  <h4 className="text-white font-semibold mb-4">Profile Picture</h4>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                      <User className="text-white" size={32} />
+                    </div>
+                    <div className="space-y-2">
+                      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Change Avatar
+                      </button>
+                      <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                        Remove Avatar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Profile Information */}
+                <div className="bg-gray-700 rounded-lg p-6 space-y-4">
+                  <h4 className="text-white font-semibold mb-4">Profile Information</h4>
+                  
+                  <div>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">Display Name</label>
+                    <input
+                      type="text"
+                      value={profileData.displayName}
+                      onChange={(e) => setProfileData({...profileData, displayName: e.target.value})}
+                      className="w-full px-3 py-2 bg-gray-600 text-white rounded-lg border border-gray-500 focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">Username</label>
+                    <input
+                      type="text"
+                      value={profileData.username}
+                      onChange={(e) => setProfileData({...profileData, username: e.target.value})}
+                      className="w-full px-3 py-2 bg-gray-600 text-white rounded-lg border border-gray-500 focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">Email</label>
+                    <input
+                      type="email"
+                      value={profileData.email}
+                      onChange={(e) => setProfileData({...profileData, email: e.target.value})}
+                      className="w-full px-3 py-2 bg-gray-600 text-white rounded-lg border border-gray-500 focus:border-blue-500 focus:outline-none"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-300 text-sm font-medium mb-2">About Me</label>
+                    <textarea
+                      value={profileData.bio}
+                      onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                      rows={3}
+                      className="w-full px-3 py-2 bg-gray-600 text-white rounded-lg border border-gray-500 focus:border-blue-500 focus:outline-none resize-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'appearance' && (
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-white mb-6">Appearance</h3>
+                
+                <div className="bg-gray-700 rounded-lg p-6 space-y-4">
+                  <h4 className="text-white font-semibold mb-4">Theme</h4>
+                  <div className="grid grid-cols-3 gap-4">
+                    {['dark', 'light', 'auto'].map((theme) => (
+                      <button
+                        key={theme}
+                        onClick={() => setAppearance({...appearance, theme})}
+                        className={`p-4 rounded-lg border-2 transition-colors ${
+                          appearance.theme === theme
+                            ? 'border-blue-500 bg-blue-600/20'
+                            : 'border-gray-600 hover:border-gray-500'
+                        }`}
+                      >
+                        <div className={`w-full h-16 rounded mb-2 ${
+                          theme === 'dark' ? 'bg-gray-900' :
+                          theme === 'light' ? 'bg-white' :
+                          'bg-gradient-to-r from-gray-900 to-white'
+                        }`}></div>
+                        <span className="text-white capitalize">{theme}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-gray-700 rounded-lg p-6 space-y-4">
+                  <h4 className="text-white font-semibold mb-4">Display Options</h4>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Compact Mode</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={appearance.compactMode}
+                        onChange={(e) => setAppearance({...appearance, compactMode: e.target.checked})}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Show Timestamps</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={appearance.showTimestamps}
+                        onChange={(e) => setAppearance({...appearance, showTimestamps: e.target.checked})}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'notifications' && (
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-white mb-6">Notifications</h3>
+                
+                <div className="bg-gray-700 rounded-lg p-6 space-y-4">
+                  <h4 className="text-white font-semibold mb-4">Campus Notifications</h4>
+                  
+                  {Object.entries(notifications).map(([key, value]) => (
+                    <div key={key} className="flex items-center justify-between">
+                      <span className="text-gray-300 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={value}
+                          onChange={(e) => setNotifications({...notifications, [key]: e.target.checked})}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'privacy' && (
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-white mb-6">Privacy & Safety</h3>
+                
+                <div className="bg-gray-700 rounded-lg p-6 space-y-4">
+                  <h4 className="text-white font-semibold mb-4">Privacy Settings</h4>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-gray-300">Allow Direct Messages</span>
+                        <p className="text-gray-400 text-sm">Let other students send you direct messages</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-gray-300">Show Online Status</span>
+                        <p className="text-gray-400 text-sm">Display when you're online to other users</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" defaultChecked className="sr-only peer" />
+                        <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'help' && (
+              <div className="space-y-6">
+                <h3 className="text-2xl font-bold text-white mb-6">Help & Support</h3>
+                
+                <div className="bg-gray-700 rounded-lg p-6 space-y-4">
+                  <h4 className="text-white font-semibold mb-4">Get Help</h4>
+                  <div className="space-y-3">
+                    <button className="w-full flex items-center space-x-3 p-3 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                      <HelpCircle size={20} className="text-blue-400" />
+                      <span className="text-white">Help Center</span>
+                    </button>
+                    <button className="w-full flex items-center space-x-3 p-3 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                      <MessageCircle size={20} className="text-green-400" />
+                      <span className="text-white">Contact Support</span>
+                    </button>
+                    <button className="w-full flex items-center space-x-3 p-3 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                      <Download size={20} className="text-purple-400" />
+                      <span className="text-white">Download Data</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Save Button */}
+            <div className="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-700">
+              <button
+                onClick={onClose}
+                className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition-colors"
+              >
+                Cancel
+              </button>
+              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const handleSendMessage = () => {
     if (messageInput.trim()) {
       // In a real app, this would send the message to the server
@@ -295,11 +692,16 @@ export default function StudentCampus() {
             <button className="p-2 text-gray-400 hover:text-white transition-colors">
               <Search size={18} />
             </button>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                <User className="text-white" size={16} />
-              </div>
-              <span className="text-white text-sm font-medium">Student User</span>
+            <div className="relative">
+              <button
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                className="flex items-center space-x-2 hover:bg-gray-700 rounded-lg p-2 transition-colors"
+              >
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                  <User className="text-white" size={16} />
+                </div>
+                <span className="text-white text-sm font-medium">Student User</span>
+              </button>
             </div>
           </div>
         </div>
@@ -593,6 +995,16 @@ export default function StudentCampus() {
           profile={selectedProfile} 
           onClose={() => setSelectedProfile(null)} 
         />
+      )}
+
+      {/* User Profile Dropdown */}
+      {showUserDropdown && (
+        <UserProfileDropdown onClose={() => setShowUserDropdown(false)} />
+      )}
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <SettingsModal onClose={() => setShowSettings(false)} />
       )}
     </div>
   );
