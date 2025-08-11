@@ -435,13 +435,9 @@ export default function StudentCampus() {
                 <div className="bg-gray-700 rounded-lg p-6">
                   <h4 className="text-white font-semibold mb-4">Profile Picture</h4>
                   <div className="flex items-center space-x-4">
-                    {profileData.avatar ? (
-                      <img src={profileData.avatar} alt="Profile" className="w-20 h-20 rounded-full object-cover" />
-                    ) : (
-                      <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                        <User className="text-white" size={32} />
-                      </div>
-                    )}
+                    <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                      <User className="text-white" size={32} />
+                    </div>
                     <div className="space-y-2">
                       <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                         Change Avatar
@@ -1061,13 +1057,13 @@ export default function StudentCampus() {
           </div>
 
           {/* Message Input */}
-          <div className={`p-4 transition-colors duration-300 ${
+          <div className={\`p-4 transition-colors duration-300 ${
             appearance.theme === 'light' ? 'bg-white' : 'bg-gray-700'
           }`}>
-            <div className={`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
+            <div className={\`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
               appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-600'
             }`}>
-              <button className={`mr-3 transition-colors ${
+              <button className={\`mr-3 transition-colors ${
                 appearance.theme === 'light' 
                   ? 'text-gray-600 hover:text-gray-900' 
                   : 'text-gray-400 hover:text-white'
@@ -1079,29 +1075,29 @@ export default function StudentCampus() {
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
-                className={`flex-1 bg-transparent outline-none transition-colors duration-300 ${
+                placeholder={\`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
+                className={\`flex-1 bg-transparent outline-none transition-colors duration-300 ${
                   appearance.theme === 'light' 
                     ? 'text-gray-900 placeholder-gray-500' 
                     : 'text-white placeholder-gray-400'
                 }`}
               />
               <div className="flex items-center space-x-2 ml-3">
-                <button className={`transition-colors ${
+                <button className={\`transition-colors ${
                   appearance.theme === 'light' 
                     ? 'text-gray-600 hover:text-gray-900' 
                     : 'text-gray-400 hover:text-white'
                 }`}>
                   <Gift size={20} />
                 </button>
-                <button className={`transition-colors ${
+                <button className={\`transition-colors ${
                   appearance.theme === 'light' 
                     ? 'text-gray-600 hover:text-gray-900' 
                     : 'text-gray-400 hover:text-white'
                 }`}>
                   <Paperclip size={20} />
                 </button>
-                <button className={`transition-colors ${
+                <button className={\`transition-colors ${
                   appearance.theme === 'light' 
                     ? 'text-gray-600 hover:text-gray-900' 
                     : 'text-gray-400 hover:text-white'
@@ -1110,7 +1106,7 @@ export default function StudentCampus() {
                 </button>
                 <button
                   onClick={handleSendMessage}
-                  className={`transition-colors ${
+                  className={\`transition-colors ${
                     appearance.theme === 'light' 
                       ? 'text-gray-600 hover:text-gray-900' 
                       : 'text-gray-400 hover:text-white'
@@ -1124,26 +1120,26 @@ export default function StudentCampus() {
         </div>
 
         {/* Members List */}
-        <div className={`w-60 border-l transition-colors duration-300 ${
+        <div className={\`w-60 border-l transition-colors duration-300 ${
           appearance.theme === 'light' 
             ? 'bg-gray-50 border-gray-200' 
             : 'bg-gray-700 border-gray-600'
         }`}>
           <div className="p-4">
-            <h3 className={`font-semibold mb-4 transition-colors duration-300 ${
+            <h3 className={\`font-semibold mb-4 transition-colors duration-300 ${
               appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
             }`}>
-              {showDMs ? 'Friends' : `${currentCourse?.name} Members`}
+              {showDMs ? 'Friends' : \`${currentCourse?.name} Members`}
             </h3>
             
             <div className="space-y-4">
               <div>
-                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                <div className={\`text-xs font-semibold mb-2 transition-colors duration-300 ${
                   appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
                 }`}>INSTRUCTORS — 1</div>
                 <div 
                   onClick={() => handleProfileClick('Sarah Johnson')}
-                  className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                  className={\`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
                     appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
                   }`}
                 >
@@ -1160,7 +1156,7 @@ export default function StudentCampus() {
               </div>
 
               <div>
-                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                <div className={\`text-xs font-semibold mb-2 transition-colors duration-300 ${
                   appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
                 }`}>STUDENTS — 24</div>
                 <div className="space-y-1">
@@ -1174,22 +1170,47 @@ export default function StudentCampus() {
                     <div 
                       key={index} 
                       onClick={() => handleProfileClick(student.name)}
-                      className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                      className={\`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
                         appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
                       }`}
                     >
                       <div className="relative">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold">
-                            {student.name.split(' ').map(n => n[0]).join('')}
-                          </span>
-                        </div>
-                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
-                          student.status === 'online' ? 'bg-green-400' : 
-                          student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+                        {editProfileData.avatar ? (
+                          <img src={editProfileData.avatar} alt="Profile" className="w-24 h-24 rounded-full object-cover mx-auto mb-4" />
+                        ) : (
+                          <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <User className="text-white" size={32} />
+                          </div>
+                        )}
+                        <label className="absolute bottom-0 right-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors cursor-pointer">
+                          <Camera size={16} className="text-white" />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarUpload}
+                            className="hidden"
+                          />
+                        </label>
                         }`}></div>
+                      <div className="space-x-4">
+                        <label className="text-blue-400 hover:text-blue-300 text-sm cursor-pointer">
+                          Change Avatar
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarUpload}
+                            className="hidden"
+                          />
+                        </label>
+                        <button 
+                          onClick={() => setEditProfileData({ ...editProfileData, avatar: null })}
+                          className="text-red-400 hover:text-red-300 text-sm"
+                        >
+                          Remove
+                        </button>
                       </div>
-                      <span className={`text-sm transition-colors duration-300 ${
                         appearance.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
                       }`}>{student.name}</span>
                     </div>
