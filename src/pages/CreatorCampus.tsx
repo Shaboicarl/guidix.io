@@ -84,18 +84,8 @@ export default function CreatorCampus() {
 
   // Apply theme and font size
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', settings.theme);
-    document.documentElement.setAttribute('data-font-size', settings.fontSize);
-    document.documentElement.setAttribute('data-compact', settings.compactMode.toString());
-    
-    // Apply theme classes to body for immediate visual feedback
-    const body = document.body;
-    body.classList.remove('theme-light', 'theme-dark', 'theme-auto');
-    body.classList.add(`theme-${settings.theme}`);
-    
-    // Apply font size classes
-    body.classList.remove('font-small', 'font-medium', 'font-large');
-    body.classList.add(`font-${settings.fontSize}`);
+    // Only apply theme within the Creator Campus component
+    // No global document changes
   }, [settings]);
 
   // Close dropdowns when clicking outside
@@ -144,32 +134,7 @@ export default function CreatorCampus() {
 
   const handleSettingChange = (key: string, value: any) => {
     setSettings(prev => ({ ...prev, [key]: value }));
-    
-    // Force immediate update for visual feedback
-    if (key === 'theme') {
-      document.documentElement.setAttribute('data-theme', value);
-      const body = document.body;
-      body.classList.remove('theme-light', 'theme-dark', 'theme-auto');
-      body.classList.add(`theme-${value}`);
-      
-      // Apply theme to the entire page container
-      const pageContainer = document.querySelector('.h-screen');
-      if (pageContainer) {
-        pageContainer.classList.remove('theme-light', 'theme-dark', 'theme-auto');
-        pageContainer.classList.add(`theme-${value}`);
-      }
-    }
-    
-    if (key === 'fontSize') {
-      document.documentElement.setAttribute('data-font-size', value);
-      const body = document.body;
-      body.classList.remove('font-small', 'font-medium', 'font-large');
-      body.classList.add(`font-${value}`);
-    }
-    
-    if (key === 'compactMode') {
-      document.documentElement.setAttribute('data-compact', value.toString());
-    }
+    // Settings change handled by state update only
   };
 
   const handleSignOut = () => {
@@ -480,14 +445,22 @@ export default function CreatorCampus() {
 
   return (
     <div className={`h-screen flex ${
-      settings.theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
+      settings.theme === 'dark' ? 'bg-gray-900 text-white' : 
+      settings.theme === 'light' ? 'bg-gray-100 text-gray-900' : 
+      'bg-gray-600 text-gray-100'
     }`}>
       {/* Sidebar */}
       <div className={`w-64 flex flex-col ${
-        settings.theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-800 text-white'
+        settings.theme === 'dark' ? 'bg-gray-800 text-white' : 
+        settings.theme === 'light' ? 'bg-white text-gray-900 border-r border-gray-200' : 
+        'bg-gray-700 text-gray-100'
       }`}>
         {/* Server Header */}
-        <div className="p-4 border-b border-gray-700">
+        <div className={`p-4 border-b ${
+          settings.theme === 'dark' ? 'border-gray-700' : 
+          settings.theme === 'light' ? 'border-gray-200' : 
+          'border-gray-600'
+        }`}>
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
               <Crown className="text-white" size={20} />
@@ -505,7 +478,11 @@ export default function CreatorCampus() {
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Text Channels</h3>
             <div className="space-y-1">
               {channels.filter(c => c.type === 'text').map((channel) => (
-                <div key={channel.id} className="flex items-center justify-between p-2 rounded hover:bg-gray-700 cursor-pointer group">
+                <div key={channel.id} className={`flex items-center justify-between p-2 rounded cursor-pointer group ${
+                  settings.theme === 'dark' ? 'hover:bg-gray-700' : 
+                  settings.theme === 'light' ? 'hover:bg-gray-100' : 
+                  'hover:bg-gray-600'
+                }`}>
                   <div className="flex items-center space-x-2">
                     <Hash size={16} className="text-gray-400" />
                     <span className="text-sm">{channel.name}</span>
@@ -522,7 +499,11 @@ export default function CreatorCampus() {
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Voice Channels</h3>
             <div className="space-y-1">
               {channels.filter(c => c.type === 'voice').map((channel) => (
-                <div key={channel.id} className="p-2 rounded hover:bg-gray-700 cursor-pointer">
+                <div key={channel.id} className={`p-2 rounded cursor-pointer ${
+                  settings.theme === 'dark' ? 'hover:bg-gray-700' : 
+                  settings.theme === 'light' ? 'hover:bg-gray-100' : 
+                  'hover:bg-gray-600'
+                }`}>
                   <div className="flex items-center space-x-2 mb-1">
                     <Volume2 size={16} className="text-gray-400" />
                     <span className="text-sm">{channel.name}</span>
@@ -544,7 +525,11 @@ export default function CreatorCampus() {
         </div>
 
         {/* User Panel */}
-        <div className="p-4 border-t border-gray-700">
+        <div className={`p-4 border-t ${
+          settings.theme === 'dark' ? 'border-gray-700' : 
+          settings.theme === 'light' ? 'border-gray-200' : 
+          'border-gray-600'
+        }`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {profileData.avatar ? (
@@ -566,19 +551,31 @@ export default function CreatorCampus() {
             <div className="flex items-center space-x-1">
               <button
                 onClick={() => setIsMuted(!isMuted)}
-                className={`p-2 rounded hover:bg-gray-700 transition-colors ${isMuted ? 'text-red-400' : 'text-gray-400'}`}
+                className={`p-2 rounded transition-colors ${isMuted ? 'text-red-400' : 'text-gray-400'} ${
+                  settings.theme === 'dark' ? 'hover:bg-gray-700' : 
+                  settings.theme === 'light' ? 'hover:bg-gray-200' : 
+                  'hover:bg-gray-600'
+                }`}
               >
                 {isMuted ? <MicOff size={16} /> : <Mic size={16} />}
               </button>
               <button
                 onClick={() => setIsDeafened(!isDeafened)}
-                className={`p-2 rounded hover:bg-gray-700 transition-colors ${isDeafened ? 'text-red-400' : 'text-gray-400'}`}
+                className={`p-2 rounded transition-colors ${isDeafened ? 'text-red-400' : 'text-gray-400'} ${
+                  settings.theme === 'dark' ? 'hover:bg-gray-700' : 
+                  settings.theme === 'light' ? 'hover:bg-gray-200' : 
+                  'hover:bg-gray-600'
+                }`}
               >
                 <Headphones size={16} />
               </button>
               <button
                 onClick={() => setShowSettingsModal(true)}
-                className="p-2 rounded hover:bg-gray-700 transition-colors text-gray-400"
+                className={`p-2 rounded transition-colors text-gray-400 ${
+                  settings.theme === 'dark' ? 'hover:bg-gray-700' : 
+                  settings.theme === 'light' ? 'hover:bg-gray-200' : 
+                  'hover:bg-gray-600'
+                }`}
               >
                 <Settings size={16} />
               </button>
@@ -591,26 +588,26 @@ export default function CreatorCampus() {
       <div className="flex-1 flex flex-col">
         {/* Top Bar */}
         <div className={`border-b p-4 ${
-          settings.theme === 'dark' 
-            ? 'bg-gray-800 border-gray-700 text-white' 
-            : 'bg-white border-gray-200 text-gray-900'
+          settings.theme === 'dark' ? 'bg-gray-800 border-gray-700 text-white' : 
+          settings.theme === 'light' ? 'bg-white border-gray-200 text-gray-900' : 
+          'bg-gray-700 border-gray-600 text-gray-100'
         }`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Hash size={20} className={settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-400'} />
-              <h2 className={`text-lg font-semibold ${
-                settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
-              }`}>general</h2>
-              <span className={`text-sm ${
-                settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-              }`}>Welcome to the Creator Campus!</span>
+              <h2 className="text-lg font-semibold">general</h2>
+              <span className="text-sm opacity-75">Welcome to the Creator Campus!</span>
             </div>
             
             {/* Profile Dropdown */}
             <div className="relative" ref={profileDropdownRef}>
               <button
                 onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-300 ${
+                  settings.theme === 'dark' ? 'hover:bg-gray-700' : 
+                  settings.theme === 'light' ? 'hover:bg-gray-100' : 
+                  'hover:bg-gray-600'
+                }`}
               >
                 {profileData.avatar ? (
                   <img
@@ -624,7 +621,6 @@ export default function CreatorCampus() {
                   </div>
                 )}
                 <span className="font-medium text-gray-900">{profileData.name}</span>
-                <ChevronDown size={16} className="text-gray-400" />
               </button>
 
               {showProfileDropdown && (
