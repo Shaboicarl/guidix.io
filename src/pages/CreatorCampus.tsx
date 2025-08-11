@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hash, Users, Settings, Mic, MicOff, Headphones, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, Crown, Shield, Edit, Trash2, Pin, MoreHorizontal, X, Mail, Calendar, MapPin, Award, BarChart3, Clock, TrendingUp, AlertTriangle, Ban, UserX, Volume2, VolumeX, BookOpen, FileText, Download } from 'lucide-react';
+import { Hash, Users, Settings, Mic, MicOff, Headphones, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, Crown, Shield, Edit, Trash2, Pin, MoreHorizontal, X, Mail, Calendar, MapPin, Award, BarChart3, Clock, TrendingUp, AlertTriangle, Ban, UserX, Volume2, VolumeX, BookOpen, FileText, Download, Eye } from 'lucide-react';
 
 export default function CreatorCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
@@ -367,6 +367,651 @@ export default function CreatorCampus() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  );
+
+  const CourseSettingsModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Course Settings</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">General Settings</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Course Name</label>
+                <input type="text" defaultValue="Web Development" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300" defaultValue="Complete web development course"></textarea>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Course Status</label>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300">
+                  <option>Active</option>
+                  <option>Draft</option>
+                  <option>Archived</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Access Control</h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                <span className="text-sm font-medium text-gray-700">Allow Guest Access</span>
+                <input type="checkbox" className="rounded" />
+              </div>
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                <span className="text-sm font-medium text-gray-700">Require Approval</span>
+                <input type="checkbox" className="rounded" />
+              </div>
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                <span className="text-sm font-medium text-gray-700">Enable Discussions</span>
+                <input type="checkbox" defaultChecked className="rounded" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex justify-end space-x-4 mt-8">
+          <button onClick={onClose} className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Cancel</button>
+          <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const CertificateManagerModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-5xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Certificate Manager</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="mb-6">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mr-4">Create Certificate Template</button>
+          <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Bulk Issue Certificates</button>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-4 font-semibold text-gray-900">Student</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Progress</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Certificate Status</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Issue Date</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {[
+                { name: 'Mike Student', progress: 100, status: 'Issued', date: '2024-01-15' },
+                { name: 'Lisa Park', progress: 95, status: 'Eligible', date: '-' },
+                { name: 'David Wilson', progress: 78, status: 'Not Eligible', date: '-' },
+                { name: 'Emma Chen', progress: 100, status: 'Issued', date: '2024-01-10' }
+              ].map((student, index) => (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="p-4 font-medium text-gray-900">{student.name}</td>
+                  <td className="p-4">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-20 bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${student.progress}%` }}></div>
+                      </div>
+                      <span className="text-sm">{student.progress}%</span>
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      student.status === 'Issued' ? 'bg-green-100 text-green-700' :
+                      student.status === 'Eligible' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {student.status}
+                    </span>
+                  </td>
+                  <td className="p-4 text-gray-600">{student.date}</td>
+                  <td className="p-4">
+                    {student.status === 'Eligible' && (
+                      <button className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">Issue Certificate</button>
+                    )}
+                    {student.status === 'Issued' && (
+                      <button className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded hover:bg-gray-200">View Certificate</button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+
+  const AnnouncementPanelModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Announcements</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="mb-6">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create Announcement</button>
+        </div>
+
+        <div className="bg-gray-50 rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Create New Announcement</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+              <input type="text" placeholder="Announcement title..." className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+              <textarea rows={4} placeholder="Write your announcement..." className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"></textarea>
+            </div>
+            <div className="flex items-center space-x-4">
+              <label className="flex items-center">
+                <input type="checkbox" className="rounded mr-2" />
+                <span className="text-sm text-gray-700">Pin to top</span>
+              </label>
+              <label className="flex items-center">
+                <input type="checkbox" className="rounded mr-2" />
+                <span className="text-sm text-gray-700">Send email notification</span>
+              </label>
+            </div>
+            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Post Announcement</button>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-900">Recent Announcements</h3>
+          {[
+            { title: 'Week 3 Assignment Due', date: '2024-01-15', pinned: true },
+            { title: 'New React Tutorial Available', date: '2024-01-12', pinned: false },
+            { title: 'Office Hours This Friday', date: '2024-01-10', pinned: false }
+          ].map((announcement, index) => (
+            <div key={index} className="border border-gray-200 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-semibold text-gray-900">{announcement.title}</h4>
+                  <p className="text-sm text-gray-600">{announcement.date}</p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {announcement.pinned && <Pin className="text-yellow-500" size={16} />}
+                  <button className="p-1 text-gray-400 hover:text-gray-600"><Edit size={16} /></button>
+                  <button className="p-1 text-gray-400 hover:text-red-600"><Trash2 size={16} /></button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const EmailPanelModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Email Students</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Recipients</label>
+            <div className="space-y-2">
+              <label className="flex items-center">
+                <input type="radio" name="recipients" value="all" defaultChecked className="mr-2" />
+                <span className="text-sm text-gray-700">All students (156 students)</span>
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="recipients" value="active" className="mr-2" />
+                <span className="text-sm text-gray-700">Active students only (134 students)</span>
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="recipients" value="specific" className="mr-2" />
+                <span className="text-sm text-gray-700">Specific students</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+            <input type="text" placeholder="Email subject..." className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+            <textarea rows={8} placeholder="Write your message..." className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"></textarea>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center">
+              <input type="checkbox" className="rounded mr-2" />
+              <span className="text-sm text-gray-700">Schedule for later</span>
+            </label>
+            <label className="flex items-center">
+              <input type="checkbox" className="rounded mr-2" />
+              <span className="text-sm text-gray-700">Save as template</span>
+            </label>
+          </div>
+
+          <div className="flex justify-end space-x-4">
+            <button onClick={onClose} className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Cancel</button>
+            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Send Email</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const NotificationPanelModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Notification Settings</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Student Notifications</h3>
+            <div className="space-y-4">
+              {[
+                { label: 'New assignments', desc: 'Notify when new assignments are posted' },
+                { label: 'Grade updates', desc: 'Notify when grades are updated' },
+                { label: 'Course announcements', desc: 'Notify about course announcements' },
+                { label: 'Discussion replies', desc: 'Notify about discussion replies' }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                  <div>
+                    <div className="font-medium text-gray-900">{item.label}</div>
+                    <div className="text-sm text-gray-600">{item.desc}</div>
+                  </div>
+                  <input type="checkbox" defaultChecked className="rounded" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Creator Notifications</h3>
+            <div className="space-y-4">
+              {[
+                { label: 'New enrollments', desc: 'Notify when students enroll' },
+                { label: 'Assignment submissions', desc: 'Notify about new submissions' },
+                { label: 'Student questions', desc: 'Notify about student questions' },
+                { label: 'Course completions', desc: 'Notify when students complete course' }
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                  <div>
+                    <div className="font-medium text-gray-900">{item.label}</div>
+                    <div className="text-sm text-gray-600">{item.desc}</div>
+                  </div>
+                  <input type="checkbox" defaultChecked className="rounded" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end space-x-4 mt-8">
+          <button onClick={onClose} className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Cancel</button>
+          <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const ChannelCreatorModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-2xl">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Create Channel</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Channel Type</label>
+            <div className="space-y-2">
+              <label className="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer">
+                <input type="radio" name="channelType" value="text" defaultChecked className="mr-3" />
+                <Hash size={20} className="mr-3 text-gray-400" />
+                <div>
+                  <div className="font-medium text-gray-900">Text Channel</div>
+                  <div className="text-sm text-gray-600">Send messages, images, and files</div>
+                </div>
+              </label>
+              <label className="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer">
+                <input type="radio" name="channelType" value="voice" className="mr-3" />
+                <Users size={20} className="mr-3 text-gray-400" />
+                <div>
+                  <div className="font-medium text-gray-900">Voice Channel</div>
+                  <div className="text-sm text-gray-600">Voice and video conversations</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Channel Name</label>
+            <input type="text" placeholder="new-channel" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description (Optional)</label>
+            <textarea rows={3} placeholder="What is this channel about?" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"></textarea>
+          </div>
+
+          <div>
+            <label className="flex items-center">
+              <input type="checkbox" className="rounded mr-2" />
+              <span className="text-sm text-gray-700">Private Channel (Only visible to selected members)</span>
+            </label>
+          </div>
+
+          <div className="flex justify-end space-x-4">
+            <button onClick={onClose} className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Cancel</button>
+            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create Channel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const AssignmentManagerModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-5xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Assignment Manager</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="mb-6">
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create Assignment</button>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-4 font-semibold text-gray-900">Assignment</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Due Date</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Submissions</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Status</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {[
+                { title: 'React Component Project', due: '2024-01-20', submissions: '45/156', status: 'Active' },
+                { title: 'JavaScript Quiz', due: '2024-01-18', submissions: '123/156', status: 'Active' },
+                { title: 'HTML/CSS Portfolio', due: '2024-01-15', submissions: '156/156', status: 'Completed' }
+              ].map((assignment, index) => (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="p-4 font-medium text-gray-900">{assignment.title}</td>
+                  <td className="p-4 text-gray-600">{assignment.due}</td>
+                  <td className="p-4 text-gray-600">{assignment.submissions}</td>
+                  <td className="p-4">
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      assignment.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                    }`}>
+                      {assignment.status}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center space-x-2">
+                      <button className="p-1 text-blue-600 hover:text-blue-700"><Eye size={16} /></button>
+                      <button className="p-1 text-gray-600 hover:text-gray-700"><Edit size={16} /></button>
+                      <button className="p-1 text-red-600 hover:text-red-700"><Trash2 size={16} /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+
+  const EventSchedulerModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Schedule Events</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Create New Event</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Event Title</label>
+                <input type="text" placeholder="Live Q&A Session" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Event Type</label>
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300">
+                  <option>Live Session</option>
+                  <option>Office Hours</option>
+                  <option>Workshop</option>
+                  <option>Assignment Due</option>
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                  <input type="date" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                  <input type="time" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <textarea rows={3} placeholder="Event description..." className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"></textarea>
+              </div>
+              <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Schedule Event</button>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Events</h3>
+            <div className="space-y-3">
+              {[
+                { title: 'React Workshop', date: '2024-01-18', time: '2:00 PM', attendees: 45 },
+                { title: 'Office Hours', date: '2024-01-19', time: '4:00 PM', attendees: 12 },
+                { title: 'Final Project Review', date: '2024-01-22', time: '1:00 PM', attendees: 156 }
+              ].map((event, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{event.title}</h4>
+                      <p className="text-sm text-gray-600">{event.date} at {event.time}</p>
+                      <p className="text-xs text-gray-500">{event.attendees} registered</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button className="p-1 text-blue-600 hover:text-blue-700"><Edit size={16} /></button>
+                      <button className="p-1 text-red-600 hover:text-red-700"><Trash2 size={16} /></button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const DataExporterModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-3xl">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Export Data</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Data to Export</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              {[
+                { label: 'Student List', desc: 'Names, emails, enrollment dates' },
+                { label: 'Progress Reports', desc: 'Individual student progress data' },
+                { label: 'Assignment Submissions', desc: 'All assignment submissions and grades' },
+                { label: 'Discussion Messages', desc: 'Course discussion history' },
+                { label: 'Certificates Issued', desc: 'Certificate records and dates' },
+                { label: 'Analytics Data', desc: 'Course performance metrics' }
+              ].map((item, index) => (
+                <label key={index} className="flex items-start p-3 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer">
+                  <input type="checkbox" className="rounded mt-1 mr-3" />
+                  <div>
+                    <div className="font-medium text-gray-900">{item.label}</div>
+                    <div className="text-sm text-gray-600">{item.desc}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Export Format</h3>
+            <div className="space-y-2">
+              <label className="flex items-center">
+                <input type="radio" name="format" value="csv" defaultChecked className="mr-2" />
+                <span className="text-sm text-gray-700">CSV (Comma Separated Values)</span>
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="format" value="excel" className="mr-2" />
+                <span className="text-sm text-gray-700">Excel (.xlsx)</span>
+              </label>
+              <label className="flex items-center">
+                <input type="radio" name="format" value="json" className="mr-2" />
+                <span className="text-sm text-gray-700">JSON</span>
+              </label>
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-4">
+            <button onClick={onClose} className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Cancel</button>
+            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Export Data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const PerformanceAnalyticsModal = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Performance Analytics</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="grid md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-blue-50 rounded-xl p-4">
+            <div className="text-2xl font-bold text-blue-600">92%</div>
+            <div className="text-sm text-blue-700">Avg Completion Rate</div>
+          </div>
+          <div className="bg-green-50 rounded-xl p-4">
+            <div className="text-2xl font-bold text-green-600">4.8</div>
+            <div className="text-sm text-green-700">Course Rating</div>
+          </div>
+          <div className="bg-purple-50 rounded-xl p-4">
+            <div className="text-2xl font-bold text-purple-600">34min</div>
+            <div className="text-sm text-purple-700">Avg Session Time</div>
+          </div>
+          <div className="bg-orange-50 rounded-xl p-4">
+            <div className="text-2xl font-bold text-orange-600">78%</div>
+            <div className="text-sm text-orange-700">Retention Rate</div>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Lesson Performance</h3>
+            <div className="space-y-3">
+              {[
+                { title: 'Introduction to React', completion: 95, avgTime: '12min' },
+                { title: 'State and Props', completion: 87, avgTime: '18min' },
+                { title: 'Component Lifecycle', completion: 82, avgTime: '22min' },
+                { title: 'Hooks Deep Dive', completion: 76, avgTime: '28min' }
+              ].map((lesson, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-medium text-gray-900">{lesson.title}</h4>
+                    <span className="text-sm text-gray-600">{lesson.avgTime}</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="flex-1 bg-gray-200 rounded-full h-2">
+                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${lesson.completion}%` }}></div>
+                    </div>
+                    <span className="text-sm font-semibold">{lesson.completion}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Student Engagement</h3>
+            <div className="space-y-4">
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h4 className="font-medium text-gray-900 mb-2">Discussion Participation</h4>
+                <div className="text-2xl font-bold text-blue-600">67%</div>
+                <div className="text-sm text-gray-600">Students actively participating</div>
+              </div>
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h4 className="font-medium text-gray-900 mb-2">Assignment Submission Rate</h4>
+                <div className="text-2xl font-bold text-green-600">89%</div>
+                <div className="text-sm text-gray-600">On-time submissions</div>
+              </div>
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h4 className="font-medium text-gray-900 mb-2">Help Requests</h4>
+                <div className="text-2xl font-bold text-orange-600">23</div>
+                <div className="text-sm text-gray-600">This week</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
