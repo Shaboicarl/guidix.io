@@ -6,6 +6,7 @@ import Demo from './pages/Demo';
 import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
+import CampusSelect from './pages/CampusSelect';
 
 // Student Portal Pages
 import StudentDashboard from './pages/student/Dashboard';
@@ -34,6 +35,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/campus-select" element={<CampusSelect />} />
         
         {/* Student Portal Routes */}
         <Route path="/org/learn" element={<StudentDashboard />} />

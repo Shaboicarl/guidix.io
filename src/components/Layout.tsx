@@ -312,12 +312,12 @@ export default function Layout({ children }: LayoutProps) {
     const portalColor = isStudentPortal ? 'blue' : 'purple';
 
     return (
-      <nav className={`bg-white/90 backdrop-blur-md border-b border-${portalColor}-100 sticky top-0 z-40`}>
+      <nav className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-8">
               <Link to="/" className="flex items-center space-x-2">
-                <div className={`w-10 h-10 bg-gradient-to-r from-${portalColor}-400 to-${portalColor}-500 rounded-xl flex items-center justify-center`}>
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
                   <BookOpen className="text-white" size={24} />
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -328,6 +328,7 @@ export default function Layout({ children }: LayoutProps) {
             
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
                   <User className="text-white" size={16} />
                 </div>
                 <span className="text-sm font-medium text-gray-700">
@@ -362,7 +363,7 @@ export default function Layout({ children }: LayoutProps) {
     <AuthContext.Provider value={authContextValue}>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
         {/* Navigation */}
-        {isInPortal ? (
+        {isInPortal || isInCampus ? (
           <PortalNav />
         ) : (
           <nav className="bg-white/80 backdrop-blur-md border-b border-blue-100 sticky top-0 z-40">
@@ -379,7 +380,7 @@ export default function Layout({ children }: LayoutProps) {
                 
                 <div className="flex items-center space-x-4">
                   <button
-                    onClick={() => navigate('/campus-select')}
+                    onClick={() => setShowCampusSelect(true)}
                     className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
                   >
                     Open Guidix.io
@@ -395,6 +396,9 @@ export default function Layout({ children }: LayoutProps) {
 
         {/* Campus Modal */}
         {showCampusSelect && <CampusSelectModal />}
+
+        {/* Portal Modal */}
+        {showPortalSelect && <PortalSelectModal />}
 
         {/* Footer - Only show on marketing pages */}
         {!isInPortal && !isInCampus && (
