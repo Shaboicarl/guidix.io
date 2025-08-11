@@ -171,7 +171,8 @@ export default function CreatorCampus() {
       location: 'New York, NY',
       joinDate: 'January 2024',
       bio: 'Passionate about web development and learning new technologies.',
-      courses: ['Web Development', 'JavaScript Fundamentals']
+      bio: 'Passionate educator helping students master web development and data science.',
+      avatar: null as string | null
     };
     setSelectedProfile(profile);
   };
