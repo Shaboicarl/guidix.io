@@ -780,16 +780,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                 )}
               </div>
-
-              {/* Settings Button */}
-              <button
-                onClick={() => setShowSettingsModal(true)}
-                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Settings"
-              >
-                <Settings size={18} />
-                <span className="text-sm font-medium">Settings</span>
-              </button>
             </div>
           </div>
         </div>
