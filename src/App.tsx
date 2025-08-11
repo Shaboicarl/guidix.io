@@ -2,18 +2,26 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
-import Courses from './pages/Courses';
-import Instructors from './pages/Instructors';
-import Certificates from './pages/Certificates';
-import Community from './pages/Community';
-import Help from './pages/Help';
+import Demo from './pages/Demo';
 import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
-import Demo from './pages/Demo';
-import CampusSelect from './pages/CampusSelect';
-import StudentCampus from './pages/StudentCampus';
-import CreatorCampus from './pages/CreatorCampus';
+
+// Student Portal Pages
+import StudentDashboard from './pages/student/Dashboard';
+import StudentCatalog from './pages/student/Catalog';
+import StudentCoursePlayer from './pages/student/CoursePlayer';
+import StudentCertificates from './pages/student/Certificates';
+import StudentProfile from './pages/student/Profile';
+
+// Creator Portal Pages
+import CreatorDashboard from './pages/creator/Dashboard';
+import CreatorCourses from './pages/creator/Courses';
+import CreatorUsers from './pages/creator/Users';
+import CreatorBranding from './pages/creator/Branding';
+import CreatorAnalytics from './pages/creator/Analytics';
+import CreatorBilling from './pages/creator/Billing';
+import CreatorSettings from './pages/creator/Settings';
 
 function App() {
   return (
@@ -21,17 +29,25 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/demo" element={<Demo />} />
-        <Route path="/campus-select" element={<CampusSelect />} />
-        <Route path="/student-campus" element={<StudentCampus />} />
-        <Route path="/creator-campus" element={<CreatorCampus />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/instructors" element={<Instructors />} />
-        <Route path="/certificates" element={<Certificates />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/help" element={<Help />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        
+        {/* Student Portal Routes */}
+        <Route path="/org/learn" element={<StudentDashboard />} />
+        <Route path="/org/learn/catalog" element={<StudentCatalog />} />
+        <Route path="/org/learn/course/:slug" element={<StudentCoursePlayer />} />
+        <Route path="/org/learn/certificates" element={<StudentCertificates />} />
+        <Route path="/org/learn/profile" element={<StudentProfile />} />
+        
+        {/* Creator Portal Routes */}
+        <Route path="/org/admin" element={<CreatorDashboard />} />
+        <Route path="/org/admin/courses" element={<CreatorCourses />} />
+        <Route path="/org/admin/users" element={<CreatorUsers />} />
+        <Route path="/org/admin/branding" element={<CreatorBranding />} />
+        <Route path="/org/admin/analytics" element={<CreatorAnalytics />} />
+        <Route path="/org/admin/billing" element={<CreatorBilling />} />
+        <Route path="/org/admin/settings" element={<CreatorSettings />} />
       </Routes>
     </Layout>
   );
