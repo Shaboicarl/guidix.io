@@ -256,8 +256,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </>
-    {showCampusModal && <CampusModal />}
+      
+      {showCampusModal && <CampusModal />}
     </>
   );
 }
