@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, Users, Zap, Shield, Star, ChevronRight, Play, CheckCircle, Globe } from 'lucide-react';
+import { BookOpen, Users, Zap, Shield, Star, ChevronRight, Play, CheckCircle, Globe, X } from 'lucide-react';
 import { useAuth } from '../components/Layout';
 
 export default function Home() {
   const navigate = useNavigate();
   const { showSignupModal } = useAuth();
+  const [showCampusModal, setShowCampusModal] = useState(false);
 
   const features = [
     {
@@ -55,6 +56,58 @@ export default function Home() {
     navigate('/demo');
   };
 
+  const CampusModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-lg relative animate-bounce-in">
+        <button
+          onClick={() => setShowCampusModal(false)}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <X size={24} />
+        </button>
+        
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome to Guidix Campus</h2>
+          <p className="text-gray-600">Choose your role to access the platform</p>
+        </div>
+
+        <div className="space-y-4">
+          <Link
+            to="/campus/student"
+            onClick={() => setShowCampusModal(false)}
+            className="w-full p-6 bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-200 rounded-xl hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all duration-200 block"
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
+                <BookOpen className="text-white" size={24} />
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-bold text-gray-800">Student</h3>
+                <p className="text-gray-600">Access courses, join discussions, and learn from experts</p>
+              </div>
+            </div>
+          </Link>
+          
+          <Link
+            to="/campus/creator"
+            onClick={() => setShowCampusModal(false)}
+            className="w-full p-6 bg-gradient-to-r from-purple-50 to-purple-100 border-2 border-purple-200 rounded-xl hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 transition-all duration-200 block"
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl flex items-center justify-center">
+                <Users className="text-white" size={24} />
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-bold text-gray-800">Creator</h3>
+                <p className="text-gray-600">Create courses, manage students, and build your educational business</p>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <>
       {/* Hero Section */}
@@ -74,10 +127,10 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button 
-                onClick={showSignupModal}
+                onClick={() => setShowCampusModal(true)}
                 className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center space-x-2"
               >
-                <span>Start Learning Now</span>
+                <span>Open Guidix.io</span>
                 <ChevronRight size={20} />
               </button>
               
@@ -194,15 +247,17 @@ export default function Home() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              onClick={showSignupModal}
+              onClick={() => setShowCampusModal(true)}
               className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
             >
-              <span>Get Started</span>
+              <span>Open Guidix.io</span>
               <CheckCircle size={20} />
             </button>
           </div>
         </div>
       </section>
+    </>
+    {showCampusModal && <CampusModal />}
     </>
   );
 }

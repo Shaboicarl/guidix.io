@@ -11,6 +11,8 @@ import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Demo from './pages/Demo';
+import StudentCampus from './pages/StudentCampus';
+import CreatorCampus from './pages/CreatorCampus';
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/campus/student" element={<StudentCampus />} />
+        <Route path="/campus/creator" element={<CreatorCampus />} />
       </Routes>
     </Layout>
   );

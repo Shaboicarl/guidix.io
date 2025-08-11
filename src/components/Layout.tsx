@@ -23,8 +23,7 @@ export const useAuth = () => {
 
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignupModal, setShowSignupModal] = useState(false);
+  const [showCampusModal, setShowCampusModal] = useState(false);
 
   // Scroll to top when route changes
   React.useEffect(() => {
@@ -32,33 +31,61 @@ export default function Layout({ children }: LayoutProps) {
   }, [location.pathname]);
 
   const authContextValue = {
-    showLoginModal: () => setShowLoginModal(true),
-    showSignupModal: () => setShowSignupModal(true)
+    showLoginModal: () => setShowCampusModal(true),
+    showSignupModal: () => setShowCampusModal(true)
   };
 
-  const LoginModal = () => (
+  const CampusModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-8 w-full max-w-md relative animate-bounce-in">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-lg relative animate-bounce-in">
         <button
-          onClick={() => setShowLoginModal(false)}
+          onClick={() => setShowCampusModal(false)}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
         >
           <X size={24} />
         </button>
         
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Welcome Back!</h2>
-          <p className="text-gray-600">Sign in to continue your learning journey</p>
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome to Guidix Campus</h2>
+          <p className="text-gray-600">Choose your role to access the platform</p>
         </div>
 
-        <form className="space-y-4">
-          <div className="relative">
-            <Mail className="absolute left-3 top-3 text-gray-400" size={20} />
-            <input
-              type="email"
-              placeholder="Email address"
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-            />
+        <div className="space-y-4">
+          <Link
+            to="/campus/student"
+            onClick={() => setShowCampusModal(false)}
+            className="w-full p-6 bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-200 rounded-xl hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all duration-200 block"
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
+                <BookOpen className="text-white" size={24} />
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-bold text-gray-800">Student</h3>
+                <p className="text-gray-600">Access courses, join discussions, and learn from experts</p>
+              </div>
+            </div>
+          </Link>
+          
+          <Link
+            to="/campus/creator"
+            onClick={() => setShowCampusModal(false)}
+            className="w-full p-6 bg-gradient-to-r from-purple-50 to-purple-100 border-2 border-purple-200 rounded-xl hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 transition-all duration-200 block"
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl flex items-center justify-center">
+                <Users className="text-white" size={24} />
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-bold text-gray-800">Creator</h3>
+                <p className="text-gray-600">Create courses, manage students, and build your educational business</p>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
           </div>
           
           <div className="relative">
@@ -96,74 +123,6 @@ export default function Layout({ children }: LayoutProps) {
     </div>
   );
 
-  const SignupModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-8 w-full max-w-md relative animate-bounce-in">
-        <button
-          onClick={() => setShowSignupModal(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          <X size={24} />
-        </button>
-        
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Join Guidix</h2>
-          <p className="text-gray-600">Start your learning adventure today</p>
-        </div>
-
-        <form className="space-y-4">
-          <div className="relative">
-            <User className="absolute left-3 top-3 text-gray-400" size={20} />
-            <input
-              type="text"
-              placeholder="Full name"
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-            />
-          </div>
-
-          <div className="relative">
-            <Mail className="absolute left-3 top-3 text-gray-400" size={20} />
-            <input
-              type="email"
-              placeholder="Email address"
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-            />
-          </div>
-          
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 text-gray-400" size={20} />
-            <input
-              type="password"
-              placeholder="Create password"
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-400 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
-          >
-            Create Account
-          </button>
-        </form>
-
-        <div className="text-center mt-6">
-          <p className="text-gray-600">
-            Already have an account?{' '}
-            <button
-              onClick={() => {
-                setShowSignupModal(false);
-                setShowLoginModal(true);
-              }}
-              className="text-purple-500 font-semibold hover:text-purple-600 transition-colors"
-            >
-              Sign in
-            </button>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
 
   return (
     <AuthContext.Provider value={authContextValue}>
@@ -183,16 +142,10 @@ export default function Layout({ children }: LayoutProps) {
               
               <div className="flex items-center space-x-4">
                 <button
-                  onClick={() => setShowLoginModal(true)}
-                  className="px-6 py-2 text-gray-700 font-semibold hover:text-blue-600 transition-colors"
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() => setShowSignupModal(true)}
+                  onClick={() => setShowCampusModal(true)}
                   className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
                 >
-                  Get Started
+                  Open Guidix.io
                 </button>
               </div>
             </div>
@@ -247,8 +200,7 @@ export default function Layout({ children }: LayoutProps) {
         </footer>
 
         {/* Modals */}
-        {showLoginModal && <LoginModal />}
-        {showSignupModal && <SignupModal />}
+        {showCampusModal && <CampusModal />}
       </div>
     </AuthContext.Provider>
   );
