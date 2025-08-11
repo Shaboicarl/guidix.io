@@ -163,6 +163,75 @@ export default function StudentCampus() {
     setSelectedProfile(profileData[userName] || null);
   };
 
+  const ProfileModal = ({ profile, onClose }: { profile: any; onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-md relative animate-bounce-in">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <X size={24} />
+        </button>
+        
+        <div className="text-center mb-6">
+          <img
+            src={profile.avatar}
+            alt={profile.name}
+            className="w-20 h-20 rounded-full mx-auto mb-4"
+          />
+          <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
+          <div className="flex items-center justify-center space-x-2 mt-2">
+            <div className={`w-3 h-3 rounded-full ${
+              profile.status === 'online' ? 'bg-green-400' : 
+              profile.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+            }`}></div>
+            <span className="text-sm text-gray-600 capitalize">{profile.status}</span>
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-6">
+          <div className="flex items-center space-x-3">
+            <Mail size={16} className="text-gray-400" />
+            <span className="text-gray-700">{profile.email}</span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <MapPin size={16} className="text-gray-400" />
+            <span className="text-gray-700">{profile.location}</span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Calendar size={16} className="text-gray-400" />
+            <span className="text-gray-700">Joined {profile.joinDate}</span>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="font-semibold text-gray-900 mb-2">Bio</h3>
+          <p className="text-gray-600 text-sm">{profile.bio}</p>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="font-semibold text-gray-900 mb-2">Courses</h3>
+          <div className="flex flex-wrap gap-2">
+            {profile.courses.map((course: string, index: number) => (
+              <span key={index} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">
+                {course}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex space-x-3">
+          <button className="flex-1 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+            Send Message
+          </button>
+          <button className="px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+            View Profile
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   const handleSendMessage = () => {
     if (messageInput.trim()) {
       // In a real app, this would send the message to the server
