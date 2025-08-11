@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Hash, Users, Crown, Settings, MessageCircle, Bell, Search, Plus, Smile, Paperclip, Send, Mic, Video, Phone, UserPlus, Shield, BarChart3, BookOpen, Mail, Calendar, FileText, Download, TrendingUp, Award, Eye, Edit, Trash2, X, LogOut, User, ChevronDown, Save, Upload, Moon, Sun, Monitor, Type, Clock, MessageSquare, Zap } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Hash, Users, Crown, Settings, MessageCircle, Bell, Search, Plus, Smile, Paperclip, Send, Mic, Video, Phone, UserPlus, Shield, BarChart3, BookOpen, Mail, Calendar, FileText, Download, TrendingUp, Award, Eye, Edit, Trash2, X, LogOut, User, ChevronDown, Save, Upload, Moon, Sun, Monitor, Type, Clock, MessageSquare, Zap, MoreHorizontal, Pin, MapPin, Headphones } from 'lucide-react';
 
 export default function CreatorCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
@@ -51,6 +51,16 @@ export default function CreatorCampus() {
   const [showPerformanceAnalytics, setShowPerformanceAnalytics] = useState(false);
   const [isInVoiceChannel, setIsInVoiceChannel] = useState(false);
   const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
+
+  // Save settings to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('creator-theme', theme);
+    localStorage.setItem('creator-fontSize', fontSize);
+    localStorage.setItem('creator-compactMode', compactMode.toString());
+    localStorage.setItem('creator-showTimestamps', showTimestamps.toString());
+    localStorage.setItem('creator-animatedEmojis', animatedEmojis.toString());
+    localStorage.setItem('creator-profile', JSON.stringify(profileData));
+  }, [theme, fontSize, compactMode, showTimestamps, animatedEmojis, profileData]);
 
   const courses = [
     {
@@ -171,10 +181,30 @@ export default function CreatorCampus() {
       location: 'New York, NY',
       joinDate: 'January 2024',
       bio: 'Passionate about web development and learning new technologies.',
-      bio: 'Passionate educator helping students master web development and data science.',
-      avatar: null as string | null
+      courses: ['Web Development', 'JavaScript Fundamentals']
     };
     setSelectedProfile(profile);
+  };
+
+  const handleAvatarUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setEditProfileData(prev => ({ ...prev, avatar: e.target.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveProfile = () => {
+    setProfileData(editProfileData);
+    setIsEditingProfile(false);
+  };
+
+  const handleCancelProfileEdit = () => {
+    setEditProfileData(profileData);
+    setIsEditingProfile(false);
   };
 
   const ProfileModal = ({ profile, onClose }: { profile: any; onClose: () => void }) => (
@@ -1688,7 +1718,6 @@ export default function CreatorCampus() {
       {/* Performance Analytics Modal */}
       {showPerformanceAnalytics && (
         <PerformanceAnalyticsModal onClose={() => setShowPerformanceAnalytics(false)} />
-        {showSettings && <SettingsModal />}
       )}
       
       {/* Settings Modal */}
