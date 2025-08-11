@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { BookOpen, X, User, LogOut, Settings, BarChart3, Users, Crown } from 'lucide-react';
+import { BookOpen, X, User, LogOut, Settings, BarChart3, Users, Crown, ChevronDown, Calendar, Award, Clock, Edit2, Save, Upload, Palette, Bell, Shield, HelpCircle } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,6 +29,88 @@ export default function Layout({ children }: LayoutProps) {
   const [showPortalSelect, setShowPortalSelect] = useState(false);
   const [showCampusSelect, setShowCampusSelect] = useState(false);
   const [currentRole, setCurrentRole] = useState<'student' | 'creator' | null>(null);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [activeSettingsTab, setActiveSettingsTab] = useState('account');
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+
+  // Profile and settings state
+  const [profileData, setProfileData] = useState(() => {
+    const saved = localStorage.getItem('creator-profile');
+    return saved ? JSON.parse(saved) : {
+      name: 'Sarah Johnson',
+      username: 'sarah.creator',
+      email: 'sarah@example.com',
+      bio: 'Passionate educator and course creator with 10+ years of experience in web development. Love helping students achieve their goals!',
+      avatar: null,
+      joinDate: 'September 2023',
+      coursesCreated: 8,
+      totalStudents: 1247,
+      certificatesIssued: 456
+    };
+  });
+
+  const [editProfileData, setEditProfileData] = useState(profileData);
+
+  // Appearance settings
+  const [appearanceSettings, setAppearanceSettings] = useState(() => {
+    const saved = localStorage.getItem('creator-appearance-settings');
+    return saved ? JSON.parse(saved) : {
+      theme: 'dark',
+      fontSize: 'medium',
+      compactMode: false,
+      showTimestamps: true,
+      animatedEmojis: true
+    };
+  });
+
+  // Apply appearance settings
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', appearanceSettings.theme);
+    document.documentElement.setAttribute('data-font-size', appearanceSettings.fontSize);
+    document.documentElement.setAttribute('data-compact', appearanceSettings.compactMode.toString());
+  }, [appearanceSettings]);
+
+  // Save settings to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('creator-profile', JSON.stringify(profileData));
+  }, [profileData]);
+
+  React.useEffect(() => {
+    localStorage.setItem('creator-appearance-settings', JSON.stringify(appearanceSettings));
+  }, [appearanceSettings]);
+
+  const handleEditProfile = () => {
+    setIsEditingProfile(true);
+    setActiveSettingsTab('account');
+    setShowSettings(true);
+    setShowProfileDropdown(false);
+  };
+
+  const handleSaveProfile = () => {
+    setProfileData(editProfileData);
+    setIsEditingProfile(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditProfileData(profileData);
+    setIsEditingProfile(false);
+  };
+
+  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setEditProfileData(prev => ({ ...prev, avatar: e.target?.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAppearanceChange = (key: string, value: any) => {
+    setAppearanceSettings(prev => ({ ...prev, [key]: value }));
+  };
 
   // Check if we're in a portal
   const isInPortal = location.pathname.startsWith('/org/');
@@ -41,7 +123,22 @@ export default function Layout({ children }: LayoutProps) {
   // Scroll to top when route changes
   React.useEffect(() => {
     window.scrollTo(0, 0);
+    // Close dropdowns when route changes
+    setShowProfileDropdown(false);
+    setShowSettings(false);
   }, [location.pathname]);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showProfileDropdown && !(event.target as Element).closest('.profile-dropdown')) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showProfileDropdown]);
 
   const handlePortalSelect = (role: 'student' | 'creator') => {
     setCurrentRole(role);
@@ -278,6 +375,110 @@ export default function Layout({ children }: LayoutProps) {
                 >
                   Switch Campus
                 </button>
+                
+                {/* Profile Dropdown */}
+                {showProfileDropdown && (
+                  <div className="profile-dropdown absolute top-16 right-4 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 animate-bounce-in">
+                    <div className="p-6">
+                      {/* Profile Header */}
+                      <div className="flex items-center space-x-4 mb-6">
+                        <div className="w-16 h-16 rounded-full overflow-hidden">
+                          {profileData.avatar ? (
+                            <img src={profileData.avatar} alt="Profile" className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
+                              <Crown className="text-white" size={24} />
+                            </div>
+                          )}
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900">{profileData.name}</h3>
+                          <p className="text-sm text-gray-600">@{profileData.username}</p>
+                          <div className="flex items-center mt-1">
+                            <div className="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
+                            <span className="text-sm text-green-600">Online</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* About */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-2">About Me</h4>
+                        <p className="text-sm text-gray-600 leading-relaxed">{profileData.bio}</p>
+                      </div>
+
+                      {/* Stats */}
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="text-lg font-bold text-gray-900">{profileData.coursesCreated}</div>
+                          <div className="text-xs text-gray-600">Courses Created</div>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="text-lg font-bold text-gray-900">{profileData.totalStudents.toLocaleString()}</div>
+                          <div className="text-xs text-gray-600">Total Students</div>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="text-lg font-bold text-gray-900">{profileData.certificatesIssued}</div>
+                          <div className="text-xs text-gray-600">Certificates Issued</div>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="flex items-center justify-center">
+                            <Calendar size={14} className="mr-1 text-gray-600" />
+                            <div className="text-xs text-gray-600">Since {profileData.joinDate}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Recent Achievements */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-3">Recent Achievements</h4>
+                        <div className="space-y-2">
+                          <div className="flex items-center space-x-2 text-sm">
+                            <Award className="text-yellow-500" size={16} />
+                            <span className="text-gray-700">Top Rated Instructor (2024)</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm">
+                            <Award className="text-blue-500" size={16} />
+                            <span className="text-gray-700">1000+ Students Milestone</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm">
+                            <Award className="text-green-500" size={16} />
+                            <span className="text-gray-700">Course Excellence Award</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="space-y-2">
+                        <button
+                          onClick={handleEditProfile}
+                          className="w-full flex items-center justify-center px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-colors"
+                        >
+                          <Edit2 size={16} className="mr-2" />
+                          Edit Profile
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowSettings(true);
+                            setShowProfileDropdown(false);
+                          }}
+                          className="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                        >
+                          <Settings size={16} className="mr-2" />
+                          Settings
+                        </button>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center justify-center px-4 py-2 bg-red-100 text-red-700 font-semibold rounded-lg hover:bg-red-200 transition-colors"
+                        >
+                          <LogOut size={16} className="mr-2" />
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 <button
                   onClick={() => navigate('/')}
                   className="p-2 text-gray-400 hover:text-white transition-colors"
@@ -373,9 +574,13 @@ export default function Layout({ children }: LayoutProps) {
                   <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
                     <BookOpen className="text-white" size={24} />
                   </div>
-                  <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    guidix.io
-                  </span>
+                  <button
+                    onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                    className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                  >
+                    <span>{isStudentPortal ? 'Alex Student' : profileData.name}</span>
+                    <ChevronDown size={14} />
+                  </button>
                 </Link>
                 
                 <div className="flex items-center space-x-4">
@@ -400,6 +605,274 @@ export default function Layout({ children }: LayoutProps) {
         {/* Portal Modal */}
         {showPortalSelect && <PortalSelectModal />}
 
+        {/* Settings Modal */}
+        {showSettings && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl w-full max-w-4xl h-[80vh] flex overflow-hidden animate-bounce-in">
+              {/* Settings Sidebar */}
+              <div className="w-64 bg-gray-50 p-6 border-r border-gray-200">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-lg font-bold text-gray-900">Settings</h2>
+                  <button
+                    onClick={() => {
+                      setShowSettings(false);
+                      setIsEditingProfile(false);
+                      setEditProfileData(profileData);
+                    }}
+                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                  >
+                    <X size={20} className="text-gray-600" />
+                  </button>
+                </div>
+                
+                <nav className="space-y-2">
+                  {[
+                    { id: 'account', name: 'My Account', icon: User },
+                    { id: 'appearance', name: 'Appearance', icon: Palette },
+                    { id: 'notifications', name: 'Notifications', icon: Bell },
+                    { id: 'privacy', name: 'Privacy & Safety', icon: Shield },
+                    { id: 'help', name: 'Help & Support', icon: HelpCircle }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveSettingsTab(tab.id)}
+                      className={`w-full flex items-center space-x-3 px-4 py-3 text-left rounded-lg transition-colors ${
+                        activeSettingsTab === tab.id
+                          ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <tab.icon size={20} />
+                      <span className="font-medium">{tab.name}</span>
+                    </button>
+                  ))}
+                </nav>
+              </div>
+
+              {/* Settings Content */}
+              <div className="flex-1 p-8 overflow-y-auto">
+                {activeSettingsTab === 'account' && (
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">My Account</h3>
+                      <p className="text-gray-600">Manage your profile information and account settings</p>
+                    </div>
+
+                    {/* Profile Picture */}
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Profile Picture</h4>
+                      <div className="flex items-center space-x-6">
+                        <div className="w-20 h-20 rounded-full overflow-hidden">
+                          {editProfileData.avatar ? (
+                            <img src={editProfileData.avatar} alt="Profile" className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
+                              <Crown className="text-white" size={32} />
+                            </div>
+                          )}
+                        </div>
+                        <div className="space-y-2">
+                          <label className="block">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleAvatarUpload}
+                              className="hidden"
+                            />
+                            <span className="px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-colors cursor-pointer inline-flex items-center">
+                              <Upload size={16} className="mr-2" />
+                              Change Avatar
+                            </span>
+                          </label>
+                          {editProfileData.avatar && (
+                            <button
+                    {/* Profile Information */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Display Name</label>
+                        <input
+                          type="text"
+                          value={editProfileData.name}
+                          onChange={(e) => setEditProfileData(prev => ({ ...prev, name: e.target.value }))}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                        <input
+                          type="text"
+                          value={editProfileData.username}
+                          onChange={(e) => setEditProfileData(prev => ({ ...prev, username: e.target.value }))}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input
+                          type="email"
+                          value={editProfileData.email}
+                          onChange={(e) => setEditProfileData(prev => ({ ...prev, email: e.target.value }))}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+                        <textarea
+                          value={editProfileData.bio}
+                          onChange={(e) => setEditProfileData(prev => ({ ...prev, bio: e.target.value }))}
+                          rows={4}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent resize-none"
+                          placeholder="Tell others about yourself..."
+                        />
+                      </div>
+                    </div>
+                              onClick={() => setEditProfileData(prev => ({ ...prev, avatar: null }))}
+                    {/* Save/Cancel Buttons */}
+                    {isEditingProfile && (
+                      <div className="flex space-x-4 pt-6 border-t border-gray-200">
+                        <button
+                          onClick={handleSaveProfile}
+                          className="px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-colors"
+                        >
+                          Save Changes
+                        </button>
+                        <button
+                          onClick={handleCancelEdit}
+                          className="px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+                              className="block px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                {activeSettingsTab === 'appearance' && (
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">Appearance</h3>
+                      <p className="text-gray-600">Customize how the interface looks and feels</p>
+                    </div>
+                            >
+                    {/* Theme Selection */}
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Theme</h4>
+                      <div className="grid grid-cols-3 gap-4">
+                        {[
+                          { id: 'dark', name: 'Dark', preview: 'bg-gray-800' },
+                          { id: 'light', name: 'Light', preview: 'bg-white border-2 border-gray-200' },
+                          { id: 'auto', name: 'Auto', preview: 'bg-gray-600' }
+                        ].map((theme) => (
+                          <button
+                            key={theme.id}
+                            onClick={() => handleAppearanceChange('theme', theme.id)}
+                            className={`p-4 rounded-xl border-2 transition-all ${
+                              appearanceSettings.theme === theme.id
+                                ? 'border-yellow-500 bg-yellow-50'
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            <div className={`w-full h-16 rounded-lg mb-3 ${theme.preview}`}></div>
+                            <div className="font-medium text-gray-900">{theme.name}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                              Remove Avatar
+                    {/* Font Size */}
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Font Size</h4>
+                      <div className="space-y-3">
+                        {[
+                          { id: 'small', name: 'Small', size: 'text-sm' },
+                          { id: 'medium', name: 'Medium', size: 'text-base' },
+                          { id: 'large', name: 'Large', size: 'text-lg' }
+                        ].map((size) => (
+                          <label key={size.id} className="flex items-center space-x-3 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="fontSize"
+                              checked={appearanceSettings.fontSize === size.id}
+                              onChange={() => handleAppearanceChange('fontSize', size.id)}
+                              className="text-yellow-500 focus:ring-yellow-300"
+                            />
+                            <span className={`font-medium ${size.size}`}>{size.name}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                            </button>
+                    {/* Display Options */}
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-4">Display</h4>
+                      <div className="space-y-4">
+                        {[
+                          { key: 'compactMode', label: 'Compact Mode', desc: 'Reduce spacing between elements' },
+                          { key: 'showTimestamps', label: 'Show Timestamps', desc: 'Display message timestamps' },
+                          { key: 'animatedEmojis', label: 'Animated Emojis', desc: 'Enable emoji animations' }
+                        ].map((option) => (
+                          <div key={option.key} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div>
+                              <div className="font-medium text-gray-900">{option.label}</div>
+                              <div className="text-sm text-gray-600">{option.desc}</div>
+                            </div>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={appearanceSettings[option.key as keyof typeof appearanceSettings] as boolean}
+                                onChange={(e) => handleAppearanceChange(option.key, e.target.checked)}
+                                className="sr-only peer"
+                              />
+                              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-500"></div>
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                          )}
+                {/* Other settings tabs would go here */}
+                {activeSettingsTab === 'notifications' && (
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">Notifications</h3>
+                      <p className="text-gray-600">Manage your notification preferences</p>
+                    </div>
+                    <div className="text-center py-12 text-gray-500">
+                      Notification settings coming soon...
+                    </div>
+                  </div>
+                )}
+                        </div>
+                {activeSettingsTab === 'privacy' && (
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">Privacy & Safety</h3>
+                      <p className="text-gray-600">Control your privacy and safety settings</p>
+                    </div>
+                    <div className="text-center py-12 text-gray-500">
+                      Privacy settings coming soon...
+                    </div>
+                  </div>
+                )}
+                      </div>
+                {activeSettingsTab === 'help' && (
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">Help & Support</h3>
+                      <p className="text-gray-600">Get help and support resources</p>
+                    </div>
+                    <div className="text-center py-12 text-gray-500">
+                      Help resources coming soon...
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+                    </div>
         {/* Footer - Only show on marketing pages */}
         {!isInPortal && !isInCampus && (
           <footer className="bg-gray-800 text-white py-12">
