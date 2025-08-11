@@ -134,6 +134,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     navigate('/');
   };
 
+  // Don't render Layout for main website pages
+  if (location.pathname === '/' || 
+      location.pathname === '/demo' || 
+      location.pathname === '/contact' || 
+      location.pathname === '/privacy' || 
+      location.pathname === '/terms' || 
+      location.pathname === '/campus-select' ||
+      location.pathname === '/student-campus' || 
+      location.pathname === '/creator-campus') {
+    return <>{children}</>;
+  }
+
   const isCreatorPortal = location.pathname.startsWith('/org/admin');
   const isStudentPortal = location.pathname.startsWith('/org/learn');
 
