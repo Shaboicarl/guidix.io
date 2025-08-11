@@ -151,6 +151,13 @@ export default function CreatorCampus() {
       const body = document.body;
       body.classList.remove('theme-light', 'theme-dark', 'theme-auto');
       body.classList.add(`theme-${value}`);
+      
+      // Apply theme to the entire page container
+      const pageContainer = document.querySelector('.h-screen');
+      if (pageContainer) {
+        pageContainer.classList.remove('theme-light', 'theme-dark', 'theme-auto');
+        pageContainer.classList.add(`theme-${value}`);
+      }
     }
     
     if (key === 'fontSize') {
@@ -472,9 +479,13 @@ export default function CreatorCampus() {
   );
 
   return (
-    <div className="h-screen bg-gray-100 flex">
+    <div className={`h-screen flex ${
+      settings.theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
+    }`}>
       {/* Sidebar */}
-      <div className="w-64 bg-gray-800 text-white flex flex-col">
+      <div className={`w-64 flex flex-col ${
+        settings.theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-800 text-white'
+      }`}>
         {/* Server Header */}
         <div className="p-4 border-b border-gray-700">
           <div className="flex items-center space-x-2">
@@ -579,12 +590,20 @@ export default function CreatorCampus() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Top Bar */}
-        <div className="bg-white border-b border-gray-200 p-4">
+        <div className={`border-b p-4 ${
+          settings.theme === 'dark' 
+            ? 'bg-gray-800 border-gray-700 text-white' 
+            : 'bg-white border-gray-200 text-gray-900'
+        }`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Hash size={20} className="text-gray-400" />
-              <h2 className="text-lg font-semibold text-gray-900">general</h2>
-              <span className="text-sm text-gray-500">Welcome to the Creator Campus!</span>
+              <Hash size={20} className={settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-400'} />
+              <h2 className={`text-lg font-semibold ${
+                settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>general</h2>
+              <span className={`text-sm ${
+                settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              }`}>Welcome to the Creator Campus!</span>
             </div>
             
             {/* Profile Dropdown */}
@@ -707,11 +726,17 @@ export default function CreatorCampus() {
         </div>
 
         {/* Course Categories Navigation */}
-        <div className="bg-gray-50 border-b border-gray-200 px-4 py-3">
+        <div className={`border-b px-4 py-3 ${
+          settings.theme === 'dark' 
+            ? 'bg-gray-700 border-gray-600' 
+            : 'bg-gray-50 border-gray-200'
+        }`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6 overflow-x-auto">
               <div className="flex items-center space-x-4 min-w-max">
-                <span className="text-sm font-medium text-gray-700">Course Categories:</span>
+                <span className={`text-sm font-medium ${
+                  settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                }`}>Course Categories:</span>
                 {[
                   'All Courses',
                   'Web Development',
@@ -725,7 +750,11 @@ export default function CreatorCampus() {
                 ].map((category) => (
                   <button
                     key={category}
-                    className="px-3 py-1 text-sm font-medium text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors whitespace-nowrap"
+                    className={`px-3 py-1 text-sm font-medium rounded-lg transition-colors whitespace-nowrap ${
+                      settings.theme === 'dark' 
+                        ? 'text-gray-300 hover:text-yellow-400 hover:bg-gray-600' 
+                        : 'text-gray-600 hover:text-yellow-600 hover:bg-yellow-50'
+                    }`}
                   >
                     {category}
                   </button>
@@ -747,14 +776,24 @@ export default function CreatorCampus() {
         <div className="flex-1 flex">
           {/* Messages */}
           <div className="flex-1 flex flex-col">
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className={`flex-1 overflow-y-auto p-4 space-y-4 ${
+              settings.theme === 'dark' ? 'bg-gray-800' : 'bg-white'
+            }`}>
               {/* Welcome Message */}
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <div className={`border rounded-lg p-4 ${
+                settings.theme === 'dark' 
+                  ? 'bg-yellow-900 border-yellow-700' 
+                  : 'bg-yellow-50 border-yellow-200'
+              }`}>
                 <div className="flex items-center space-x-2 mb-2">
                   <Crown className="text-yellow-600" size={20} />
-                  <span className="font-semibold text-yellow-800">Welcome to Creator Campus!</span>
+                  <span className={`font-semibold ${
+                    settings.theme === 'dark' ? 'text-yellow-400' : 'text-yellow-800'
+                  }`}>Welcome to Creator Campus!</span>
                 </div>
-                <p className="text-yellow-700 text-sm">
+                <p className={`text-sm ${
+                  settings.theme === 'dark' ? 'text-yellow-300' : 'text-yellow-700'
+                }`}>
                   Connect with fellow educators, share teaching strategies, and collaborate on course development. 
                   This is your space to grow as a creator and build amazing learning experiences.
                 </p>
@@ -768,10 +807,14 @@ export default function CreatorCampus() {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-semibold text-gray-900">Dr. Michael Chen</span>
-                      <span className="text-xs text-gray-500">Today at 2:30 PM</span>
+                      <span className={`font-semibold ${
+                        settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>Dr. Michael Chen</span>
+                      <span className={`text-xs ${
+                        settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Today at 2:30 PM</span>
                     </div>
-                    <p className="text-gray-700">Just finished updating my Data Science course with new Python exercises. The interactive coding challenges are really engaging students!</p>
+                    <p className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>Just finished updating my Data Science course with new Python exercises. The interactive coding challenges are really engaging students!</p>
                   </div>
                 </div>
 
@@ -781,10 +824,14 @@ export default function CreatorCampus() {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-semibold text-gray-900">Emma Rodriguez</span>
-                      <span className="text-xs text-gray-500">Today at 2:45 PM</span>
+                      <span className={`font-semibold ${
+                        settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>Emma Rodriguez</span>
+                      <span className={`text-xs ${
+                        settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Today at 2:45 PM</span>
                     </div>
-                    <p className="text-gray-700">That's awesome! I've been working on gamifying my marketing course. Adding progress badges has increased completion rates by 30% 🎯</p>
+                    <p className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>That's awesome! I've been working on gamifying my marketing course. Adding progress badges has increased completion rates by 30% 🎯</p>
                   </div>
                 </div>
 
@@ -794,22 +841,34 @@ export default function CreatorCampus() {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-semibold text-gray-900">{profileData.name}</span>
-                      <span className="text-xs text-gray-500">Today at 3:00 PM</span>
+                      <span className={`font-semibold ${
+                        settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>{profileData.name}</span>
+                      <span className={`text-xs ${
+                        settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                      }`}>Today at 3:00 PM</span>
                     </div>
-                    <p className="text-gray-700">Love hearing about everyone's innovations! I'm experimenting with live Q&A sessions. The real-time interaction really helps clarify complex topics.</p>
+                    <p className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}>Love hearing about everyone's innovations! I'm experimenting with live Q&A sessions. The real-time interaction really helps clarify complex topics.</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Message Input */}
-            <div className="p-4 border-t border-gray-200">
+            <div className={`p-4 border-t ${
+              settings.theme === 'dark' 
+                ? 'border-gray-700 bg-gray-800' 
+                : 'border-gray-200 bg-white'
+            }`}>
               <div className="flex items-center space-x-3">
                 <input
                   type="text"
                   placeholder="Message #general"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent"
+                  className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent ${
+                    settings.theme === 'dark' 
+                      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                  }`}
                 />
                 <button className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
                   Send
@@ -819,11 +878,19 @@ export default function CreatorCampus() {
           </div>
 
           {/* Online Users */}
-          <div className="w-64 bg-gray-50 border-l border-gray-200 p-4">
-            <h3 className="font-semibold text-gray-900 mb-4">Online — {onlineUsers.filter(u => u.status === 'online').length}</h3>
+          <div className={`w-64 border-l p-4 ${
+            settings.theme === 'dark' 
+              ? 'bg-gray-700 border-gray-600' 
+              : 'bg-gray-50 border-gray-200'
+          }`}>
+            <h3 className={`font-semibold mb-4 ${
+              settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>Online — {onlineUsers.filter(u => u.status === 'online').length}</h3>
             <div className="space-y-2">
               {onlineUsers.map((user) => (
-                <div key={user.id} className="flex items-center space-x-3 p-2 rounded hover:bg-gray-100 cursor-pointer">
+                <div key={user.id} className={`flex items-center space-x-3 p-2 rounded cursor-pointer ${
+                  settings.theme === 'dark' ? 'hover:bg-gray-600' : 'hover:bg-gray-100'
+                }`}>
                   <div className="relative">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                       user.role === 'instructor' 
@@ -843,8 +910,12 @@ export default function CreatorCampus() {
                     }`}></div>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                    <div className="text-xs text-gray-500 capitalize">{user.role}</div>
+                    <div className={`text-sm font-medium ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>{user.name}</div>
+                    <div className={`text-xs capitalize ${
+                      settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                    }`}>{user.role}</div>
                   </div>
                 </div>
               ))}
