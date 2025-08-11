@@ -87,6 +87,15 @@ export default function CreatorCampus() {
     document.documentElement.setAttribute('data-theme', settings.theme);
     document.documentElement.setAttribute('data-font-size', settings.fontSize);
     document.documentElement.setAttribute('data-compact', settings.compactMode.toString());
+    
+    // Apply theme classes to body for immediate visual feedback
+    const body = document.body;
+    body.classList.remove('theme-light', 'theme-dark', 'theme-auto');
+    body.classList.add(`theme-${settings.theme}`);
+    
+    // Apply font size classes
+    body.classList.remove('font-small', 'font-medium', 'font-large');
+    body.classList.add(`font-${settings.fontSize}`);
   }, [settings]);
 
   // Close dropdowns when clicking outside
@@ -135,6 +144,25 @@ export default function CreatorCampus() {
 
   const handleSettingChange = (key: string, value: any) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+    
+    // Force immediate update for visual feedback
+    if (key === 'theme') {
+      document.documentElement.setAttribute('data-theme', value);
+      const body = document.body;
+      body.classList.remove('theme-light', 'theme-dark', 'theme-auto');
+      body.classList.add(`theme-${value}`);
+    }
+    
+    if (key === 'fontSize') {
+      document.documentElement.setAttribute('data-font-size', value);
+      const body = document.body;
+      body.classList.remove('font-small', 'font-medium', 'font-large');
+      body.classList.add(`font-${value}`);
+    }
+    
+    if (key === 'compactMode') {
+      document.documentElement.setAttribute('data-compact', value.toString());
+    }
   };
 
   const handleSignOut = () => {
@@ -355,6 +383,9 @@ export default function CreatorCampus() {
                       >
                         <div className={`w-full h-12 rounded ${theme.preview} mb-2`}></div>
                         <span className="text-sm font-medium">{theme.name}</span>
+                        {settings.theme === theme.id && (
+                          <div className="mt-1 text-xs text-yellow-600 font-semibold">✓ Active</div>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -378,6 +409,9 @@ export default function CreatorCampus() {
                         }`}
                       >
                         <span className={`${size.size} font-medium`}>{size.name}</span>
+                        {settings.fontSize === size.id && (
+                          <span className="ml-2 text-xs text-yellow-600 font-semibold">✓ Active</span>
+                        )}
                       </button>
                     ))}
                   </div>
