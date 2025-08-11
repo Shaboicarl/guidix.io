@@ -906,12 +906,8 @@ export default function CreatorCampus() {
                     }`}></div>
                   </div>
                   <div>
-                    <div className={`text-sm font-medium ${
-                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
-                    }`}>{user.name}</div>
-                    <div className={`text-xs capitalize ${
-                      settings.theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                    }`}>{user.role}</div>
+                    <div className="text-sm font-medium">{user.name}</div>
+                    <div className="text-xs capitalize opacity-60">{user.role}</div>
                   </div>
                 </div>
               ))}
