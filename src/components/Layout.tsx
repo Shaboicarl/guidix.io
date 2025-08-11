@@ -328,7 +328,6 @@ export default function Layout({ children }: LayoutProps) {
             
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                onClick={() => setShowCampusSelect(true)}
                   <User className="text-white" size={16} />
                 </div>
                 <span className="text-sm font-medium text-gray-700">
