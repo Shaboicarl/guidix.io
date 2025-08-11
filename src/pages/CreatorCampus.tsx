@@ -111,6 +111,67 @@ export default function CreatorCampus() {
   const currentCourse = courses.find(course => course.id === selectedCourse);
   const currentChannel = currentCourse?.channels.find(channel => channel.id === selectedChannel);
 
+  const profileData = {
+    'Mike Student': {
+      name: 'Mike Student',
+      role: 'student',
+      avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=100',
+      email: 'mike.student@email.com',
+      location: 'New York, NY',
+      joinDate: 'September 2024',
+      courses: ['Web Development', 'Data Science'],
+      bio: 'Learning web development to transition into tech.',
+      status: 'online',
+      progress: 85,
+      lastActive: '2 minutes ago',
+      warnings: 0,
+      plan: 'Premium'
+    },
+    'Lisa Park': {
+      name: 'Lisa Park',
+      role: 'student',
+      avatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=100',
+      email: 'lisa.park@email.com',
+      location: 'Los Angeles, CA',
+      joinDate: 'August 2024',
+      courses: ['Web Development', 'UX Design'],
+      bio: 'Passionate about creating beautiful user experiences.',
+      status: 'online',
+      progress: 92,
+      lastActive: '5 minutes ago',
+      warnings: 0,
+      plan: 'Basic'
+    }
+  };
+
+  const studentAnalyticsData = [
+    { name: 'Mike Student', progress: 85, plan: 'Premium', lastActive: '2 min ago', status: 'online', coursesCompleted: 2, timeSpent: '47h' },
+    { name: 'Lisa Park', progress: 92, plan: 'Basic', lastActive: '5 min ago', status: 'online', coursesCompleted: 1, timeSpent: '32h' },
+    { name: 'David Wilson', progress: 78, plan: 'Premium', lastActive: '1h ago', status: 'away', coursesCompleted: 1, timeSpent: '28h' },
+    { name: 'Emma Chen', progress: 95, plan: 'Premium', lastActive: '10 min ago', status: 'online', coursesCompleted: 3, timeSpent: '65h' },
+    { name: 'Alex Rodriguez', progress: 67, plan: 'Basic', lastActive: '2h ago', status: 'offline', coursesCompleted: 0, timeSpent: '15h' },
+    { name: 'James Kim', progress: 88, plan: 'Premium', lastActive: '30 min ago', status: 'online', coursesCompleted: 2, timeSpent: '41h' },
+    { name: 'Maria Garcia', progress: 73, plan: 'Basic', lastActive: '45 min ago', status: 'away', coursesCompleted: 1, timeSpent: '22h' }
+  ];
+
+  const handleChannelClick = (channel) => {
+    if (channel.type === 'voice') {
+      setIsInVoiceChannel(true);
+      setConnectedVoiceChannel(channel.id);
+    } else {
+      setSelectedChannel(channel.id);
+    }
+  };
+
+  const handleLeaveVoice = () => {
+    setIsInVoiceChannel(false);
+    setConnectedVoiceChannel(null);
+  };
+
+  const handleProfileClick = (userName) => {
+    setSelectedProfile(profileData[userName] || null);
+  };
+
   const handleSendMessage = () => {
     if (messageInput.trim()) {
       console.log('Sending message:', messageInput);

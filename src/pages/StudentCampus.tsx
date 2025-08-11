@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Hash, Users, Settings, Mic, MicOff, Headphones, HeadphonesIcon, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift } from 'lucide-react';
+import { Hash, Users, Settings, Mic, MicOff, Headphones, HeadphonesIcon, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, X, Mail, Calendar, MapPin, Award } from 'lucide-react';
 
 export default function StudentCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
   const [selectedChannel, setSelectedChannel] = useState('general');
   const [messageInput, setMessageInput] = useState('');
   const [showDMs, setShowDMs] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [isInVoiceChannel, setIsInVoiceChannel] = useState(false);
+  const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
 
   const courses = [
     {
@@ -116,6 +119,49 @@ export default function StudentCampus() {
 
   const currentCourse = courses.find(course => course.id === selectedCourse);
   const currentChannel = currentCourse?.channels.find(channel => channel.id === selectedChannel);
+
+  const profileData = {
+    'Sarah Johnson': {
+      name: 'Sarah Johnson',
+      role: 'instructor',
+      avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+      email: 'sarah.johnson@guidix.io',
+      location: 'San Francisco, CA',
+      joinDate: 'January 2023',
+      courses: ['Web Development', 'Advanced JavaScript'],
+      bio: 'Passionate educator with 10+ years of experience in web development.',
+      status: 'online'
+    },
+    'Mike Student': {
+      name: 'Mike Student',
+      role: 'student',
+      avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=100',
+      email: 'mike.student@email.com',
+      location: 'New York, NY',
+      joinDate: 'September 2024',
+      courses: ['Web Development', 'Data Science'],
+      bio: 'Learning web development to transition into tech.',
+      status: 'online'
+    }
+  };
+
+  const handleChannelClick = (channel) => {
+    if (channel.type === 'voice') {
+      setIsInVoiceChannel(true);
+      setConnectedVoiceChannel(channel.id);
+    } else {
+      setSelectedChannel(channel.id);
+    }
+  };
+
+  const handleLeaveVoice = () => {
+    setIsInVoiceChannel(false);
+    setConnectedVoiceChannel(null);
+  };
+
+  const handleProfileClick = (userName) => {
+    setSelectedProfile(profileData[userName] || null);
+  };
 
   const handleSendMessage = () => {
     if (messageInput.trim()) {
@@ -420,12 +466,15 @@ export default function StudentCampus() {
             <div className="space-y-4">
               <div>
                 <div className="text-gray-400 text-xs font-semibold mb-2">INSTRUCTORS — 1</div>
-                <div className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer">
+                <div 
+                  onClick={() => handleProfileClick('Sarah Johnson')}
+                  className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer"
+                >
                   <div className="relative">
                     <img
                       src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100"
                       alt="Sarah Johnson"
-                      className="w-8 h-8 rounded-full"
+                      className="w-8 h-8 rounded-full hover:ring-2 hover:ring-yellow-400 transition-all"
                     />
                     <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-700"></div>
                   </div>
@@ -443,7 +492,11 @@ export default function StudentCampus() {
                     { name: 'Emma Chen', status: 'online' },
                     { name: 'Alex Rodriguez', status: 'offline' }
                   ].map((student, index) => (
-                    <div key={index} className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer">
+                    <div 
+                      key={index} 
+                      onClick={() => handleProfileClick(student.name)}
+                      className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer"
+                    >
                       <div className="relative">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold">
@@ -464,6 +517,14 @@ export default function StudentCampus() {
           </div>
         </div>
       </div>
+      
+      {/* Profile Modal */}
+      {selectedProfile && (
+        <ProfileModal 
+          profile={selectedProfile} 
+          onClose={() => setSelectedProfile(null)} 
+        />
+      )}
     </div>
   );
 }
