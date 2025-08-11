@@ -123,7 +123,22 @@ export default function Layout({ children }: LayoutProps) {
   // Scroll to top when route changes
   React.useEffect(() => {
     window.scrollTo(0, 0);
+    // Close dropdowns when route changes
+    setShowProfileDropdown(false);
+    setShowSettings(false);
   }, [location.pathname]);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showProfileDropdown && !(event.target as Element).closest('.profile-dropdown')) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showProfileDropdown]);
 
   const handlePortalSelect = (role: 'student' | 'creator') => {
     setCurrentRole(role);
@@ -559,13 +574,9 @@ export default function Layout({ children }: LayoutProps) {
                   <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl flex items-center justify-center">
                     <BookOpen className="text-white" size={24} />
                   </div>
-                  <button
-                    onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                    className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-                  >
-                    <span>{isStudentPortal ? 'Alex Student' : profileData.name}</span>
-                    <ChevronDown size={14} />
-                  </button>
+                  <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    guidix.io
+                  </span>
                 </Link>
                 
                 <div className="flex items-center space-x-4">
