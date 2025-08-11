@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hash, Users, Settings, Mic, MicOff, Headphones, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, Crown, Shield, Edit, Trash2, Pin, MoreHorizontal } from 'lucide-react';
+import { Hash, Users, Settings, Mic, MicOff, Headphones, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, Crown, Shield, Edit, Trash2, Pin, MoreHorizontal, X, Mail, Calendar, MapPin, Award, BarChart3, Clock, TrendingUp, AlertTriangle, Ban, UserX, Volume2, VolumeX } from 'lucide-react';
 
 export default function CreatorCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
@@ -7,6 +7,11 @@ export default function CreatorCampus() {
   const [messageInput, setMessageInput] = useState('');
   const [showDMs, setShowDMs] = useState(false);
   const [showModTools, setShowModTools] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [showModerationPanel, setShowModerationPanel] = useState(false);
+  const [showStudentAnalytics, setShowStudentAnalytics] = useState(false);
+  const [isInVoiceChannel, setIsInVoiceChannel] = useState(false);
+  const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
 
   const courses = [
     {
@@ -110,67 +115,6 @@ export default function CreatorCampus() {
 
   const currentCourse = courses.find(course => course.id === selectedCourse);
   const currentChannel = currentCourse?.channels.find(channel => channel.id === selectedChannel);
-
-  const profileData = {
-    'Mike Student': {
-      name: 'Mike Student',
-      role: 'student',
-      avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=100',
-      email: 'mike.student@email.com',
-      location: 'New York, NY',
-      joinDate: 'September 2024',
-      courses: ['Web Development', 'Data Science'],
-      bio: 'Learning web development to transition into tech.',
-      status: 'online',
-      progress: 85,
-      lastActive: '2 minutes ago',
-      warnings: 0,
-      plan: 'Premium'
-    },
-    'Lisa Park': {
-      name: 'Lisa Park',
-      role: 'student',
-      avatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=100',
-      email: 'lisa.park@email.com',
-      location: 'Los Angeles, CA',
-      joinDate: 'August 2024',
-      courses: ['Web Development', 'UX Design'],
-      bio: 'Passionate about creating beautiful user experiences.',
-      status: 'online',
-      progress: 92,
-      lastActive: '5 minutes ago',
-      warnings: 0,
-      plan: 'Basic'
-    }
-  };
-
-  const studentAnalyticsData = [
-    { name: 'Mike Student', progress: 85, plan: 'Premium', lastActive: '2 min ago', status: 'online', coursesCompleted: 2, timeSpent: '47h' },
-    { name: 'Lisa Park', progress: 92, plan: 'Basic', lastActive: '5 min ago', status: 'online', coursesCompleted: 1, timeSpent: '32h' },
-    { name: 'David Wilson', progress: 78, plan: 'Premium', lastActive: '1h ago', status: 'away', coursesCompleted: 1, timeSpent: '28h' },
-    { name: 'Emma Chen', progress: 95, plan: 'Premium', lastActive: '10 min ago', status: 'online', coursesCompleted: 3, timeSpent: '65h' },
-    { name: 'Alex Rodriguez', progress: 67, plan: 'Basic', lastActive: '2h ago', status: 'offline', coursesCompleted: 0, timeSpent: '15h' },
-    { name: 'James Kim', progress: 88, plan: 'Premium', lastActive: '30 min ago', status: 'online', coursesCompleted: 2, timeSpent: '41h' },
-    { name: 'Maria Garcia', progress: 73, plan: 'Basic', lastActive: '45 min ago', status: 'away', coursesCompleted: 1, timeSpent: '22h' }
-  ];
-
-  const handleChannelClick = (channel) => {
-    if (channel.type === 'voice') {
-      setIsInVoiceChannel(true);
-      setConnectedVoiceChannel(channel.id);
-    } else {
-      setSelectedChannel(channel.id);
-    }
-  };
-
-  const handleLeaveVoice = () => {
-    setIsInVoiceChannel(false);
-    setConnectedVoiceChannel(null);
-  };
-
-  const handleProfileClick = (userName) => {
-    setSelectedProfile(profileData[userName] || null);
-  };
 
   const handleSendMessage = () => {
     if (messageInput.trim()) {
@@ -560,7 +504,7 @@ export default function CreatorCampus() {
                       <img
                         src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100"
                         alt="Sarah Johnson"
-                        className="w-8 h-8 rounded-full"
+                        className="w-8 h-8 rounded-full hover:ring-2 hover:ring-yellow-400 transition-all"
                       />
                       <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-700"></div>
                     </div>
@@ -584,7 +528,11 @@ export default function CreatorCampus() {
                     { name: 'James Kim', status: 'online', progress: '88%' },
                     { name: 'Maria Garcia', status: 'away', progress: '73%' }
                   ].map((student, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 rounded hover:bg-gray-600 cursor-pointer group">
+                    <div 
+                      key={index} 
+                      onClick={() => handleProfileClick(student.name)}
+                      className="flex items-center justify-between p-2 rounded hover:bg-gray-600 cursor-pointer group"
+                    >
                       <div className="flex items-center space-x-2">
                         <div className="relative">
                           <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
@@ -613,6 +561,24 @@ export default function CreatorCampus() {
           </div>
         </div>
       </div>
+      
+      {/* Profile Modal */}
+      {selectedProfile && (
+        <ProfileModal 
+          profile={selectedProfile} 
+          onClose={() => setSelectedProfile(null)} 
+        />
+      )}
+      
+      {/* Moderation Panel */}
+      {showModerationPanel && (
+        <ModerationPanel onClose={() => setShowModerationPanel(false)} />
+      )}
+      
+      {/* Student Analytics Panel */}
+      {showStudentAnalytics && (
+        <StudentAnalyticsPanel onClose={() => setShowStudentAnalytics(false)} />
+      )}
     </div>
   );
 }
