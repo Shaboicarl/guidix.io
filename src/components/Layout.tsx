@@ -331,7 +331,6 @@ export default function Layout({ children }: LayoutProps) {
                   <User className="text-white" size={16} />
                 </div>
                 <span className="text-sm font-medium text-gray-700">
-                <span className="text-sm font-medium text-gray-700">
                   {isStudentPortal ? 'Alex Student' : 'Sarah Creator'}
                 </span>
                 <span className={`bg-${portalColor}-100 text-${portalColor}-700 text-xs px-2 py-1 rounded-full font-semibold`}>
