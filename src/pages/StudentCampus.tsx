@@ -11,6 +11,40 @@ export default function StudentCampus() {
   const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  
+  // Appearance settings state
+  const [appearance, setAppearance] = useState(() => {
+    // Load from localStorage or use defaults
+    const saved = localStorage.getItem('guidix-appearance');
+    return saved ? JSON.parse(saved) : {
+      theme: 'dark',
+      fontSize: 'medium',
+      compactMode: false,
+      showTimestamps: true,
+      animatedEmojis: true
+    };
+  });
+
+  // Save appearance settings to localStorage whenever they change
+  React.useEffect(() => {
+    localStorage.setItem('guidix-appearance', JSON.stringify(appearance));
+    
+    // Apply theme to document
+    document.documentElement.setAttribute('data-theme', appearance.theme);
+    document.documentElement.setAttribute('data-compact', appearance.compactMode.toString());
+    document.documentElement.setAttribute('data-font-size', appearance.fontSize);
+  }, [appearance]);
+
+  // Apply theme on component mount
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', appearance.theme);
+    document.documentElement.setAttribute('data-compact', appearance.compactMode.toString());
+    document.documentElement.setAttribute('data-font-size', appearance.fontSize);
+  }, []);
+
+  const updateAppearance = (updates) => {
+    setAppearance(prev => ({ ...prev, ...updates }));
+  };
 
   const courses = [
     {
@@ -342,13 +376,6 @@ export default function StudentCampus() {
       avatar: '',
       banner: ''
     });
-    const [appearance, setAppearance] = useState({
-      theme: 'dark',
-      fontSize: 'medium',
-      compactMode: false,
-      showTimestamps: true,
-      animatedEmojis: true
-    });
     const [notifications, setNotifications] = useState({
       courseUpdates: true,
       directMessages: true,
@@ -501,12 +528,31 @@ export default function StudentCampus() {
                   <h4 className="text-white font-semibold mb-4">Display Options</h4>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-300">Compact Mode</span>
+                    <div>
+                      <span className="text-gray-300">Font Size</span>
+                      <p className="text-gray-400 text-sm">Adjust text size throughout the app</p>
+                    </div>
+                    <select
+                      value={appearance.fontSize}
+                      onChange={(e) => updateAppearance({ fontSize: e.target.value })}
+                      className="bg-gray-600 text-white rounded-lg px-3 py-2 border border-gray-500 focus:border-blue-500 focus:outline-none"
+                    >
+                      <option value="small">Small</option>
+                      <option value="medium">Medium</option>
+                      <option value="large">Large</option>
+                    </select>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-gray-300">Compact Mode</span>
+                      <p className="text-gray-400 text-sm">Reduce spacing between messages</p>
+                    </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
                         checked={appearance.compactMode}
-                        onChange={(e) => setAppearance({...appearance, compactMode: e.target.checked})}
+                        onChange={(e) => updateAppearance({ compactMode: e.target.checked })}
                         className="sr-only peer"
                       />
                       <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -514,17 +560,42 @@ export default function StudentCampus() {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-300">Show Timestamps</span>
+                    <div>
+                      <span className="text-gray-300">Show Timestamps</span>
+                      <p className="text-gray-400 text-sm">Display message timestamps</p>
+                    </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
                         checked={appearance.showTimestamps}
-                        onChange={(e) => setAppearance({...appearance, showTimestamps: e.target.checked})}
+                        onChange={(e) => updateAppearance({ showTimestamps: e.target.checked })}
                         className="sr-only peer"
                       />
                       <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-gray-300">Animated Emojis</span>
+                      <p className="text-gray-400 text-sm">Enable emoji animations</p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={appearance.animatedEmojis}
+                        onChange={(e) => updateAppearance({ animatedEmojis: e.target.checked })}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                  </div>
+                </div>
+                
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-blue-800 text-sm">
+                    <strong>💡 Tip:</strong> Changes are saved automatically and will persist across sessions.
+                  </p>
                 </div>
               </div>
             )}
@@ -638,16 +709,31 @@ export default function StudentCampus() {
   };
 
   return (
-    <div className="h-screen bg-gray-800 flex flex-col">
+    <div className={`h-screen flex flex-col transition-all duration-300 ${
+      appearance.theme === 'light' 
+        ? 'bg-gray-100' 
+        : appearance.theme === 'auto'
+        ? 'bg-gray-700'
+        : 'bg-gray-800'
+    } ${
+      appearance.fontSize === 'small' ? 'text-sm' :
+      appearance.fontSize === 'large' ? 'text-lg' : 'text-base'
+    }`}>
       {/* Top Navigation Bar */}
-      <div className="bg-gray-900 border-b border-gray-700 px-4 py-3">
+      <div className={`border-b px-4 py-3 transition-colors duration-300 ${
+        appearance.theme === 'light'
+          ? 'bg-white border-gray-200'
+          : 'bg-gray-900 border-gray-700'
+      }`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">G</span>
               </div>
-              <span className="text-white font-bold text-lg">Guidix Campus</span>
+              <span className={`font-bold text-lg transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+              }`}>Guidix Campus</span>
             </div>
             
             {/* Course Tabs */}
@@ -663,11 +749,13 @@ export default function StudentCampus() {
                   className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-all duration-200 ${
                     selectedCourse === course.id 
                       ? `bg-gradient-to-r ${course.color} text-white shadow-lg` 
+                      : appearance.theme === 'light'
+                      ? 'bg-gray-200 hover:bg-gray-300 text-gray-700 hover:text-gray-900'
                       : 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white'
                   }`}
                 >
                   <span className="text-lg">{course.icon}</span>
-                  <span className="font-medium text-sm">{course.name}</span>
+                  <span className={`font-medium ${appearance.fontSize === 'small' ? 'text-xs' : appearance.fontSize === 'large' ? 'text-base' : 'text-sm'}`}>{course.name}</span>
                 </button>
               ))}
               
@@ -676,31 +764,47 @@ export default function StudentCampus() {
                 className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-all duration-200 ${
                   showDMs 
                     ? 'bg-green-500 text-white shadow-lg' 
+                    : appearance.theme === 'light'
+                    ? 'bg-gray-200 hover:bg-gray-300 text-gray-700 hover:text-gray-900'
                     : 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white'
                 }`}
               >
                 <MessageCircle size={16} />
-                <span className="font-medium text-sm">Direct Messages</span>
+                <span className={`font-medium ${appearance.fontSize === 'small' ? 'text-xs' : appearance.fontSize === 'large' ? 'text-base' : 'text-sm'}`}>Direct Messages</span>
               </button>
             </div>
           </div>
           
           <div className="flex items-center space-x-3">
-            <button className="p-2 text-gray-400 hover:text-white transition-colors">
+            <button className={`p-2 transition-colors ${
+              appearance.theme === 'light' 
+                ? 'text-gray-600 hover:text-gray-900' 
+                : 'text-gray-400 hover:text-white'
+            }`}>
               <Bell size={18} />
             </button>
-            <button className="p-2 text-gray-400 hover:text-white transition-colors">
+            <button className={`p-2 transition-colors ${
+              appearance.theme === 'light' 
+                ? 'text-gray-600 hover:text-gray-900' 
+                : 'text-gray-400 hover:text-white'
+            }`}>
               <Search size={18} />
             </button>
             <div className="relative">
               <button
                 onClick={() => setShowUserDropdown(!showUserDropdown)}
-                className="flex items-center space-x-2 hover:bg-gray-700 rounded-lg p-2 transition-colors"
+                className={`flex items-center space-x-2 rounded-lg p-2 transition-colors ${
+                  appearance.theme === 'light'
+                    ? 'hover:bg-gray-200'
+                    : 'hover:bg-gray-700'
+                }`}
               >
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
                   <User className="text-white" size={16} />
                 </div>
-                <span className="text-white text-sm font-medium">Student User</span>
+                <span className={`text-sm font-medium transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`}>Student User</span>
               </button>
             </div>
           </div>
@@ -710,9 +814,15 @@ export default function StudentCampus() {
       {/* Main Content Area */}
       <div className="flex-1 flex">
         {/* Channels Sidebar */}
-        <div className="w-60 bg-gray-700 flex flex-col">
-          <div className="p-4 border-b border-gray-600">
-            <h2 className="text-white font-bold text-lg">
+        <div className={`w-60 flex flex-col transition-colors duration-300 ${
+          appearance.theme === 'light' ? 'bg-gray-50' : 'bg-gray-700'
+        }`}>
+          <div className={`p-4 border-b transition-colors duration-300 ${
+            appearance.theme === 'light' ? 'border-gray-200' : 'border-gray-600'
+          }`}>
+            <h2 className={`font-bold text-lg transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}>
               {showDMs ? 'Direct Messages' : currentCourse?.name}
             </h2>
           </div>
@@ -788,25 +898,49 @@ export default function StudentCampus() {
           </div>
 
           {/* User Panel */}
-          <div className="p-2 bg-gray-800 border-t border-gray-600">
+          <div className={`p-2 border-t transition-colors duration-300 ${
+            appearance.theme === 'light' 
+              ? 'bg-gray-100 border-gray-200' 
+              : 'bg-gray-800 border-gray-600'
+          }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mr-2">
                   <User className="text-white" size={16} />
                 </div>
                 <div>
-                  <div className="text-white text-sm font-medium">Student User</div>
-                  <div className="text-gray-400 text-xs">#1234</div>
+                  <div className={`text-sm font-medium transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}>Student User</div>
+                  <div className={`text-xs transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>#1234</div>
                 </div>
               </div>
               <div className="flex space-x-1">
-                <button className="p-1 text-gray-400 hover:text-white transition-colors">
+                <button className={`p-1 transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-600 hover:text-gray-900' 
+                    : 'text-gray-400 hover:text-white'
+                }`}>
                   <Mic size={16} />
                 </button>
-                <button className="p-1 text-gray-400 hover:text-white transition-colors">
+                <button className={`p-1 transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-600 hover:text-gray-900' 
+                    : 'text-gray-400 hover:text-white'
+                }`}>
                   <Headphones size={16} />
                 </button>
-                <button className="p-1 text-gray-400 hover:text-white transition-colors">
+                <button 
+                  onClick={() => setShowSettings(true)}
+                  className={`p-1 transition-colors ${
+                    appearance.theme === 'light' 
+                      ? 'text-gray-600 hover:text-gray-900' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  title="Settings"
+                >
                   <Settings size={16} />
                 </button>
               </div>
@@ -815,21 +949,35 @@ export default function StudentCampus() {
         </div>
 
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col bg-gray-600">
+        <div className={`flex-1 flex flex-col transition-colors duration-300 ${
+          appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
+        }`}>
           {/* Chat Header */}
-          <div className="p-4 border-b border-gray-500 bg-gray-700">
+          <div className={`p-4 border-b transition-colors duration-300 ${
+            appearance.theme === 'light' 
+              ? 'border-gray-300 bg-white' 
+              : 'border-gray-500 bg-gray-700'
+          }`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 {showDMs ? (
-                  <MessageCircle className="text-gray-300 mr-2" size={20} />
+                  <MessageCircle className={`mr-2 transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                  }`} size={20} />
                 ) : (
-                  <Hash className="text-gray-300 mr-2" size={20} />
+                  <Hash className={`mr-2 transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                  }`} size={20} />
                 )}
-                <h3 className="text-white font-semibold">
+                <h3 className={`font-semibold transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`}>
                   {showDMs ? 'Direct Messages' : currentChannel?.name}
                 </h3>
                 {!showDMs && (
-                  <div className="ml-4 text-gray-400 text-sm">
+                  <div className={`ml-4 text-sm transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>
                     Course discussion and help
                   </div>
                 )}
@@ -855,19 +1003,27 @@ export default function StudentCampus() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className={`flex-1 overflow-y-auto p-4 ${
+            appearance.compactMode ? 'space-y-1' : 'space-y-4'
+          }`}>
             {!showDMs && messages.map((message) => (
-              <div key={message.id} className="flex items-start space-x-3 hover:bg-gray-700 hover:bg-opacity-30 p-2 rounded">
+              <div key={message.id} className={`flex items-start space-x-3 p-2 rounded transition-colors ${
+                appearance.theme === 'light' 
+                  ? 'hover:bg-gray-100' 
+                  : 'hover:bg-gray-700 hover:bg-opacity-30'
+              } ${appearance.compactMode ? 'py-1' : 'py-2'}`}>
                 <img
                   src={message.avatar}
                   alt={message.user}
-                  className="w-10 h-10 rounded-full"
+                  className={`rounded-full ${
+                    appearance.compactMode ? 'w-8 h-8' : 'w-10 h-10'
+                  }`}
                 />
                 <div className="flex-1">
-                  <div className="flex items-center space-x-2 mb-1">
+                  <div className={`flex items-center space-x-2 ${appearance.compactMode ? 'mb-0' : 'mb-1'}`}>
                     <span className={`font-semibold ${
                       message.role === 'instructor' ? 'text-yellow-400' : 'text-white'
-                    }`}>
+                      appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
                       {message.user}
                     </span>
                     {message.role === 'instructor' && (
@@ -875,9 +1031,15 @@ export default function StudentCampus() {
                         INSTRUCTOR
                       </span>
                     )}
-                    <span className="text-gray-400 text-xs">{message.time}</span>
+                    {appearance.showTimestamps && (
+                      <span className={`text-xs transition-colors duration-300 ${
+                        appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                      }`}>{message.time}</span>
+                    )}
                   </div>
-                  <div className="text-gray-300 leading-relaxed">
+                  <div className={`leading-relaxed transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-800' : 'text-gray-300'
+                  }`}>
                     {message.content}
                   </div>
                 </div>
@@ -885,7 +1047,9 @@ export default function StudentCampus() {
             ))}
             
             {showDMs && (
-              <div className="text-center text-gray-400 py-8">
+              <div className={`text-center py-8 transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+              }`}>
                 <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
                 <p>Select a conversation to start messaging</p>
               </div>
@@ -893,9 +1057,17 @@ export default function StudentCampus() {
           </div>
 
           {/* Message Input */}
-          <div className="p-4 bg-gray-700">
-            <div className="flex items-center bg-gray-600 rounded-lg px-4 py-3">
-              <button className="text-gray-400 hover:text-white transition-colors mr-3">
+          <div className={`p-4 transition-colors duration-300 ${
+            appearance.theme === 'light' ? 'bg-white' : 'bg-gray-700'
+          }`}>
+            <div className={`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-600'
+            }`}>
+              <button className={`mr-3 transition-colors ${
+                appearance.theme === 'light' 
+                  ? 'text-gray-600 hover:text-gray-900' 
+                  : 'text-gray-400 hover:text-white'
+              }`}>
                 <Plus size={20} />
               </button>
               <input
@@ -904,21 +1076,41 @@ export default function StudentCampus() {
                 onChange={(e) => setMessageInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
-                className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
+                className={`flex-1 bg-transparent outline-none transition-colors duration-300 ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-900 placeholder-gray-500' 
+                    : 'text-white placeholder-gray-400'
+                }`}
               />
               <div className="flex items-center space-x-2 ml-3">
-                <button className="text-gray-400 hover:text-white transition-colors">
+                <button className={`transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-600 hover:text-gray-900' 
+                    : 'text-gray-400 hover:text-white'
+                }`}>
                   <Gift size={20} />
                 </button>
-                <button className="text-gray-400 hover:text-white transition-colors">
+                <button className={`transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-600 hover:text-gray-900' 
+                    : 'text-gray-400 hover:text-white'
+                }`}>
                   <Paperclip size={20} />
                 </button>
-                <button className="text-gray-400 hover:text-white transition-colors">
+                <button className={`transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-600 hover:text-gray-900' 
+                    : 'text-gray-400 hover:text-white'
+                }`}>
                   <Smile size={20} />
                 </button>
                 <button
                   onClick={handleSendMessage}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className={`transition-colors ${
+                    appearance.theme === 'light' 
+                      ? 'text-gray-600 hover:text-gray-900' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
                 >
                   <Send size={20} />
                 </button>
@@ -928,18 +1120,28 @@ export default function StudentCampus() {
         </div>
 
         {/* Members List */}
-        <div className="w-60 bg-gray-700 border-l border-gray-600">
+        <div className={`w-60 border-l transition-colors duration-300 ${
+          appearance.theme === 'light' 
+            ? 'bg-gray-50 border-gray-200' 
+            : 'bg-gray-700 border-gray-600'
+        }`}>
           <div className="p-4">
-            <h3 className="text-white font-semibold mb-4">
+            <h3 className={`font-semibold mb-4 transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}>
               {showDMs ? 'Friends' : `${currentCourse?.name} Members`}
             </h3>
             
             <div className="space-y-4">
               <div>
-                <div className="text-gray-400 text-xs font-semibold mb-2">INSTRUCTORS — 1</div>
+                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                }`}>INSTRUCTORS — 1</div>
                 <div 
                   onClick={() => handleProfileClick('Sarah Johnson')}
-                  className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer"
+                  className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                    appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
+                  }`}
                 >
                   <div className="relative">
                     <img
@@ -954,7 +1156,9 @@ export default function StudentCampus() {
               </div>
 
               <div>
-                <div className="text-gray-400 text-xs font-semibold mb-2">STUDENTS — 24</div>
+                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                }`}>STUDENTS — 24</div>
                 <div className="space-y-1">
                   {[
                     { name: 'Mike Student', status: 'online' },
@@ -966,7 +1170,9 @@ export default function StudentCampus() {
                     <div 
                       key={index} 
                       onClick={() => handleProfileClick(student.name)}
-                      className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer"
+                      className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                        appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
+                      }`}
                     >
                       <div className="relative">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
@@ -979,7 +1185,9 @@ export default function StudentCampus() {
                           student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
                         }`}></div>
                       </div>
-                      <span className="text-gray-300 text-sm">{student.name}</span>
+                      <span className={`text-sm transition-colors duration-300 ${
+                        appearance.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                      }`}>{student.name}</span>
                     </div>
                   ))}
                 </div>
