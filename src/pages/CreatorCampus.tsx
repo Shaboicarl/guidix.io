@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Hash, Users, Crown, Settings, MessageCircle, Bell, Search, Plus, Smile, Paperclip, Send, Mic, Video, Phone, UserPlus, Shield, BarChart3, BookOpen, Mail, Calendar, FileText, Download, TrendingUp, Award, Eye, Edit, Trash2, X, LogOut, User, ChevronDown, Save, Upload, Moon, Sun, Monitor, Type, Clock, MessageSquare, Zap } from 'lucide-react';
 
 export default function CreatorCampus() {
@@ -51,6 +51,62 @@ export default function CreatorCampus() {
   const [showPerformanceAnalytics, setShowPerformanceAnalytics] = useState(false);
   const [isInVoiceChannel, setIsInVoiceChannel] = useState(false);
   const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
+  const [activeCreatorTool, setActiveCreatorTool] = useState<string | null>(null);
+  
+  // Load settings from localStorage on component mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('creator-theme') || 'dark';
+    const savedFontSize = localStorage.getItem('creator-fontSize') || 'medium';
+    const savedCompactMode = localStorage.getItem('creator-compactMode') === 'true';
+    const savedTimestamps = localStorage.getItem('creator-showTimestamps') !== 'false';
+    const savedAnimatedEmojis = localStorage.getItem('creator-animatedEmojis') !== 'false';
+    const savedProfile = localStorage.getItem('creator-profile');
+    
+    setTheme(savedTheme);
+    setFontSize(savedFontSize);
+    setCompactMode(savedCompactMode);
+    setShowTimestamps(savedTimestamps);
+    setAnimatedEmojis(savedAnimatedEmojis);
+    
+    if (savedProfile) {
+      const parsedProfile = JSON.parse(savedProfile);
+      setProfileData(parsedProfile);
+      setEditProfileData(parsedProfile);
+    }
+    
+    // Apply theme to document
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.documentElement.setAttribute('data-font-size', savedFontSize);
+    document.documentElement.setAttribute('data-compact', savedCompactMode.toString());
+  }, []);
+  
+  // Save settings to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('creator-theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+  
+  useEffect(() => {
+    localStorage.setItem('creator-fontSize', fontSize);
+    document.documentElement.setAttribute('data-font-size', fontSize);
+  }, [fontSize]);
+  
+  useEffect(() => {
+    localStorage.setItem('creator-compactMode', compactMode.toString());
+    document.documentElement.setAttribute('data-compact', compactMode.toString());
+  }, [compactMode]);
+  
+  useEffect(() => {
+    localStorage.setItem('creator-showTimestamps', showTimestamps.toString());
+  }, [showTimestamps]);
+  
+  useEffect(() => {
+    localStorage.setItem('creator-animatedEmojis', animatedEmojis.toString());
+  }, [animatedEmojis]);
+  
+  useEffect(() => {
+    localStorage.setItem('creator-profile', JSON.stringify(profileData));
+  }, [profileData]);
 
   const courses = [
     {
