@@ -468,6 +468,7 @@ export default function CreatorCampus() {
           </div>
 
           <div className="flex-1 overflow-y-auto">
+            {showDMs ? (
               <div className="p-2">
                 <div className="flex items-center justify-between px-2 py-1 mb-2">
                   <span className="text-gray-300 text-sm font-semibold">STUDENT MESSAGES</span>
@@ -495,6 +496,92 @@ export default function CreatorCampus() {
                     </div>
                   </div>
                 ))}
+              </div>
+            ) : showCreatorTools ? (
+              <div className="p-2">
+                <div className="space-y-6">
+                  {/* Course Management */}
+                  <div>
+                    <div className="text-gray-300 text-sm font-semibold mb-3 px-2">COURSE MANAGEMENT</div>
+                    <div className="space-y-1">
+                      <button
+                        onClick={() => setShowModerationPanel(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
+                        <Shield size={16} className="mr-2" />
+                        <span className="text-sm">Moderation Panel</span>
+                      </button>
+                      <button
+                        onClick={() => setShowStudentAnalytics(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
+                        <BarChart3 size={16} className="mr-2" />
+                        <span className="text-sm">Student Analytics</span>
+                      </button>
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <Settings size={16} className="mr-2" />
+                        <span className="text-sm">Course Settings</span>
+                      </button>
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <Award size={16} className="mr-2" />
+                        <span className="text-sm">Certificates</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Communication Tools */}
+                  <div>
+                    <div className="text-gray-300 text-sm font-semibold mb-3 px-2">COMMUNICATION</div>
+                    <div className="space-y-1">
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <Bell size={16} className="mr-2" />
+                        <span className="text-sm">Announcements</span>
+                      </button>
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <Mail size={16} className="mr-2" />
+                        <span className="text-sm">Email Students</span>
+                      </button>
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <MessageCircle size={16} className="mr-2" />
+                        <span className="text-sm">Notifications</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Content Management */}
+                  <div>
+                    <div className="text-gray-300 text-sm font-semibold mb-3 px-2">CONTENT</div>
+                    <div className="space-y-1">
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <Plus size={16} className="mr-2" />
+                        <span className="text-sm">Create Channel</span>
+                      </button>
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <FileText size={16} className="mr-2" />
+                        <span className="text-sm">Assignments</span>
+                      </button>
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <Calendar size={16} className="mr-2" />
+                        <span className="text-sm">Schedule Events</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Advanced Tools */}
+                  <div>
+                    <div className="text-gray-300 text-sm font-semibold mb-3 px-2">ADVANCED</div>
+                    <div className="space-y-1">
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <Download size={16} className="mr-2" />
+                        <span className="text-sm">Export Data</span>
+                      </button>
+                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                        <TrendingUp size={16} className="mr-2" />
+                        <span className="text-sm">Performance Analytics</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="p-2">
@@ -547,19 +634,6 @@ export default function CreatorCampus() {
                   ))}
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-600">
-                  <div className="px-2 py-1 mb-2">
-                    <span className="text-gray-300 text-sm font-semibold">CREATOR TOOLS</span>
-                  </div>
-                  <button className="w-full flex items-center px-2 py-1 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
-                    <Shield size={16} className="mr-2" />
-                    <span className="text-sm">Moderation</span>
-                  </button>
-                  <button className="w-full flex items-center px-2 py-1 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
-                    <Users size={16} className="mr-2" />
-                    <span className="text-sm">Student Analytics</span>
-                  </button>
-                </div>
               </div>
             )}
           </div>
