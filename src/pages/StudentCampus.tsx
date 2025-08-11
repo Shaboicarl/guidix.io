@@ -1048,7 +1048,9 @@ export default function StudentCampus() {
             ))}
             
             {showDMs && (
-              <div className="text-center text-gray-400 py-8">
+              <div className={`text-center py-8 transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+              }`}>
                 <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
                 <p>Select a conversation to start messaging</p>
               </div>
@@ -1056,9 +1058,17 @@ export default function StudentCampus() {
           </div>
 
           {/* Message Input */}
-          <div className="p-4 bg-gray-700">
-            <div className="flex items-center bg-gray-600 rounded-lg px-4 py-3">
-              <button className="text-gray-400 hover:text-white transition-colors mr-3">
+          <div className={\`p-4 transition-colors duration-300 ${
+            appearance.theme === 'light' ? 'bg-white' : 'bg-gray-700'
+          }`}>
+            <div className={\`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-600'
+            }`}>
+              <button className={\`mr-3 transition-colors ${
+                appearance.theme === 'light' 
+                  ? 'text-gray-600 hover:text-gray-900' 
+                  : 'text-gray-400 hover:text-white'
+              }`}>
                 <Plus size={20} />
               </button>
               <input
@@ -1066,22 +1076,42 @@ export default function StudentCampus() {
                 value={messageInput}
                 onChange={(e) => setMessageInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
-                className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
+                placeholder={\`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
+                className={\`flex-1 bg-transparent outline-none transition-colors duration-300 ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-900 placeholder-gray-500' 
+                    : 'text-white placeholder-gray-400'
+                }`}
               />
               <div className="flex items-center space-x-2 ml-3">
-                <button className="text-gray-400 hover:text-white transition-colors">
+                <button className={\`transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-600 hover:text-gray-900' 
+                    : 'text-gray-400 hover:text-white'
+                }`}>
                   <Gift size={20} />
                 </button>
-                <button className="text-gray-400 hover:text-white transition-colors">
+                <button className={\`transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-600 hover:text-gray-900' 
+                    : 'text-gray-400 hover:text-white'
+                }`}>
                   <Paperclip size={20} />
                 </button>
-                <button className="text-gray-400 hover:text-white transition-colors">
+                <button className={\`transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'text-gray-600 hover:text-gray-900' 
+                    : 'text-gray-400 hover:text-white'
+                }`}>
                   <Smile size={20} />
                 </button>
                 <button
                   onClick={handleSendMessage}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className={\`transition-colors ${
+                    appearance.theme === 'light' 
+                      ? 'text-gray-600 hover:text-gray-900' 
+                      : 'text-gray-400 hover:text-white'
+                  }`}
                 >
                   <Send size={20} />
                 </button>
