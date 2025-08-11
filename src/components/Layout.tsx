@@ -47,6 +47,9 @@ const MainHeader = () => {
             <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               Home
             </Link>
+            <Link to="/courses" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Courses
+            </Link>
             <Link to="/demo" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               Demo
             </Link>
@@ -76,6 +79,9 @@ const MainHeader = () => {
             <div className="flex flex-col space-y-4">
               <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                 Home
+              </Link>
+              <Link to="/courses" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                Courses
               </Link>
               <Link to="/demo" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                 Demo
@@ -133,6 +139,7 @@ const MainFooter = () => {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
+              <li><Link to="/courses" className="text-gray-300 hover:text-white transition-colors">Courses</Link></li>
               <li><Link to="/demo" className="text-gray-300 hover:text-white transition-colors">Demo</Link></li>
               <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
               <li><Link to="/campus-select" className="text-gray-300 hover:text-white transition-colors">Get Started</Link></li>
@@ -279,6 +286,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       location.pathname === '/contact' || 
       location.pathname === '/privacy' || 
       location.pathname === '/terms' || 
+      location.pathname === '/courses' || 
       location.pathname === '/campus-select' ||
       location.pathname === '/student-campus' || 
       location.pathname === '/creator-campus') {
@@ -592,6 +600,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   if (location.pathname === '/' || location.pathname === '/demo' || location.pathname === '/contact' || 
       location.pathname === '/privacy' || location.pathname === '/terms' || location.pathname === '/campus-select' ||
+      location.pathname === '/courses' ||
       location.pathname === '/student-campus' || location.pathname === '/creator-campus') {
     return <>{children}</>;
   }
