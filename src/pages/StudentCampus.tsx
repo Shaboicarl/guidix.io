@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hash, Users, Settings, Mic, MicOff, Headphones, HeadphonesIcon, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, X, Mail, Calendar, MapPin, Award } from 'lucide-react';
+import { Hash, Users, Settings, Mic, MicOff, Headphones, HeadphonesIcon, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, X, Mail, Calendar, MapPin, Award, LogOut, Edit, Palette, Shield, HelpCircle, Download } from 'lucide-react';
 
 export default function StudentCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
