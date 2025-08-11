@@ -706,6 +706,43 @@ export default function CreatorCampus() {
           </div>
         </div>
 
+        {/* Course Categories Navigation */}
+        <div className="bg-gray-50 border-b border-gray-200 px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6 overflow-x-auto">
+              <div className="flex items-center space-x-4 min-w-max">
+                <span className="text-sm font-medium text-gray-700">Course Categories:</span>
+                {[
+                  'All Courses',
+                  'Web Development',
+                  'Data Science',
+                  'Digital Marketing',
+                  'Design',
+                  'Mobile Development',
+                  'Cloud Computing',
+                  'Business',
+                  'Photography'
+                ].map((category) => (
+                  <button
+                    key={category}
+                    className="px-3 py-1 text-sm font-medium text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors whitespace-nowrap"
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Creator Tools Button */}
+            <Link
+              to="/org/admin"
+              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 ml-4"
+            >
+              <Crown size={16} />
+              <span>Creator Tools</span>
+            </Link>
+          </div>
+        </div>
         {/* Chat Area */}
         <div className="flex-1 flex">
           {/* Messages */}
