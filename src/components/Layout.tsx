@@ -123,22 +123,7 @@ export default function Layout({ children }: LayoutProps) {
   // Scroll to top when route changes
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    // Close dropdowns when route changes
-    setShowProfileDropdown(false);
-    setShowSettings(false);
   }, [location.pathname]);
-
-  // Close dropdown when clicking outside
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (showProfileDropdown && !(event.target as Element).closest('.profile-dropdown')) {
-        setShowProfileDropdown(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showProfileDropdown]);
 
   const handlePortalSelect = (role: 'student' | 'creator') => {
     setCurrentRole(role);
@@ -378,7 +363,7 @@ export default function Layout({ children }: LayoutProps) {
                 
                 {/* Profile Dropdown */}
                 {showProfileDropdown && (
-                  <div className="profile-dropdown absolute top-16 right-4 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 animate-bounce-in">
+                  <div className="absolute top-16 right-4 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 animate-bounce-in">
                     <div className="p-6">
                       {/* Profile Header */}
                       <div className="flex items-center space-x-4 mb-6">
@@ -686,6 +671,16 @@ export default function Layout({ children }: LayoutProps) {
                           </label>
                           {editProfileData.avatar && (
                             <button
+                              onClick={() => setEditProfileData(prev => ({ ...prev, avatar: null }))}
+                              className="block px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                            >
+                              Remove Avatar
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Profile Information */}
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
@@ -726,7 +721,7 @@ export default function Layout({ children }: LayoutProps) {
                         />
                       </div>
                     </div>
-                              onClick={() => setEditProfileData(prev => ({ ...prev, avatar: null }))}
+
                     {/* Save/Cancel Buttons */}
                     {isEditingProfile && (
                       <div className="flex space-x-4 pt-6 border-t border-gray-200">
@@ -746,14 +741,14 @@ export default function Layout({ children }: LayoutProps) {
                     )}
                   </div>
                 )}
-                              className="block px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+
                 {activeSettingsTab === 'appearance' && (
                   <div className="space-y-8">
                     <div>
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">Appearance</h3>
                       <p className="text-gray-600">Customize how the interface looks and feels</p>
                     </div>
-                            >
+
                     {/* Theme Selection */}
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-4">Theme</h4>
@@ -778,7 +773,7 @@ export default function Layout({ children }: LayoutProps) {
                         ))}
                       </div>
                     </div>
-                              Remove Avatar
+
                     {/* Font Size */}
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-4">Font Size</h4>
@@ -801,7 +796,7 @@ export default function Layout({ children }: LayoutProps) {
                         ))}
                       </div>
                     </div>
-                            </button>
+
                     {/* Display Options */}
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-4">Display</h4>
@@ -831,7 +826,7 @@ export default function Layout({ children }: LayoutProps) {
                     </div>
                   </div>
                 )}
-                          )}
+
                 {/* Other settings tabs would go here */}
                 {activeSettingsTab === 'notifications' && (
                   <div className="space-y-8">
@@ -844,7 +839,7 @@ export default function Layout({ children }: LayoutProps) {
                     </div>
                   </div>
                 )}
-                        </div>
+
                 {activeSettingsTab === 'privacy' && (
                   <div className="space-y-8">
                     <div>
@@ -856,7 +851,7 @@ export default function Layout({ children }: LayoutProps) {
                     </div>
                   </div>
                 )}
-                      </div>
+
                 {activeSettingsTab === 'help' && (
                   <div className="space-y-8">
                     <div>
@@ -872,7 +867,7 @@ export default function Layout({ children }: LayoutProps) {
             </div>
           </div>
         )}
-                    </div>
+
         {/* Footer - Only show on marketing pages */}
         {!isInPortal && !isInCampus && (
           <footer className="bg-gray-800 text-white py-12">
