@@ -1,34 +1,31 @@
 import React from 'react';
 import { Award, CheckCircle, Download, Share2, Star, Users } from 'lucide-react';
-import { useAuth } from '../components/Layout';
 
 export default function Certificates() {
-  const { showSignupModal } = useAuth();
-
   const certificateTypes = [
     {
       id: 1,
-      title: "Personal Achievement Badge",
-      description: "Mark your progress with completion badges for every course you finish",
+      title: "Course Completion Certificate",
+      description: "Earn a certificate for every course you complete successfully",
       icon: Award,
       color: "from-blue-400 to-blue-600",
-      features: ["Personal milestone tracking", "Digital download", "Portfolio showcase", "Growth documentation"]
+      features: ["Verified completion", "Digital download", "LinkedIn integration", "Employer recognition"]
     },
     {
       id: 2,
-      title: "Skill Mastery Recognition",
-      description: "Celebrate your expertise development in specific skill areas",
+      title: "Professional Certification",
+      description: "Industry-recognized certifications for career advancement",
       icon: Star,
       color: "from-purple-400 to-purple-600",
-      features: ["Skill documentation", "Personal branding", "Learning validation", "Entrepreneurial toolkit"]
+      features: ["Industry validation", "Career boost", "Skill verification", "Professional credibility"]
     },
     {
       id: 3,
-      title: "Learning Path Completion",
-      description: "Complete comprehensive learning paths to master entire subject areas",
+      title: "Specialization Certificate",
+      description: "Complete a series of related courses to earn specialization",
       icon: CheckCircle,
       color: "from-green-400 to-green-600",
-      features: ["Holistic learning", "Comprehensive knowledge", "Personal expertise", "Business-ready skills"]
+      features: ["Multiple courses", "Comprehensive skills", "Expert level", "Portfolio projects"]
     }
   ];
 
@@ -65,23 +62,23 @@ export default function Certificates() {
   const benefits = [
     {
       icon: CheckCircle,
-      title: "Document Your Growth",
-      description: "Keep track of your learning journey and personal skill development"
+      title: "Verified Skills",
+      description: "Demonstrate your expertise with industry-recognized certificates"
     },
     {
       icon: Users,
-      title: "Personal Branding",
-      description: "Build your personal brand and showcase your commitment to continuous learning"
+      title: "Career Advancement",
+      description: "Stand out to employers and advance your professional career"
     },
     {
       icon: Share2,
-      title: "Portfolio Building",
-      description: "Create a comprehensive portfolio of your learning achievements and skills"
+      title: "Easy Sharing",
+      description: "Share your achievements on LinkedIn, resume, and social media"
     },
     {
       icon: Download,
-      title: "Personal Records",
-      description: "Keep digital records of your learning milestones and achievements"
+      title: "Digital & Print",
+      description: "Download high-quality certificates for digital and print use"
     }
   ];
 
@@ -91,10 +88,10 @@ export default function Certificates() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            Track Your <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Learning Journey</span>
+            Earn <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Certificates</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Document your personal growth and learning achievements as you build valuable skills for your entrepreneurial journey.
+            Validate your skills and boost your career with industry-recognized certificates from Guidix.
           </p>
         </div>
 
@@ -129,9 +126,9 @@ export default function Certificates() {
         <div className="mb-16">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
-              Your Learning <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Achievements</span>
+              Sample <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Certificates</span>
             </h2>
-            <p className="text-lg text-gray-600">Track your personal learning milestones and showcase your growth</p>
+            <p className="text-lg text-gray-600">See what your certificates will look like</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -215,15 +212,12 @@ export default function Certificates() {
         {/* CTA Section */}
         <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
-            Ready to Start Your Learning Journey?
+            Ready to Earn Your First Certificate?
           </h2>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Begin documenting your personal growth and skill development with our comprehensive courses.
+            Start learning today and earn industry-recognized certificates that advance your career.
           </p>
-          <button 
-            onClick={showSignupModal}
-            className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
-          >
+          <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
             Browse Courses
           </button>
         </div>
