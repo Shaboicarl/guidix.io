@@ -4,12 +4,13 @@ import { Hash, Users, Settings, Mic, MicOff, Headphones, Phone, Video, Plus, Sea
 export default function CreatorCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
   const [selectedChannel, setSelectedChannel] = useState('general');
+  const [selectedCreatorTool, setSelectedCreatorTool] = useState('');
   const [messageInput, setMessageInput] = useState('');
   const [showDMs, setShowDMs] = useState(false);
-  const [showModTools, setShowModTools] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [showModerationPanel, setShowModerationPanel] = useState(false);
   const [showStudentAnalytics, setShowStudentAnalytics] = useState(false);
+  const [showCreatorTools, setShowCreatorTools] = useState(false);
   const [isInVoiceChannel, setIsInVoiceChannel] = useState(false);
   const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
 
@@ -410,18 +411,24 @@ export default function CreatorCampus() {
                 <MessageCircle size={16} />
                 <span className="font-medium text-sm">Student Messages</span>
               </button>
+              
+              <button
+                onClick={() => setShowCreatorTools(!showCreatorTools)}
+                className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-all duration-200 ${
+                  showCreatorTools 
+                    ? 'bg-yellow-500 text-white shadow-lg' 
+                    : 'bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white'
+                }`}
+              >
+                <Shield size={16} />
+                <span className="font-medium text-sm">Creator Tools</span>
+              </button>
             </div>
           </div>
           
           <div className="flex items-center space-x-3">
             <button className="p-2 text-gray-400 hover:text-white transition-colors">
               <Bell size={18} />
-            </button>
-            <button 
-              onClick={() => setShowModTools(!showModTools)}
-              className={`p-2 transition-colors ${showModTools ? 'text-yellow-400' : 'text-gray-400 hover:text-white'}`}
-            >
-              <Shield size={18} />
             </button>
             <button className="p-2 text-gray-400 hover:text-white transition-colors">
               <Search size={18} />
@@ -444,16 +451,16 @@ export default function CreatorCampus() {
           <div className="p-4 border-b border-gray-600">
             <div className="flex items-center justify-between">
               <h2 className="text-white font-bold text-lg">
-                {showDMs ? 'Direct Messages' : currentCourse?.name}
+                {showDMs ? 'Direct Messages' : showCreatorTools ? 'Creator Tools' : currentCourse?.name}
               </h2>
-              {!showDMs && (
+              {!showDMs && !showCreatorTools && (
                 <div className="flex items-center space-x-1">
                   <Crown className="text-yellow-400" size={16} />
                   <span className="text-yellow-400 text-xs font-bold">CREATOR</span>
                 </div>
               )}
             </div>
-            {!showDMs && (
+            {!showDMs && !showCreatorTools && (
               <div className="text-gray-400 text-sm mt-1">
                 {currentCourse?.students} students enrolled
               </div>
@@ -461,7 +468,6 @@ export default function CreatorCampus() {
           </div>
 
           <div className="flex-1 overflow-y-auto">
-            {showDMs ? (
               <div className="p-2">
                 <div className="flex items-center justify-between px-2 py-1 mb-2">
                   <span className="text-gray-300 text-sm font-semibold">STUDENT MESSAGES</span>
