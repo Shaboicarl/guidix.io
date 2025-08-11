@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { BookOpen, X, User, LogOut, Settings, BarChart3, Users, Crown, ChevronDown, Calendar, Award, Clock, Edit2, Save, Upload, Palette, Bell, Shield, HelpCircle } from 'lucide-react';
+import { BookOpen, X, User, LogOut, Settings, BarChart3, Users, Crown, ChevronDown, Calendar, Award, Clock, Edit2, Save, Upload, Palette, Bell, Shield, HelpCircle, MessageCircle } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -528,7 +528,11 @@ export default function Layout({ children }: LayoutProps) {
             </div>
             
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 relative">
+                <button
+                  onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors profile-dropdown"
+                >
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
                   <User className="text-white" size={16} />
                 </div>
@@ -538,7 +542,121 @@ export default function Layout({ children }: LayoutProps) {
                 <span className={`bg-${portalColor}-100 text-${portalColor}-700 text-xs px-2 py-1 rounded-full font-semibold`}>
                   {isStudentPortal ? 'STUDENT' : 'CREATOR'}
                 </span>
+                
+                {/* Profile Dropdown */}
+                {showProfileDropdown && (
+                  <div className="absolute top-12 right-0 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 animate-bounce-in">
+                    <div className="p-6">
+                      {/* Profile Header */}
+                      <div className="flex items-center space-x-4 mb-6">
+                        <div className="w-16 h-16 rounded-full overflow-hidden">
+                          {profileData.avatar ? (
+                            <img src={profileData.avatar} alt="Profile" className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
+                              <Crown className="text-white" size={24} />
+                            </div>
+                          )}
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-900">{profileData.name}</h3>
+                          <p className="text-sm text-gray-600">@{profileData.username}</p>
+                          <div className="flex items-center mt-1">
+                            <div className="w-3 h-3 bg-green-400 rounded-full mr-2"></div>
+                            <span className="text-sm text-green-600">Online</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* About */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-2">About Me</h4>
+                        <p className="text-sm text-gray-600 leading-relaxed">{profileData.bio}</p>
+                      </div>
+
+                      {/* Stats */}
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="text-lg font-bold text-gray-900">{profileData.coursesCreated}</div>
+                          <div className="text-xs text-gray-600">Courses Created</div>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="text-lg font-bold text-gray-900">{profileData.totalStudents.toLocaleString()}</div>
+                          <div className="text-xs text-gray-600">Total Students</div>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="text-lg font-bold text-gray-900">{profileData.certificatesIssued}</div>
+                          <div className="text-xs text-gray-600">Certificates Issued</div>
+                        </div>
+                        <div className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="flex items-center justify-center">
+                            <Calendar size={14} className="mr-1 text-gray-600" />
+                            <div className="text-xs text-gray-600">Since {profileData.joinDate}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Recent Achievements */}
+                      <div className="mb-6">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-3">Recent Achievements</h4>
+                        <div className="space-y-2">
+                          <div className="flex items-center space-x-2 text-sm">
+                            <Award className="text-yellow-500" size={16} />
+                            <span className="text-gray-700">Top Rated Instructor (2024)</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm">
+                            <Award className="text-blue-500" size={16} />
+                            <span className="text-gray-700">1000+ Students Milestone</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm">
+                            <Award className="text-green-500" size={16} />
+                            <span className="text-gray-700">Course Excellence Award</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="space-y-2">
+                        <button
+                          onClick={handleEditProfile}
+                          className="w-full flex items-center justify-center px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-colors"
+                        >
+                          <Edit2 size={16} className="mr-2" />
+                          Edit Profile
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowSettings(true);
+                            setShowProfileDropdown(false);
+                          }}
+                          className="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                        >
+                          <Settings size={16} className="mr-2" />
+                          Settings
+                        </button>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center justify-center px-4 py-2 bg-red-100 text-red-700 font-semibold rounded-lg hover:bg-red-200 transition-colors"
+                        >
+                          <LogOut size={16} className="mr-2" />
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
+              
+              {/* Settings Button (Bottom Left Style) */}
+              <button
+                onClick={() => setShowSettings(true)}
+                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+                title="Settings"
+              >
+                <Settings size={18} />
+                <span className="text-sm font-medium">Settings</span>
+              </button>
+              
               <button
                 onClick={handleLogout}
                 className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
@@ -577,6 +695,8 @@ export default function Layout({ children }: LayoutProps) {
                   <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     guidix.io
                   </span>
+                  <ChevronDown size={16} className="text-gray-400" />
+                </button>
                 </Link>
                 
                 <div className="flex items-center space-x-4">
