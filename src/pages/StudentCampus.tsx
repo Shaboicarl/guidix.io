@@ -22,8 +22,11 @@ export default function StudentCampus() {
       compactMode: false,
       showTimestamps: true,
       animatedEmojis: true
-    };
+    bio: 'Passionate learner focused on web development and data science.',
+    avatar: null as string | null
   });
+
+  const [editProfileData, setEditProfileData] = useState(profileData);
 
   // Save appearance settings to localStorage whenever they change
   React.useEffect(() => {
@@ -34,12 +37,18 @@ export default function StudentCampus() {
     document.documentElement.setAttribute('data-compact', appearance.compactMode.toString());
     document.documentElement.setAttribute('data-font-size', appearance.fontSize);
   }, [appearance]);
+    const savedProfileData = localStorage.getItem('campus-profile-data');
 
   // Apply theme on component mount
   React.useEffect(() => {
     document.documentElement.setAttribute('data-theme', appearance.theme);
     document.documentElement.setAttribute('data-compact', appearance.compactMode.toString());
     document.documentElement.setAttribute('data-font-size', appearance.fontSize);
+    if (savedProfileData) {
+      const parsed = JSON.parse(savedProfileData);
+      setProfileData(parsed);
+      setEditProfileData(parsed);
+    }
   }, []);
 
   const updateAppearance = (updates) => {
