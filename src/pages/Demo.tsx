@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, SkipForward, Volume2, Maximize, User, BookOpen, Award, MessageCircle, BarChart3, Settings, Bell, Search } from 'lucide-react';
+import { Play, Pause, SkipForward, Volume2, Maximize, User, BookOpen, Award, MessageCircle, BarChart3, Settings, Bell, Search, X, CheckCircle } from 'lucide-react';
 
 export default function Demo() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [showUpgradePlans, setShowUpgradePlans] = useState(false);
 
   const demoSteps = [
     {
