@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hash, Users, Settings, Mic, MicOff, Headphones, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, Crown, Shield, Edit, Trash2, Pin, MoreHorizontal, X, Mail, Calendar, MapPin, Award, BarChart3, Clock, TrendingUp, AlertTriangle, Ban, UserX, Volume2, VolumeX } from 'lucide-react';
+import { Hash, Users, Settings, Mic, MicOff, Headphones, Phone, Video, Plus, Search, Bell, User, MessageCircle, Send, Smile, Paperclip, Gift, Crown, Shield, Edit, Trash2, Pin, MoreHorizontal, X, Mail, Calendar, MapPin, Award, BarChart3, Clock, TrendingUp, AlertTriangle, Ban, UserX, Volume2, VolumeX, BookOpen, FileText, Download } from 'lucide-react';
 
 export default function CreatorCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
