@@ -22,7 +22,6 @@ import CreatorBranding from './pages/creator/Branding';
 import CreatorAnalytics from './pages/creator/Analytics';
 import CreatorBilling from './pages/creator/Billing';
 import CreatorSettings from './pages/creator/Settings';
-import CampusSelect from './pages/CampusSelect';
 import StudentCampus from './pages/StudentCampus';
 import CreatorCampus from './pages/CreatorCampus';
 
@@ -53,7 +52,6 @@ function App() {
         <Route path="/org/admin/settings" element={<CreatorSettings />} />
         
         {/* Campus Routes */}
-        <Route path="/campus-select" element={<CampusSelect />} />
         <Route path="/student-campus" element={<StudentCampus />} />
         <Route path="/creator-campus" element={<CreatorCampus />} />
       </Routes>
