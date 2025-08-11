@@ -666,7 +666,8 @@ export default function CreatorCampus() {
         </div>
 
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col bg-gray-600">
+        {!showCreatorTools ? (
+          <div className="flex-1 flex flex-col bg-gray-600">
           {/* Chat Header */}
           <div className="p-4 border-b border-gray-500 bg-gray-700">
             <div className="flex items-center justify-between">
@@ -699,8 +700,8 @@ export default function CreatorCampus() {
                   <Users size={18} />
                 </button>
                 <button 
-                  onClick={() => setShowModTools(!showModTools)}
-                  className={`p-2 transition-colors ${showModTools ? 'text-yellow-400' : 'text-gray-400 hover:text-white'}`}
+                  onClick={() => setShowModerationPanel(true)}
+                  className="p-2 text-gray-400 hover:text-white transition-colors"
                 >
                   <Shield size={18} />
                 </button>
@@ -744,19 +745,17 @@ export default function CreatorCampus() {
                     {message.content}
                   </div>
                 </div>
-                {showModTools && (
-                  <div className="opacity-0 group-hover:opacity-100 flex items-center space-x-1">
-                    <button className="p-1 text-gray-400 hover:text-yellow-400 transition-colors" title="Pin Message">
-                      <Pin size={14} />
-                    </button>
-                    <button className="p-1 text-gray-400 hover:text-red-400 transition-colors" title="Delete Message">
-                      <Trash2 size={14} />
-                    </button>
-                    <button className="p-1 text-gray-400 hover:text-white transition-colors" title="More Options">
-                      <MoreHorizontal size={14} />
-                    </button>
-                  </div>
-                )}
+                <div className="opacity-0 group-hover:opacity-100 flex items-center space-x-1">
+                  <button className="p-1 text-gray-400 hover:text-yellow-400 transition-colors" title="Pin Message">
+                    <Pin size={14} />
+                  </button>
+                  <button className="p-1 text-gray-400 hover:text-red-400 transition-colors" title="Delete Message">
+                    <Trash2 size={14} />
+                  </button>
+                  <button className="p-1 text-gray-400 hover:text-white transition-colors" title="More Options">
+                    <MoreHorizontal size={14} />
+                  </button>
+                </div>
               </div>
             ))}
             
@@ -801,10 +800,38 @@ export default function CreatorCampus() {
               </div>
             </div>
           </div>
-        </div>
+          </div>
+        ) : (
+          <div className="flex-1 bg-gray-600 p-8">
+            <div className="text-center">
+              <Crown className="mx-auto text-yellow-400 mb-4" size={64} />
+              <h2 className="text-2xl font-bold text-white mb-2">Creator Tools</h2>
+              <p className="text-gray-300 mb-8">Select a tool from the sidebar to get started</p>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div className="bg-gray-700 rounded-xl p-6 text-center">
+                  <Shield className="mx-auto text-blue-400 mb-3" size={32} />
+                  <h3 className="text-white font-semibold mb-2">Moderation</h3>
+                  <p className="text-gray-400 text-sm">Manage users and content</p>
+                </div>
+                <div className="bg-gray-700 rounded-xl p-6 text-center">
+                  <BarChart3 className="mx-auto text-green-400 mb-3" size={32} />
+                  <h3 className="text-white font-semibold mb-2">Analytics</h3>
+                  <p className="text-gray-400 text-sm">Track student progress</p>
+                </div>
+                <div className="bg-gray-700 rounded-xl p-6 text-center">
+                  <Bell className="mx-auto text-purple-400 mb-3" size={32} />
+                  <h3 className="text-white font-semibold mb-2">Communication</h3>
+                  <p className="text-gray-400 text-sm">Send announcements</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Members List */}
-        <div className="w-60 bg-gray-700 border-l border-gray-600">
+        {!showCreatorTools && (
+          <div className="w-60 bg-gray-700 border-l border-gray-600">
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-white font-semibold">
@@ -877,7 +904,8 @@ export default function CreatorCampus() {
               </div>
             </div>
           </div>
-        </div>
+          </div>
+        )}
       </div>
       
       {/* Profile Modal */}
