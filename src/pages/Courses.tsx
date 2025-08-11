@@ -1,8 +1,11 @@
 import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Clock, Users, Star, Play, X } from 'lucide-react';
 
 export default function Courses() {
+  const [selectedCategory, setSelectedCategory] = useState('All Courses');
+
   const courses = [
     {
       id: 1,
@@ -13,6 +16,7 @@ export default function Courses() {
       duration: "40 hours",
       level: "Beginner to Advanced",
       price: "$89",
+      category: "Web Development",
       image: "https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=400",
       description: "Master HTML, CSS, JavaScript, React, Node.js, and more in this comprehensive bootcamp."
     },
@@ -25,6 +29,7 @@ export default function Courses() {
       duration: "35 hours",
       level: "Intermediate",
       price: "$79",
+      category: "Data Science",
       image: "https://images.pexels.com/photos/590020/pexels-photo-590020.jpeg?auto=compress&cs=tinysrgb&w=400",
       description: "Learn data analysis, machine learning, and visualization with Python and popular libraries."
     },
@@ -37,6 +42,7 @@ export default function Courses() {
       duration: "25 hours",
       level: "Beginner",
       price: "$69",
+      category: "Digital Marketing",
       image: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400",
       description: "Master SEO, social media marketing, content strategy, and paid advertising campaigns."
     },
@@ -49,6 +55,7 @@ export default function Courses() {
       duration: "30 hours",
       level: "Beginner to Intermediate",
       price: "$75",
+      category: "Design",
       image: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=400",
       description: "Learn user experience design principles, wireframing, prototyping, and design tools."
     },
@@ -61,6 +68,7 @@ export default function Courses() {
       duration: "45 hours",
       level: "Intermediate to Advanced",
       price: "$95",
+      category: "Mobile Development",
       image: "https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=400",
       description: "Build cross-platform mobile apps for iOS and Android using React Native."
     },
@@ -73,6 +81,7 @@ export default function Courses() {
       duration: "38 hours",
       level: "Intermediate",
       price: "$85",
+      category: "Cloud Computing",
       image: "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=400",
       description: "Master Amazon Web Services, cloud architecture, and deployment strategies."
     }
@@ -90,6 +99,11 @@ export default function Courses() {
     "Photography"
   ];
 
+  // Filter courses based on selected category
+  const filteredCourses = selectedCategory === 'All Courses' 
+    ? courses 
+    : courses.filter(course => course.category === selectedCategory);
+
   return (
     <div className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,11 +119,12 @@ export default function Courses() {
 
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <button
-              key={index}
+              key={category}
+              onClick={() => setSelectedCategory(category)}
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
-                index === 0
+                selectedCategory === category
                   ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white'
                   : 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-600 border border-gray-200'
               }`}
@@ -121,7 +136,7 @@ export default function Courses() {
 
         {/* Courses Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {courses.map((course) => (
+          {filteredCourses.map((course) => (
             <div
               key={course.id}
               className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100"
@@ -179,11 +194,25 @@ export default function Courses() {
           ))}
         </div>
 
-        {/* Load More */}
+        {/* Results Info */}
         <div className="text-center mt-12">
-          <button className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl text-lg border-2 border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-all duration-200">
-            Load More Courses
-          </button>
+          <p className="text-gray-600 mb-4">
+            Showing {filteredCourses.length} course{filteredCourses.length !== 1 ? 's' : ''} 
+            {selectedCategory !== 'All Courses' && ` in ${selectedCategory}`}
+          </p>
+          {filteredCourses.length === 0 && (
+            <div className="text-center py-12">
+              <BookOpen size={64} className="mx-auto text-gray-400 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">No courses found</h3>
+              <p className="text-gray-600 mb-6">Try selecting a different category.</p>
+              <button 
+                onClick={() => setSelectedCategory('All Courses')}
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                View All Courses
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
