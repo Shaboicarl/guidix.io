@@ -123,6 +123,244 @@ export default function CreatorCampus() {
     }
   };
 
+  const handleProfileClick = (studentName) => {
+    const profile = {
+      name: studentName,
+      avatar: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=100',
+      status: 'online',
+      email: 'student@example.com',
+      location: 'New York, NY',
+      joinDate: 'January 2024',
+      bio: 'Passionate about web development and learning new technologies.',
+      courses: ['Web Development', 'JavaScript Fundamentals']
+    };
+    setSelectedProfile(profile);
+  };
+
+  const ProfileModal = ({ profile, onClose }: { profile: any; onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-md relative animate-bounce-in">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <X size={24} />
+        </button>
+        
+        <div className="text-center mb-6">
+          <img
+            src={profile.avatar}
+            alt={profile.name}
+            className="w-20 h-20 rounded-full mx-auto mb-4"
+          />
+          <h2 className="text-2xl font-bold text-gray-900">{profile.name}</h2>
+          <div className="flex items-center justify-center space-x-2 mt-2">
+            <div className={`w-3 h-3 rounded-full ${
+              profile.status === 'online' ? 'bg-green-400' : 
+              profile.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+            }`}></div>
+            <span className="text-sm text-gray-600 capitalize">{profile.status}</span>
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-6">
+          <div className="flex items-center space-x-3">
+            <Mail size={16} className="text-gray-400" />
+            <span className="text-gray-700">{profile.email}</span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <MapPin size={16} className="text-gray-400" />
+            <span className="text-gray-700">{profile.location}</span>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Calendar size={16} className="text-gray-400" />
+            <span className="text-gray-700">Joined {profile.joinDate}</span>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="font-semibold text-gray-900 mb-2">Bio</h3>
+          <p className="text-gray-600 text-sm">{profile.bio}</p>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="font-semibold text-gray-900 mb-2">Courses</h3>
+          <div className="flex flex-wrap gap-2">
+            {profile.courses.map((course: string, index: number) => (
+              <span key={index} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">
+                {course}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex space-x-3">
+          <button className="flex-1 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+            Send Message
+          </button>
+          <button className="px-4 py-2 bg-yellow-600 text-white font-semibold rounded-lg hover:bg-yellow-700 transition-colors">
+            Moderate
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const ModerationPanel = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Moderation Tools</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Channel Management</h3>
+            <div className="space-y-3">
+              <button className="w-full p-3 text-left border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
+                <div className="font-medium text-gray-900">Create Channel</div>
+                <div className="text-sm text-gray-600">Add new text or voice channels</div>
+              </button>
+              <button className="w-full p-3 text-left border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
+                <div className="font-medium text-gray-900">Edit Permissions</div>
+                <div className="text-sm text-gray-600">Manage channel access and roles</div>
+              </button>
+              <button className="w-full p-3 text-left border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
+                <div className="font-medium text-gray-900">Slow Mode</div>
+                <div className="text-sm text-gray-600">Limit message frequency</div>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">User Management</h3>
+            <div className="space-y-3">
+              <button className="w-full p-3 text-left border border-gray-200 rounded-lg hover:border-red-300 transition-colors">
+                <div className="font-medium text-red-700">Mute User</div>
+                <div className="text-sm text-gray-600">Temporarily silence a user</div>
+              </button>
+              <button className="w-full p-3 text-left border border-gray-200 rounded-lg hover:border-red-300 transition-colors">
+                <div className="font-medium text-red-700">Kick User</div>
+                <div className="text-sm text-gray-600">Remove user from course</div>
+              </button>
+              <button className="w-full p-3 text-left border border-gray-200 rounded-lg hover:border-red-300 transition-colors">
+                <div className="font-medium text-red-700">Ban User</div>
+                <div className="text-sm text-gray-600">Permanently ban from course</div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const StudentAnalyticsPanel = ({ onClose }: { onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Student Analytics</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        <div className="grid md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-blue-50 rounded-xl p-4">
+            <div className="text-2xl font-bold text-blue-600">156</div>
+            <div className="text-sm text-blue-700">Total Students</div>
+          </div>
+          <div className="bg-green-50 rounded-xl p-4">
+            <div className="text-2xl font-bold text-green-600">73%</div>
+            <div className="text-sm text-green-700">Avg Progress</div>
+          </div>
+          <div className="bg-purple-50 rounded-xl p-4">
+            <div className="text-2xl font-bold text-purple-600">89</div>
+            <div className="text-sm text-purple-700">Premium Plans</div>
+          </div>
+          <div className="bg-orange-50 rounded-xl p-4">
+            <div className="text-2xl font-bold text-orange-600">67</div>
+            <div className="text-sm text-orange-700">Basic Plans</div>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-4 font-semibold text-gray-900">Student</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Progress</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Plan</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Time Spent</th>
+                <th className="text-left p-4 font-semibold text-gray-900">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {[
+                { name: 'Mike Student', progress: 85, plan: 'Premium', time: '47h', status: 'online' },
+                { name: 'Lisa Park', progress: 92, plan: 'Premium', time: '52h', status: 'online' },
+                { name: 'David Wilson', progress: 78, plan: 'Basic', time: '34h', status: 'away' },
+                { name: 'Emma Chen', progress: 95, plan: 'Premium', time: '61h', status: 'online' },
+                { name: 'Alex Rodriguez', progress: 67, plan: 'Basic', time: '28h', status: 'offline' }
+              ].map((student, index) => (
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="p-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">
+                          {student.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      </div>
+                      <span className="font-medium text-gray-900">{student.name}</span>
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-blue-500 h-2 rounded-full"
+                          style={{ width: `${student.progress}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-sm font-semibold">{student.progress}%</span>
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      student.plan === 'Premium' 
+                        ? 'bg-purple-100 text-purple-700' 
+                        : 'bg-blue-100 text-blue-700'
+                    }`}>
+                      {student.plan}
+                    </span>
+                  </td>
+                  <td className="p-4 text-gray-600">{student.time}</td>
+                  <td className="p-4">
+                    <div className="flex items-center space-x-2">
+                      <div className={`w-2 h-2 rounded-full ${
+                        student.status === 'online' ? 'bg-green-400' : 
+                        student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+                      }`}></div>
+                      <span className="text-sm text-gray-600 capitalize">{student.status}</span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="h-screen bg-gray-800 flex flex-col">
       {/* Top Navigation Bar */}

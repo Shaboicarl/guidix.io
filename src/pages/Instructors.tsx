@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Users, BookOpen, Award } from 'lucide-react';
+import { Star, Users, BookOpen, Award, X } from 'lucide-react';
 
 export default function Instructors() {
   const instructors = [

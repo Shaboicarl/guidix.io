@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Play, ChevronDown, ChevronRight, Download, BookOpen, CheckCircle, Clock, FileText, Save } from 'lucide-react';
+import { Play, ChevronDown, ChevronRight, Download, BookOpen, CheckCircle, Clock, FileText, Save, X } from 'lucide-react';
 
 export default function StudentCoursePlayer() {
   const { slug } = useParams();

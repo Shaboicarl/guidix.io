@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award, CheckCircle, Download, Share2, Star, Users } from 'lucide-react';
+import { Award, CheckCircle, Download, Share2, Star, Users, X } from 'lucide-react';
 
 export default function Certificates() {
   const certificateTypes = [

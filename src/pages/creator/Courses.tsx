@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Search, Filter, Edit, Trash2, Eye, Users, DollarSign, MoreHorizontal } from 'lucide-react';
+import { Plus, Search, Filter, Edit, Trash2, Eye, Users, DollarSign, MoreHorizontal, X } from 'lucide-react';
 
 export default function CreatorCourses() {
   const [searchQuery, setSearchQuery] = useState('');

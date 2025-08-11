@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Users, BookOpen, DollarSign, Eye, Download, Calendar, Filter } from 'lucide-react';
+import { TrendingUp, Users, BookOpen, DollarSign, Eye, Download, Calendar, Filter, X } from 'lucide-react';
 
 export default function CreatorAnalytics() {
   const [timeRange, setTimeRange] = useState('30d');

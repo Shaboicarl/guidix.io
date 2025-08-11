@@ -359,8 +359,17 @@ export default function Demo() {
           <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-bold rounded-2xl text-lg hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200">
             Get Started Free
           </button>
+          <button 
+            onClick={() => setShowUpgradeModal(true)}
+            className="px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl text-lg border-2 border-gray-200 hover:border-blue-300 hover:text-blue-600 transition-all duration-200"
+          >
+            View Plans
+          </button>
         </div>
       </div>
+      
+      {/* Upgrade Modal */}
+      {showUpgradeModal && <UpgradeModal />}
     </div>
   );
 }

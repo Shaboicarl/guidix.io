@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, Palette, Globe, Mail, Eye, Save, RefreshCw } from 'lucide-react';
+import { Upload, Palette, Globe, Mail, Eye, Save, RefreshCw, X } from 'lucide-react';
 
 export default function CreatorBranding() {
   const [primaryColor, setPrimaryColor] = useState('#3B82F6');

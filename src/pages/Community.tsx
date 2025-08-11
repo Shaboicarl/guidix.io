@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, MessageCircle, Heart, Share2, Calendar, Trophy, Star, BookOpen } from 'lucide-react';
+import { Users, MessageCircle, Heart, Share2, Calendar, Trophy, Star, BookOpen, X } from 'lucide-react';
 
 export default function Community() {
   const communityStats = [

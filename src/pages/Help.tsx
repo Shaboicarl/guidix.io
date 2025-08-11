@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, HelpCircle, BookOpen, MessageCircle, Mail, Phone, Clock, ChevronDown, ChevronRight } from 'lucide-react';
+import { Search, HelpCircle, BookOpen, MessageCircle, Mail, Phone, Clock, ChevronDown, ChevronRight, X } from 'lucide-react';
 
 export default function Help() {
   const [searchQuery, setSearchQuery] = useState('');

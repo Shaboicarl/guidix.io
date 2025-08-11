@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CreditCard, Download, TrendingUp, Users, HardDrive, Video, CheckCircle, AlertCircle } from 'lucide-react';
+import { CreditCard, Download, TrendingUp, Users, HardDrive, Video, CheckCircle, AlertCircle, X } from 'lucide-react';
 
 export default function CreatorBilling() {
   const [selectedPlan, setSelectedPlan] = useState('pro');

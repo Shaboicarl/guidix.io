@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, Clock, Users, Star, Play } from 'lucide-react';
+import { BookOpen, Clock, Users, Star, Play, X } from 'lucide-react';
 
 export default function Courses() {
   const courses = [

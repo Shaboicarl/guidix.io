@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Shield, Bell, Users, Globe, Key, Trash2, AlertTriangle } from 'lucide-react';
+import { Save, Shield, Bell, Users, Globe, Key, Trash2, AlertTriangle, X } from 'lucide-react';
 
 export default function CreatorSettings() {
   const [activeTab, setActiveTab] = useState('general');

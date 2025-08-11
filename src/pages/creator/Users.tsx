@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Search, Filter, Mail, MoreHorizontal, UserPlus, Upload, Download } from 'lucide-react';
+import { Plus, Search, Filter, Mail, MoreHorizontal, UserPlus, Upload, Download, X } from 'lucide-react';
 
 export default function CreatorUsers() {
   const [searchQuery, setSearchQuery] = useState('');
