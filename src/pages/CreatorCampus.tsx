@@ -176,32 +176,6 @@ export default function CreatorCampus() {
     setSelectedProfile(profile);
   };
 
-  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        setEditProfileData(prev => ({ ...prev, avatar: result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  
-  const handleSaveProfile = () => {
-    setProfileData(editProfileData);
-    setIsEditingProfile(false);
-  };
-  
-  const handleCancelProfileEdit = () => {
-    setEditProfileData(profileData);
-    setIsEditingProfile(false);
-  };
-  
-  const handleSignOut = () => {
-    navigate('/');
-  };
-
   const ProfileModal = ({ profile, onClose }: { profile: any; onClose: () => void }) => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-8 w-full max-w-md relative animate-bounce-in">
@@ -1713,6 +1687,376 @@ export default function CreatorCampus() {
       {/* Performance Analytics Modal */}
       {showPerformanceAnalytics && (
         <PerformanceAnalyticsModal onClose={() => setShowPerformanceAnalytics(false)} />
+        {showSettings && <SettingsModal />}
+      )}
+      
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-lg w-full max-w-4xl h-[80vh] flex overflow-hidden animate-bounce-in">
+            {/* Settings Sidebar */}
+            <div className="w-64 bg-gray-900 p-4 overflow-y-auto">
+              <h2 className="text-white font-bold text-lg mb-6">Settings</h2>
+              <nav className="space-y-2">
+                {[
+                  { id: 'account', label: 'My Account', icon: User },
+                  { id: 'appearance', label: 'Appearance', icon: Moon },
+                  { id: 'notifications', label: 'Notifications', icon: Bell },
+                  { id: 'privacy', label: 'Privacy & Safety', icon: Shield },
+                  { id: 'help', label: 'Help & Support', icon: MessageCircle }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveSettingsTab(tab.id)}
+                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+                      activeSettingsTab === tab.id
+                        ? 'bg-yellow-600 text-white'
+                        : 'text-gray-300 hover:bg-gray-700'
+                    }`}
+                  >
+                    <tab.icon size={16} />
+                    <span>{tab.label}</span>
+                  </button>
+                ))}
+              </nav>
+            </div>
+            
+            {/* Settings Content */}
+            <div className="flex-1 p-6 overflow-y-auto">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-white text-xl font-bold">
+                  {activeSettingsTab === 'account' && 'My Account'}
+                  {activeSettingsTab === 'appearance' && 'Appearance'}
+                  {activeSettingsTab === 'notifications' && 'Notifications'}
+                  {activeSettingsTab === 'privacy' && 'Privacy & Safety'}
+                  {activeSettingsTab === 'help' && 'Help & Support'}
+                </h3>
+                <button
+                  onClick={() => setShowSettings(false)}
+                  className="p-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              
+              {/* Account Tab */}
+              {activeSettingsTab === 'account' && (
+                <div className="space-y-6">
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <div className="flex items-center space-x-4 mb-6">
+                      <div className="relative">
+                        <div className="w-20 h-20 rounded-full overflow-hidden">
+                          {editProfileData.avatar ? (
+                            <img src={editProfileData.avatar} alt="Profile" className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
+                              <User className="text-white" size={32} />
+                            </div>
+                          )}
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleAvatarUpload}
+                          className="hidden"
+                          id="avatar-upload"
+                        />
+                        <label
+                          htmlFor="avatar-upload"
+                          className="absolute -bottom-2 -right-2 bg-yellow-600 hover:bg-yellow-700 text-white p-2 rounded-full cursor-pointer transition-colors"
+                        >
+                          <Upload size={12} />
+                        </label>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-semibold">Profile Picture</h4>
+                        <p className="text-gray-400 text-sm">PNG, JPG, GIF up to 8MB</p>
+                        <div className="flex space-x-2 mt-2">
+                          <label
+                            htmlFor="avatar-upload"
+                            className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 text-white text-sm rounded cursor-pointer transition-colors"
+                          >
+                            Change Avatar
+                          </label>
+                          {editProfileData.avatar && (
+                            <button
+                              onClick={() => setEditProfileData(prev => ({ ...prev, avatar: null }))}
+                              className="px-3 py-1 bg-gray-600 hover:bg-gray-500 text-white text-sm rounded transition-colors"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-2">Display Name</label>
+                        <input
+                          type="text"
+                          value={editProfileData.name}
+                          onChange={(e) => setEditProfileData(prev => ({ ...prev, name: e.target.value }))}
+                          className="w-full px-3 py-2 bg-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-gray-300 text-sm font-medium mb-2">Username</label>
+                        <input
+                          type="text"
+                          value={editProfileData.username}
+                          onChange={(e) => setEditProfileData(prev => ({ ...prev, username: e.target.value }))}
+                          className="w-full px-3 py-2 bg-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-gray-300 text-sm font-medium mb-2">Email</label>
+                        <input
+                          type="email"
+                          value={editProfileData.email}
+                          onChange={(e) => setEditProfileData(prev => ({ ...prev, email: e.target.value }))}
+                          className="w-full px-3 py-2 bg-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-gray-300 text-sm font-medium mb-2">About Me</label>
+                        <textarea
+                          value={editProfileData.bio}
+                          onChange={(e) => setEditProfileData(prev => ({ ...prev, bio: e.target.value }))}
+                          rows={3}
+                          className="w-full px-3 py-2 bg-gray-600 text-white rounded-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none resize-none"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-end space-x-3 mt-6">
+                      <button
+                        onClick={handleCancelProfileEdit}
+                        className="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleSaveProfile}
+                        className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors flex items-center space-x-2"
+                      >
+                        <Save size={16} />
+                        <span>Save Changes</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Appearance Tab */}
+              {activeSettingsTab === 'appearance' && (
+                <div className="space-y-6">
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="text-white font-semibold mb-4">Theme</h4>
+                    <div className="grid grid-cols-3 gap-4">
+                      {[
+                        { id: 'dark', name: 'Dark', icon: Moon, preview: 'bg-gray-800' },
+                        { id: 'light', name: 'Light', icon: Sun, preview: 'bg-white' },
+                        { id: 'auto', name: 'Auto', icon: Monitor, preview: 'bg-gray-600' }
+                      ].map((themeOption) => (
+                        <button
+                          key={themeOption.id}
+                          onClick={() => setTheme(themeOption.id)}
+                          className={`p-4 rounded-lg border-2 transition-all ${
+                            theme === themeOption.id
+                              ? 'border-yellow-500 bg-gray-600'
+                              : 'border-gray-600 hover:border-gray-500'
+                          }`}
+                        >
+                          <div className={`w-full h-16 ${themeOption.preview} rounded mb-3 flex items-center justify-center`}>
+                            <themeOption.icon size={24} className={themeOption.id === 'light' ? 'text-gray-800' : 'text-white'} />
+                          </div>
+                          <div className="text-white text-sm font-medium">{themeOption.name}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="text-white font-semibold mb-4">Font Size</h4>
+                    <div className="space-y-3">
+                      {[
+                        { id: 'small', name: 'Small', size: '14px' },
+                        { id: 'medium', name: 'Medium', size: '16px' },
+                        { id: 'large', name: 'Large', size: '18px' }
+                      ].map((sizeOption) => (
+                        <label key={sizeOption.id} className="flex items-center space-x-3 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="fontSize"
+                            checked={fontSize === sizeOption.id}
+                            onChange={() => setFontSize(sizeOption.id)}
+                            className="text-yellow-500 focus:ring-yellow-500"
+                          />
+                          <span className="text-white" style={{ fontSize: sizeOption.size }}>
+                            {sizeOption.name} - The quick brown fox jumps over the lazy dog
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="text-white font-semibold mb-4">Display</h4>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-white font-medium">Compact Mode</div>
+                          <div className="text-gray-400 text-sm">Reduce spacing between messages</div>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={compactMode}
+                            onChange={(e) => setCompactMode(e.target.checked)}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-white font-medium">Show Timestamps</div>
+                          <div className="text-gray-400 text-sm">Display message timestamps</div>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={showTimestamps}
+                            onChange={(e) => setShowTimestamps(e.target.checked)}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                        </label>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-white font-medium">Animated Emojis</div>
+                          <div className="text-gray-400 text-sm">Play emoji animations</div>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={animatedEmojis}
+                            onChange={(e) => setAnimatedEmojis(e.target.checked)}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Notifications Tab */}
+              {activeSettingsTab === 'notifications' && (
+                <div className="space-y-6">
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="text-white font-semibold mb-4">Campus Notifications</h4>
+                    <div className="space-y-4">
+                      {[
+                        { id: 'course-updates', label: 'Course Updates', desc: 'New lessons, announcements, and course changes' },
+                        { id: 'student-activity', label: 'Student Activity', desc: 'New enrollments, completions, and messages' },
+                        { id: 'direct-messages', label: 'Direct Messages', desc: 'Messages from students and other creators' },
+                        { id: 'mentions', label: 'Mentions', desc: 'When someone mentions you in discussions' }
+                      ].map((notification) => (
+                        <div key={notification.id} className="flex items-center justify-between">
+                          <div>
+                            <div className="text-white font-medium">{notification.label}</div>
+                            <div className="text-gray-400 text-sm">{notification.desc}</div>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" defaultChecked className="sr-only peer" />
+                            <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="text-white font-semibold mb-4">Email & Push</h4>
+                    <div className="space-y-4">
+                      {[
+                        { id: 'email-notifications', label: 'Email Notifications', desc: 'Receive notifications via email' },
+                        { id: 'push-notifications', label: 'Push Notifications', desc: 'Browser push notifications' }
+                      ].map((notification) => (
+                        <div key={notification.id} className="flex items-center justify-between">
+                          <div>
+                            <div className="text-white font-medium">{notification.label}</div>
+                            <div className="text-gray-400 text-sm">{notification.desc}</div>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" defaultChecked className="sr-only peer" />
+                            <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Privacy Tab */}
+              {activeSettingsTab === 'privacy' && (
+                <div className="space-y-6">
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="text-white font-semibold mb-4">Privacy</h4>
+                    <div className="space-y-4">
+                      {[
+                        { id: 'direct-messages', label: 'Direct Messages', desc: 'Who can send you direct messages' },
+                        { id: 'online-status', label: 'Online Status', desc: 'Show when you\'re online' },
+                        { id: 'course-visibility', label: 'Course Visibility', desc: 'Who can see your courses' }
+                      ].map((privacy) => (
+                        <div key={privacy.id} className="flex items-center justify-between">
+                          <div>
+                            <div className="text-white font-medium">{privacy.label}</div>
+                            <div className="text-gray-400 text-sm">{privacy.desc}</div>
+                          </div>
+                          <label className="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" defaultChecked className="sr-only peer" />
+                            <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Help Tab */}
+              {activeSettingsTab === 'help' && (
+                <div className="space-y-6">
+                  <div className="bg-gray-700 rounded-lg p-6">
+                    <h4 className="text-white font-semibold mb-4">Support</h4>
+                    <div className="space-y-3">
+                      <button className="w-full flex items-center justify-between p-3 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                        <span className="text-white">Help Center</span>
+                        <ChevronDown size={16} className="text-gray-400" />
+                      </button>
+                      <button className="w-full flex items-center justify-between p-3 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                        <span className="text-white">Contact Support</span>
+                        <ChevronDown size={16} className="text-gray-400" />
+                      </button>
+                      <button className="w-full flex items-center justify-between p-3 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors">
+                        <span className="text-white">Download My Data</span>
+                        <Download size={16} className="text-gray-400" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
