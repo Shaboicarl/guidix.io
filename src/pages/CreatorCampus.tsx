@@ -11,6 +11,16 @@ export default function CreatorCampus() {
   const [showModerationPanel, setShowModerationPanel] = useState(false);
   const [showStudentAnalytics, setShowStudentAnalytics] = useState(false);
   const [showCreatorTools, setShowCreatorTools] = useState(false);
+  const [showCourseSettings, setShowCourseSettings] = useState(false);
+  const [showCertificateManager, setShowCertificateManager] = useState(false);
+  const [showAnnouncementPanel, setShowAnnouncementPanel] = useState(false);
+  const [showEmailPanel, setShowEmailPanel] = useState(false);
+  const [showNotificationPanel, setShowNotificationPanel] = useState(false);
+  const [showChannelCreator, setShowChannelCreator] = useState(false);
+  const [showAssignmentManager, setShowAssignmentManager] = useState(false);
+  const [showEventScheduler, setShowEventScheduler] = useState(false);
+  const [showDataExporter, setShowDataExporter] = useState(false);
+  const [showPerformanceAnalytics, setShowPerformanceAnalytics] = useState(false);
   const [isInVoiceChannel, setIsInVoiceChannel] = useState(false);
   const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
 
@@ -518,11 +528,17 @@ export default function CreatorCampus() {
                         <BarChart3 size={16} className="mr-2" />
                         <span className="text-sm">Student Analytics</span>
                       </button>
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowCourseSettings(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <Settings size={16} className="mr-2" />
                         <span className="text-sm">Course Settings</span>
                       </button>
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowCertificateManager(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <Award size={16} className="mr-2" />
                         <span className="text-sm">Certificates</span>
                       </button>
@@ -533,15 +549,24 @@ export default function CreatorCampus() {
                   <div>
                     <div className="text-gray-300 text-sm font-semibold mb-3 px-2">COMMUNICATION</div>
                     <div className="space-y-1">
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowAnnouncementPanel(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <Bell size={16} className="mr-2" />
                         <span className="text-sm">Announcements</span>
                       </button>
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowEmailPanel(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <Mail size={16} className="mr-2" />
                         <span className="text-sm">Email Students</span>
                       </button>
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowNotificationPanel(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <MessageCircle size={16} className="mr-2" />
                         <span className="text-sm">Notifications</span>
                       </button>
@@ -552,15 +577,24 @@ export default function CreatorCampus() {
                   <div>
                     <div className="text-gray-300 text-sm font-semibold mb-3 px-2">CONTENT</div>
                     <div className="space-y-1">
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowChannelCreator(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <Plus size={16} className="mr-2" />
                         <span className="text-sm">Create Channel</span>
                       </button>
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowAssignmentManager(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <FileText size={16} className="mr-2" />
                         <span className="text-sm">Assignments</span>
                       </button>
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowEventScheduler(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <Calendar size={16} className="mr-2" />
                         <span className="text-sm">Schedule Events</span>
                       </button>
@@ -571,11 +605,17 @@ export default function CreatorCampus() {
                   <div>
                     <div className="text-gray-300 text-sm font-semibold mb-3 px-2">ADVANCED</div>
                     <div className="space-y-1">
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowDataExporter(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <Download size={16} className="mr-2" />
                         <span className="text-sm">Export Data</span>
                       </button>
-                      <button className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors">
+                      <button
+                        onClick={() => setShowPerformanceAnalytics(true)}
+                        className="w-full flex items-center px-2 py-2 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                      >
                         <TrendingUp size={16} className="mr-2" />
                         <span className="text-sm">Performance Analytics</span>
                       </button>
@@ -924,6 +964,56 @@ export default function CreatorCampus() {
       {/* Student Analytics Panel */}
       {showStudentAnalytics && (
         <StudentAnalyticsPanel onClose={() => setShowStudentAnalytics(false)} />
+      )}
+      
+      {/* Course Settings Modal */}
+      {showCourseSettings && (
+        <CourseSettingsModal onClose={() => setShowCourseSettings(false)} />
+      )}
+      
+      {/* Certificate Manager Modal */}
+      {showCertificateManager && (
+        <CertificateManagerModal onClose={() => setShowCertificateManager(false)} />
+      )}
+      
+      {/* Announcement Panel Modal */}
+      {showAnnouncementPanel && (
+        <AnnouncementPanelModal onClose={() => setShowAnnouncementPanel(false)} />
+      )}
+      
+      {/* Email Panel Modal */}
+      {showEmailPanel && (
+        <EmailPanelModal onClose={() => setShowEmailPanel(false)} />
+      )}
+      
+      {/* Notification Panel Modal */}
+      {showNotificationPanel && (
+        <NotificationPanelModal onClose={() => setShowNotificationPanel(false)} />
+      )}
+      
+      {/* Channel Creator Modal */}
+      {showChannelCreator && (
+        <ChannelCreatorModal onClose={() => setShowChannelCreator(false)} />
+      )}
+      
+      {/* Assignment Manager Modal */}
+      {showAssignmentManager && (
+        <AssignmentManagerModal onClose={() => setShowAssignmentManager(false)} />
+      )}
+      
+      {/* Event Scheduler Modal */}
+      {showEventScheduler && (
+        <EventSchedulerModal onClose={() => setShowEventScheduler(false)} />
+      )}
+      
+      {/* Data Exporter Modal */}
+      {showDataExporter && (
+        <DataExporterModal onClose={() => setShowDataExporter(false)} />
+      )}
+      
+      {/* Performance Analytics Modal */}
+      {showPerformanceAnalytics && (
+        <PerformanceAnalyticsModal onClose={() => setShowPerformanceAnalytics(false)} />
       )}
     </div>
   );
