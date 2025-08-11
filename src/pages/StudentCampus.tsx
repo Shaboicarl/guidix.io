@@ -192,272 +192,273 @@ export default function StudentCampus() {
 
       {/* Main Content Area */}
       <div className="flex-1 flex">
-      {/* Channels Sidebar */}
-      <div className="w-60 bg-gray-700 flex flex-col">
-        <div className="p-4 border-b border-gray-600">
-          <h2 className="text-white font-bold text-lg">
-            {showDMs ? 'Direct Messages' : currentCourse?.name}
-          </h2>
-        </div>
+        {/* Channels Sidebar */}
+        <div className="w-60 bg-gray-700 flex flex-col">
+          <div className="p-4 border-b border-gray-600">
+            <h2 className="text-white font-bold text-lg">
+              {showDMs ? 'Direct Messages' : currentCourse?.name}
+            </h2>
+          </div>
 
-        <div className="flex-1 overflow-y-auto">
-          {showDMs ? (
-            <div className="p-2">
-              <div className="flex items-center justify-between px-2 py-1 mb-2">
-                <span className="text-gray-300 text-sm font-semibold">DIRECT MESSAGES</span>
-                <Plus className="text-gray-400 hover:text-white cursor-pointer" size={16} />
-              </div>
-              {directMessages.map((dm) => (
-                <div
-                  key={dm.id}
-                  className="flex items-center px-2 py-2 rounded hover:bg-gray-600 cursor-pointer group"
-                >
-                  <div className="relative">
-                    <img
-                      src={dm.avatar}
-                      alt={dm.name}
-                      className="w-8 h-8 rounded-full mr-3"
-                    />
-                    <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
-                      dm.status === 'online' ? 'bg-green-400' : 
-                      dm.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
-                    }`}></div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-gray-300 text-sm font-medium">{dm.name}</div>
-                    <div className="text-gray-400 text-xs truncate">{dm.lastMessage}</div>
-                  </div>
+          <div className="flex-1 overflow-y-auto">
+            {showDMs ? (
+              <div className="p-2">
+                <div className="flex items-center justify-between px-2 py-1 mb-2">
+                  <span className="text-gray-300 text-sm font-semibold">DIRECT MESSAGES</span>
+                  <Plus className="text-gray-400 hover:text-white cursor-pointer" size={16} />
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="p-2">
-              <div className="mb-4">
-                <div className="flex items-center px-2 py-1 mb-2">
-                  <span className="text-gray-300 text-sm font-semibold">TEXT CHANNELS</span>
-                </div>
-                {currentCourse?.channels.filter(channel => channel.type === 'text').map((channel) => (
-                  <button
-                    key={channel.id}
-                    onClick={() => setSelectedChannel(channel.id)}
-                    className={`w-full flex items-center px-2 py-1 rounded text-left transition-colors ${
-                      selectedChannel === channel.id 
-                        ? 'bg-gray-600 text-white' 
-                        : 'text-gray-300 hover:bg-gray-600 hover:text-white'
-                    }`}
+                {directMessages.map((dm) => (
+                  <div
+                    key={dm.id}
+                    className="flex items-center px-2 py-2 rounded hover:bg-gray-600 cursor-pointer group"
                   >
-                    <Hash size={16} className="mr-2" />
-                    <span className="text-sm">{channel.name}</span>
-                  </button>
-                ))}
-              </div>
-
-              <div>
-                <div className="flex items-center px-2 py-1 mb-2">
-                  <span className="text-gray-300 text-sm font-semibold">VOICE CHANNELS</span>
-                </div>
-                {currentCourse?.channels.filter(channel => channel.type === 'voice').map((channel) => (
-                  <button
-                    key={channel.id}
-                    className="w-full flex items-center px-2 py-1 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
-                  >
-                    <Users size={16} className="mr-2" />
-                    <span className="text-sm">{channel.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* User Panel */}
-        <div className="p-2 bg-gray-800 border-t border-gray-600">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mr-2">
-                <User className="text-white" size={16} />
-              </div>
-              <div>
-                <div className="text-white text-sm font-medium">Student User</div>
-                <div className="text-gray-400 text-xs">#1234</div>
-              </div>
-            </div>
-            <div className="flex space-x-1">
-              <button className="p-1 text-gray-400 hover:text-white transition-colors">
-                <Mic size={16} />
-              </button>
-              <button className="p-1 text-gray-400 hover:text-white transition-colors">
-                <Headphones size={16} />
-              </button>
-              <button className="p-1 text-gray-400 hover:text-white transition-colors">
-                <Settings size={16} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-gray-600">
-        {/* Chat Header */}
-        <div className="p-4 border-b border-gray-500 bg-gray-700">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              {showDMs ? (
-                <MessageCircle className="text-gray-300 mr-2" size={20} />
-              ) : (
-                <Hash className="text-gray-300 mr-2" size={20} />
-              )}
-              <h3 className="text-white font-semibold">
-                {showDMs ? 'Direct Messages' : currentChannel?.name}
-              </h3>
-              {!showDMs && (
-                <div className="ml-4 text-gray-400 text-sm">
-                  Course discussion and help
-                </div>
-              )}
-            </div>
-            <div className="flex items-center space-x-2">
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <Phone size={18} />
-              </button>
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <Video size={18} />
-              </button>
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <Bell size={18} />
-              </button>
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <Users size={18} />
-              </button>
-              <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                <Search size={18} />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {!showDMs && messages.map((message) => (
-            <div key={message.id} className="flex items-start space-x-3 hover:bg-gray-700 hover:bg-opacity-30 p-2 rounded">
-              <img
-                src={message.avatar}
-                alt={message.user}
-                className="w-10 h-10 rounded-full"
-              />
-              <div className="flex-1">
-                <div className="flex items-center space-x-2 mb-1">
-                  <span className={`font-semibold ${
-                    message.role === 'instructor' ? 'text-yellow-400' : 'text-white'
-                  }`}>
-                    {message.user}
-                  </span>
-                  {message.role === 'instructor' && (
-                    <span className="bg-yellow-500 text-black text-xs px-2 py-0.5 rounded font-bold">
-                      INSTRUCTOR
-                    </span>
-                  )}
-                  <span className="text-gray-400 text-xs">{message.time}</span>
-                </div>
-                <div className="text-gray-300 leading-relaxed">
-                  {message.content}
-                </div>
-              </div>
-            </div>
-          ))}
-          
-          {showDMs && (
-            <div className="text-center text-gray-400 py-8">
-              <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
-              <p>Select a conversation to start messaging</p>
-            </div>
-          )}
-        </div>
-
-        {/* Message Input */}
-        <div className="p-4 bg-gray-700">
-          <div className="flex items-center bg-gray-600 rounded-lg px-4 py-3">
-            <button className="text-gray-400 hover:text-white transition-colors mr-3">
-              <Plus size={20} />
-            </button>
-            <input
-              type="text"
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
-              className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
-            />
-            <div className="flex items-center space-x-2 ml-3">
-              <button className="text-gray-400 hover:text-white transition-colors">
-                <Gift size={20} />
-              </button>
-              <button className="text-gray-400 hover:text-white transition-colors">
-                <Paperclip size={20} />
-              </button>
-              <button className="text-gray-400 hover:text-white transition-colors">
-                <Smile size={20} />
-              </button>
-              <button
-                onClick={handleSendMessage}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Send size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Members List */}
-      <div className="w-60 bg-gray-700 border-l border-gray-600">
-        <div className="p-4">
-          <h3 className="text-white font-semibold mb-4">
-            {showDMs ? 'Friends' : `${currentCourse?.name} Members`}
-          </h3>
-          
-          <div className="space-y-4">
-            <div>
-              <div className="text-gray-400 text-xs font-semibold mb-2">INSTRUCTORS — 1</div>
-              <div className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer">
-                <div className="relative">
-                  <img
-                    src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100"
-                    alt="Sarah Johnson"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-700"></div>
-                </div>
-                <span className="text-yellow-400 text-sm font-medium">Sarah Johnson</span>
-              </div>
-            </div>
-
-            <div>
-              <div className="text-gray-400 text-xs font-semibold mb-2">STUDENTS — 24</div>
-              <div className="space-y-1">
-                {[
-                  { name: 'Mike Student', status: 'online' },
-                  { name: 'Lisa Park', status: 'online' },
-                  { name: 'David Wilson', status: 'away' },
-                  { name: 'Emma Chen', status: 'online' },
-                  { name: 'Alex Rodriguez', status: 'offline' }
-                ].map((student, index) => (
-                  <div key={index} className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer">
                     <div className="relative">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">
-                          {student.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      </div>
+                      <img
+                        src={dm.avatar}
+                        alt={dm.name}
+                        className="w-8 h-8 rounded-full mr-3"
+                      />
                       <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
-                        student.status === 'online' ? 'bg-green-400' : 
-                        student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+                        dm.status === 'online' ? 'bg-green-400' : 
+                        dm.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
                       }`}></div>
                     </div>
-                    <span className="text-gray-300 text-sm">{student.name}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-gray-300 text-sm font-medium">{dm.name}</div>
+                      <div className="text-gray-400 text-xs truncate">{dm.lastMessage}</div>
+                    </div>
                   </div>
                 ))}
+              </div>
+            ) : (
+              <div className="p-2">
+                <div className="mb-4">
+                  <div className="flex items-center px-2 py-1 mb-2">
+                    <span className="text-gray-300 text-sm font-semibold">TEXT CHANNELS</span>
+                  </div>
+                  {currentCourse?.channels.filter(channel => channel.type === 'text').map((channel) => (
+                    <button
+                      key={channel.id}
+                      onClick={() => setSelectedChannel(channel.id)}
+                      className={`w-full flex items-center px-2 py-1 rounded text-left transition-colors ${
+                        selectedChannel === channel.id 
+                          ? 'bg-gray-600 text-white' 
+                          : 'text-gray-300 hover:bg-gray-600 hover:text-white'
+                      }`}
+                    >
+                      <Hash size={16} className="mr-2" />
+                      <span className="text-sm">{channel.name}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <div>
+                  <div className="flex items-center px-2 py-1 mb-2">
+                    <span className="text-gray-300 text-sm font-semibold">VOICE CHANNELS</span>
+                  </div>
+                  {currentCourse?.channels.filter(channel => channel.type === 'voice').map((channel) => (
+                    <button
+                      key={channel.id}
+                      className="w-full flex items-center px-2 py-1 rounded text-left text-gray-300 hover:bg-gray-600 hover:text-white transition-colors"
+                    >
+                      <Users size={16} className="mr-2" />
+                      <span className="text-sm">{channel.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* User Panel */}
+          <div className="p-2 bg-gray-800 border-t border-gray-600">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mr-2">
+                  <User className="text-white" size={16} />
+                </div>
+                <div>
+                  <div className="text-white text-sm font-medium">Student User</div>
+                  <div className="text-gray-400 text-xs">#1234</div>
+                </div>
+              </div>
+              <div className="flex space-x-1">
+                <button className="p-1 text-gray-400 hover:text-white transition-colors">
+                  <Mic size={16} />
+                </button>
+                <button className="p-1 text-gray-400 hover:text-white transition-colors">
+                  <Headphones size={16} />
+                </button>
+                <button className="p-1 text-gray-400 hover:text-white transition-colors">
+                  <Settings size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Chat Area */}
+        <div className="flex-1 flex flex-col bg-gray-600">
+          {/* Chat Header */}
+          <div className="p-4 border-b border-gray-500 bg-gray-700">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                {showDMs ? (
+                  <MessageCircle className="text-gray-300 mr-2" size={20} />
+                ) : (
+                  <Hash className="text-gray-300 mr-2" size={20} />
+                )}
+                <h3 className="text-white font-semibold">
+                  {showDMs ? 'Direct Messages' : currentChannel?.name}
+                </h3>
+                {!showDMs && (
+                  <div className="ml-4 text-gray-400 text-sm">
+                    Course discussion and help
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center space-x-2">
+                <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                  <Phone size={18} />
+                </button>
+                <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                  <Video size={18} />
+                </button>
+                <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                  <Bell size={18} />
+                </button>
+                <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                  <Users size={18} />
+                </button>
+                <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                  <Search size={18} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {!showDMs && messages.map((message) => (
+              <div key={message.id} className="flex items-start space-x-3 hover:bg-gray-700 hover:bg-opacity-30 p-2 rounded">
+                <img
+                  src={message.avatar}
+                  alt={message.user}
+                  className="w-10 h-10 rounded-full"
+                />
+                <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className={`font-semibold ${
+                      message.role === 'instructor' ? 'text-yellow-400' : 'text-white'
+                    }`}>
+                      {message.user}
+                    </span>
+                    {message.role === 'instructor' && (
+                      <span className="bg-yellow-500 text-black text-xs px-2 py-0.5 rounded font-bold">
+                        INSTRUCTOR
+                      </span>
+                    )}
+                    <span className="text-gray-400 text-xs">{message.time}</span>
+                  </div>
+                  <div className="text-gray-300 leading-relaxed">
+                    {message.content}
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            {showDMs && (
+              <div className="text-center text-gray-400 py-8">
+                <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
+                <p>Select a conversation to start messaging</p>
+              </div>
+            )}
+          </div>
+
+          {/* Message Input */}
+          <div className="p-4 bg-gray-700">
+            <div className="flex items-center bg-gray-600 rounded-lg px-4 py-3">
+              <button className="text-gray-400 hover:text-white transition-colors mr-3">
+                <Plus size={20} />
+              </button>
+              <input
+                type="text"
+                value={messageInput}
+                onChange={(e) => setMessageInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
+                className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
+              />
+              <div className="flex items-center space-x-2 ml-3">
+                <button className="text-gray-400 hover:text-white transition-colors">
+                  <Gift size={20} />
+                </button>
+                <button className="text-gray-400 hover:text-white transition-colors">
+                  <Paperclip size={20} />
+                </button>
+                <button className="text-gray-400 hover:text-white transition-colors">
+                  <Smile size={20} />
+                </button>
+                <button
+                  onClick={handleSendMessage}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <Send size={20} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Members List */}
+        <div className="w-60 bg-gray-700 border-l border-gray-600">
+          <div className="p-4">
+            <h3 className="text-white font-semibold mb-4">
+              {showDMs ? 'Friends' : `${currentCourse?.name} Members`}
+            </h3>
+            
+            <div className="space-y-4">
+              <div>
+                <div className="text-gray-400 text-xs font-semibold mb-2">INSTRUCTORS — 1</div>
+                <div className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer">
+                  <div className="relative">
+                    <img
+                      src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100"
+                      alt="Sarah Johnson"
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-700"></div>
+                  </div>
+                  <span className="text-yellow-400 text-sm font-medium">Sarah Johnson</span>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-gray-400 text-xs font-semibold mb-2">STUDENTS — 24</div>
+                <div className="space-y-1">
+                  {[
+                    { name: 'Mike Student', status: 'online' },
+                    { name: 'Lisa Park', status: 'online' },
+                    { name: 'David Wilson', status: 'away' },
+                    { name: 'Emma Chen', status: 'online' },
+                    { name: 'Alex Rodriguez', status: 'offline' }
+                  ].map((student, index) => (
+                    <div key={index} className="flex items-center space-x-2 p-2 rounded hover:bg-gray-600 cursor-pointer">
+                      <div className="relative">
+                        <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">
+                            {student.name.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        </div>
+                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
+                          student.status === 'online' ? 'bg-green-400' : 
+                          student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+                        }`}></div>
+                      </div>
+                      <span className="text-gray-300 text-sm">{student.name}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
