@@ -1177,40 +1177,15 @@ export default function StudentCampus() {
                       <div className="relative">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold">
-                        {editProfileData.avatar ? (
-                          <img src={editProfileData.avatar} alt="Profile" className="w-24 h-24 rounded-full object-cover mx-auto mb-4" />
-                        ) : (
-                          <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <User className="text-white" size={32} />
-                          </div>
-                        )}
-                        <label className="absolute bottom-0 right-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors cursor-pointer">
-                          <Camera size={16} className="text-white" />
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleAvatarUpload}
-                            className="hidden"
-                          />
-                        </label>
+                            {student.name.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        </div>
+                        <div className={\`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
+                          student.status === 'online' ? 'bg-green-400' : 
+                          student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
                         }`}></div>
-                      <div className="space-x-4">
-                        <label className="text-blue-400 hover:text-blue-300 text-sm cursor-pointer">
-                          Change Avatar
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleAvatarUpload}
-                            className="hidden"
-                          />
-                        </label>
-                        <button 
-                          onClick={() => setEditProfileData({ ...editProfileData, avatar: null })}
-                          className="text-red-400 hover:text-red-300 text-sm"
-                        >
-                          Remove
-                        </button>
                       </div>
+                      <span className={\`text-sm transition-colors duration-300 ${
                         appearance.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
                       }`}>{student.name}</span>
                     </div>
