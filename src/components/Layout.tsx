@@ -241,7 +241,7 @@ export default function Layout({ children }: LayoutProps) {
                 
                 <div className="flex items-center space-x-4">
                   <button
-                    onClick={() => setShowPortalSelect(true)}
+                    onClick={() => navigate('/campus-select')}
                     className="px-6 py-2 bg-gradient-to-r from-blue-400 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-purple-600 transform hover:scale-105 transition-all duration-200"
                   >
                     Open Guidix.io
@@ -276,8 +276,8 @@ export default function Layout({ children }: LayoutProps) {
                 <div>
                   <h4 className="font-bold mb-4">Platform</h4>
                   <ul className="space-y-2 text-gray-400">
-                    <li><button onClick={() => setShowPortalSelect(true)} className="hover:text-white transition-colors">Student Portal</button></li>
-                    <li><button onClick={() => setShowPortalSelect(true)} className="hover:text-white transition-colors">Creator Portal</button></li>
+                    <li><button onClick={() => navigate('/campus-select')} className="hover:text-white transition-colors">Student Portal</button></li>
+                    <li><button onClick={() => navigate('/campus-select')} className="hover:text-white transition-colors">Creator Portal</button></li>
                     <li><Link to="/demo" className="hover:text-white transition-colors">Demo</Link></li>
                   </ul>
                 </div>
@@ -298,9 +298,6 @@ export default function Layout({ children }: LayoutProps) {
             </div>
           </footer>
         )}
-
-        {/* Portal Select Modal */}
-        {showPortalSelect && <PortalSelectModal />}
       </div>
     </AuthContext.Provider>
   );
