@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Hash, Users, Crown, Settings, MessageCircle, Bell, Search, Plus, Smile, Paperclip, Send, Mic, Video, Phone, UserPlus, Shield, BarChart3, BookOpen, Mail, Calendar, FileText, Download, TrendingUp, Award, Eye, Edit, Trash2, X, LogOut, User, ChevronDown, Save, Upload, Moon, Sun, Monitor, Type, Clock, MessageSquare, Zap } from 'lucide-react';
+import { Hash, Users, Crown, Settings, MessageCircle, Bell, Search, Plus, Smile, Paperclip, Send, Mic, Video, Phone, UserPlus, Shield, BarChart3, BookOpen, Mail, Calendar, FileText, Download, TrendingUp, Award, Eye, Edit, Trash2, X, LogOut, User, ChevronDown, Save, Upload, Moon, Sun, Monitor, Type, Clock, MessageSquare, Zap, MapPin, Pin, MoreHorizontal, Headphones } from 'lucide-react';
 
 export default function CreatorCampus() {
   const [selectedCourse, setSelectedCourse] = useState('web-development');
@@ -174,6 +174,27 @@ export default function CreatorCampus() {
       courses: ['Web Development', 'JavaScript Fundamentals']
     };
     setSelectedProfile(profile);
+  };
+
+  const handleAvatarUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setEditProfileData(prev => ({ ...prev, avatar: e.target.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveProfile = () => {
+    setProfileData(editProfileData);
+    setIsEditingProfile(false);
+  };
+
+  const handleCancelProfileEdit = () => {
+    setEditProfileData(profileData);
+    setIsEditingProfile(false);
   };
 
   const ProfileModal = ({ profile, onClose }: { profile: any; onClose: () => void }) => (
