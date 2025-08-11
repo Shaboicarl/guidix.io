@@ -17,7 +17,11 @@ import {
   Save,
   X,
   Upload,
-  ChevronDown
+  ChevronDown,
+  Menu,
+  Globe,
+  Mail,
+  Phone
 } from 'lucide-react';
 
 // Main Website Header Component
