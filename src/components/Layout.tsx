@@ -611,9 +611,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Navigation */}
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center space-x-4">
+          <div className="flex items-center h-16">
+            {/* Logo and Portal Badge */}
+            <div className="flex items-center space-x-4 mr-8">
               <Link to="/" className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
                   <BookOpen className="text-white" size={20} />
@@ -634,8 +634,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               )}
             </div>
 
-            {/* Navigation Items */}
-            <div className="hidden md:flex items-center space-x-8">
+            {/* Navigation Items - Now on the left side */}
+            <div className="hidden md:flex items-center space-x-6 flex-1">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
@@ -658,8 +658,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ))}
             </div>
 
-            {/* User Menu */}
-            <div className="flex items-center space-x-4">
+            {/* User Menu - Now on the right side */}
+            <div className="flex items-center space-x-4 ml-auto">
               {/* Profile Dropdown */}
               <div className="relative" ref={profileDropdownRef}>
                 <button
