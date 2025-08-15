@@ -12,6 +12,8 @@ export default function StudentCampus() {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showCourseStudies, setShowCourseStudies] = useState(false);
+  const [showCourseSidebar, setShowCourseSidebar] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>(['web-development']);
   
   // Appearance settings state
   const [appearance, setAppearance] = useState(() => {
@@ -170,6 +172,70 @@ export default function StudentCampus() {
 
   const currentCourse = courses.find(course => course.id === selectedCourse);
   const currentChannel = currentCourse?.channels.find(channel => channel.id === selectedChannel);
+
+  // Detailed course data for sidebar
+  const courseCategories = {
+    'web-development': {
+      name: 'Web Development',
+      icon: '💻',
+      color: 'from-blue-400 to-blue-600',
+      progress: 45,
+      courses: [
+        { id: 'html-fundamentals', name: 'HTML Fundamentals', progress: 85, duration: '2 weeks', status: 'completed' },
+        { id: 'css-styling', name: 'CSS Styling', progress: 60, duration: '3 weeks', status: 'in-progress' },
+        { id: 'javascript-basics', name: 'JavaScript Basics', progress: 0, duration: '4 weeks', status: 'locked' },
+        { id: 'dom-manipulation', name: 'DOM Manipulation', progress: 0, duration: '3 weeks', status: 'locked' },
+        { id: 'react-intro', name: 'React Introduction', progress: 0, duration: '5 weeks', status: 'locked' },
+        { id: 'advanced-react', name: 'Advanced React', progress: 0, duration: '4 weeks', status: 'locked' },
+        { id: 'node-backend', name: 'Node.js Backend', progress: 0, duration: '6 weeks', status: 'locked' }
+      ]
+    },
+    'data-science': {
+      name: 'Data Science',
+      icon: '📊',
+      color: 'from-purple-400 to-purple-600',
+      progress: 35,
+      courses: [
+        { id: 'python-intro', name: 'Python Introduction', progress: 90, duration: '3 weeks', status: 'completed' },
+        { id: 'data-analysis', name: 'Data Analysis', progress: 45, duration: '4 weeks', status: 'in-progress' },
+        { id: 'visualization', name: 'Data Visualization', progress: 0, duration: '3 weeks', status: 'locked' },
+        { id: 'machine-learning', name: 'Machine Learning', progress: 0, duration: '6 weeks', status: 'locked' },
+        { id: 'deep-learning', name: 'Deep Learning', progress: 0, duration: '8 weeks', status: 'locked' },
+        { id: 'statistics', name: 'Statistics Fundamentals', progress: 0, duration: '4 weeks', status: 'locked' },
+        { id: 'sql-database', name: 'SQL & Databases', progress: 0, duration: '3 weeks', status: 'locked' }
+      ]
+    },
+    'digital-marketing': {
+      name: 'Digital Marketing',
+      icon: '📈',
+      color: 'from-green-400 to-green-600',
+      progress: 55,
+      courses: [
+        { id: 'marketing-basics', name: 'Marketing Fundamentals', progress: 100, duration: '2 weeks', status: 'completed' },
+        { id: 'seo-basics', name: 'SEO Basics', progress: 75, duration: '3 weeks', status: 'in-progress' },
+        { id: 'social-media', name: 'Social Media Marketing', progress: 0, duration: '4 weeks', status: 'locked' },
+        { id: 'content-marketing', name: 'Content Marketing', progress: 0, duration: '3 weeks', status: 'locked' },
+        { id: 'analytics', name: 'Marketing Analytics', progress: 0, duration: '4 weeks', status: 'locked' },
+        { id: 'ppc-advertising', name: 'PPC Advertising', progress: 0, duration: '3 weeks', status: 'locked' },
+        { id: 'email-marketing', name: 'Email Marketing', progress: 0, duration: '2 weeks', status: 'locked' }
+      ]
+    },
+    'ux-design': {
+      name: 'UX Design',
+      icon: '🎨',
+      color: 'from-pink-400 to-pink-600',
+      progress: 25,
+      courses: [
+        { id: 'design-principles', name: 'Design Principles', progress: 95, duration: '2 weeks', status: 'completed' },
+        { id: 'user-research', name: 'User Research', progress: 30, duration: '3 weeks', status: 'in-progress' },
+        { id: 'wireframing', name: 'Wireframing & Prototyping', progress: 0, duration: '3 weeks', status: 'locked' },
+        { id: 'ui-design', name: 'UI Design', progress: 0, duration: '4 weeks', status: 'locked' },
+        { id: 'usability-testing', name: 'Usability Testing', progress: 0, duration: '3 weeks', status: 'locked' },
+        { id: 'figma-sketch', name: 'Figma & Sketch', progress: 0, duration: '3 weeks', status: 'locked' },
+        { id: 'design-systems', name: 'Design Systems', progress: 0, duration: '4 weeks', status: 'locked' }
+      ]
+    }
+  };
 
   // Course Studies data with progression tracking
   const courseStudies = {
@@ -435,6 +501,171 @@ export default function StudentCampus() {
   const handleProfileClick = (userName: string) => {
     setSelectedProfile(profileDataMap[userName as keyof typeof profileDataMap] || null);
   };
+
+  // Course sidebar helper functions
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories(prev => 
+      prev.includes(categoryId) 
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const getCategoryProgress = (categoryId: string) => {
+    const category = courseCategories[categoryId as keyof typeof courseCategories];
+    if (!category) return 0;
+    const totalProgress = category.courses.reduce((sum, course) => sum + course.progress, 0);
+    return Math.round(totalProgress / category.courses.length);
+  };
+
+  const CourseSidebar = () => (
+    <div className={`w-80 flex flex-col transition-colors duration-300 ${
+      appearance.theme === 'light' ? 'bg-gray-50 border-r border-gray-200' : 'bg-gray-800 border-r border-gray-700'
+    }`}>
+      {/* Header */}
+      <div className={`p-4 border-b transition-colors duration-300 ${
+        appearance.theme === 'light' ? 'border-gray-200' : 'border-gray-700'
+      }`}>
+        <div className="flex items-center justify-between">
+          <h2 className={`font-bold text-lg transition-colors duration-300 ${
+            appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+          }`}>
+            Course Categories
+          </h2>
+          <button
+            onClick={() => setShowCourseSidebar(false)}
+            className={`p-2 rounded-lg transition-colors ${
+              appearance.theme === 'light' 
+                ? 'hover:bg-gray-200 text-gray-600' 
+                : 'hover:bg-gray-700 text-gray-300'
+            }`}
+          >
+            <X size={20} />
+          </button>
+        </div>
+      </div>
+
+      {/* Course Categories */}
+      <div className="flex-1 overflow-y-auto p-2">
+        {Object.entries(courseCategories).map(([categoryId, category]) => {
+          const isExpanded = expandedCategories.includes(categoryId);
+          const categoryProgress = getCategoryProgress(categoryId);
+          
+          return (
+            <div key={categoryId} className="mb-3">
+              {/* Category Header */}
+              <button
+                onClick={() => toggleCategory(categoryId)}
+                className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 hover:shadow-md ${
+                  appearance.theme === 'light' 
+                    ? 'bg-white border border-gray-200 hover:border-gray-300' 
+                    : 'bg-gray-700 border border-gray-600 hover:border-gray-500'
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl bg-gradient-to-r ${category.color}`}>
+                    {category.icon}
+                  </div>
+                  <div className="text-left">
+                    <h3 className={`font-semibold transition-colors duration-300 ${
+                      appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
+                      {category.name}
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-16 bg-gray-200 rounded-full h-1.5">
+                        <div 
+                          className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
+                          style={{ width: `${categoryProgress}%` }}
+                        ></div>
+                      </div>
+                      <span className={`text-xs transition-colors duration-300 ${
+                        appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                      }`}>
+                        {categoryProgress}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </button>
+
+              {/* Course List */}
+              {isExpanded && (
+                <div className={`mt-2 ml-4 space-y-2 transition-all duration-200 ${
+                  appearance.theme === 'light' ? 'border-l-2 border-gray-200' : 'border-l-2 border-gray-600'
+                }`}>
+                  {category.courses.map((course) => (
+                    <div
+                      key={course.id}
+                      className={`p-3 rounded-lg transition-colors duration-200 ${
+                        appearance.theme === 'light' 
+                          ? 'bg-white border border-gray-200 hover:border-gray-300' 
+                          : 'bg-gray-700 border border-gray-600 hover:border-gray-500'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className={`font-medium text-sm transition-colors duration-300 ${
+                          appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                        }`}>
+                          {course.name}
+                        </h4>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          course.status === 'completed'
+                            ? 'bg-green-100 text-green-700'
+                            : course.status === 'in-progress'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {course.status === 'completed' ? 'Completed' : 
+                           course.status === 'in-progress' ? 'In Progress' : 'Not Started'}
+                        </span>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className={`text-xs transition-colors duration-300 ${
+                            appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                          }`}>
+                            Progress
+                          </span>
+                          <span className={`text-xs font-medium transition-colors duration-300 ${
+                            appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                          }`}>
+                            {course.progress}%
+                          </span>
+                        </div>
+                        <div className={`w-full rounded-full h-1.5 ${
+                          appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
+                        }`}>
+                          <div 
+                            className={`h-1.5 rounded-full transition-all duration-300 ${
+                              course.status === 'completed' ? 'bg-green-500' : 
+                              course.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-400'
+                            }`}
+                            style={{ width: `${course.progress}%` }}
+                          ></div>
+                        </div>
+                        <div className={`text-xs transition-colors duration-300 ${
+                          appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-500'
+                        }`}>
+                          Duration: {course.duration}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 
   const ProfileModal = ({ profile, onClose }: { profile: typeof profileDataMap[keyof typeof profileDataMap]; onClose: () => void }) => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -1618,12 +1849,15 @@ export default function StudentCampus() {
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex">
-        {/* Channels Sidebar */}
-        <div className={`w-60 flex flex-col transition-colors duration-300 ${
-          appearance.theme === 'light' ? 'bg-gray-50' : 'bg-gray-700'
-        }`}>
+             {/* Main Content Area */}
+       <div className="flex-1 flex">
+         {/* Course Categories Sidebar */}
+         {showCourseSidebar && <CourseSidebar />}
+         
+         {/* Channels Sidebar */}
+         <div className={`w-60 flex flex-col transition-colors duration-300 ${
+           appearance.theme === 'light' ? 'bg-gray-50' : 'bg-gray-700'
+         }`}>
           <div className={`p-4 border-b transition-colors duration-300 ${
             appearance.theme === 'light' ? 'border-gray-200' : 'border-gray-600'
           }`}>
@@ -1633,23 +1867,18 @@ export default function StudentCampus() {
               {showDMs ? 'Direct Messages' : currentCourse?.name}
             </h2>
             
-            {/* Course Studies Button */}
-            {!showDMs && currentCourse && (
-              <button
-                onClick={() => {
-                  setShowCourseStudies(true);
-                  setActiveView('grid');
-                }}
-                className={`mt-3 w-full flex items-center justify-center px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 ${
-                  appearance.theme === 'light'
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                    : 'bg-blue-500 hover:bg-blue-600 text-white'
-                }`}
-              >
-                <span className="mr-2">📚</span>
-                <span className="font-medium">{currentCourse?.name} Studies</span>
-              </button>
-            )}
+                         {/* Course Categories Button */}
+             <button
+               onClick={() => setShowCourseSidebar(!showCourseSidebar)}
+               className={`mt-3 w-full flex items-center justify-center px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 ${
+                 appearance.theme === 'light'
+                   ? 'bg-green-600 hover:bg-green-700 text-white'
+                   : 'bg-green-500 hover:bg-green-600 text-white'
+               }`}
+             >
+               <span className="mr-2">📖</span>
+               <span className="font-medium">Course Categories</span>
+             </button>
           </div>
 
           <div className="flex-1 overflow-y-auto">
