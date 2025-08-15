@@ -35,6 +35,7 @@ export default function CreatorCampus() {
   const navigate = useNavigate();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showCreatorToolsModal, setShowCreatorToolsModal] = useState(false);
   const [activeSettingsTab, setActiveSettingsTab] = useState('account');
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -443,6 +444,129 @@ export default function CreatorCampus() {
     </div>
   );
 
+  const CreatorToolsModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-bounce-in">
+        <div className="flex h-[600px]">
+          {/* Creator Tools Sidebar */}
+          <div className="w-64 bg-gradient-to-br from-yellow-50 to-orange-50 p-4 border-r border-yellow-200">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
+                  <Crown className="text-white" size={20} />
+                </div>
+                <h2 className="text-lg font-bold text-gray-900">Creator Tools</h2>
+              </div>
+              <button
+                onClick={() => setShowCreatorToolsModal(false)}
+                className="p-2 hover:bg-yellow-100 rounded-lg transition-colors"
+              >
+                <X size={20} className="text-gray-600" />
+              </button>
+            </div>
+            
+            <nav className="space-y-2">
+              {[
+                { id: 'dashboard', label: 'Dashboard', icon: BarChart3, color: 'yellow' },
+                { id: 'courses', label: 'Course Management', icon: BookOpen, color: 'blue' },
+                { id: 'students', label: 'Student Analytics', icon: Users, color: 'green' },
+                { id: 'content', label: 'Content Creation', icon: Edit2, color: 'purple' },
+                { id: 'marketing', label: 'Marketing Tools', icon: TrendingUp, color: 'red' },
+                { id: 'monetization', label: 'Monetization', icon: DollarSign, color: 'emerald' }
+              ].map((tool) => (
+                <button
+                  key={tool.id}
+                  className="w-full flex items-center space-x-3 px-3 py-3 text-left rounded-lg transition-colors hover:bg-yellow-100 group"
+                >
+                  <div className={`w-10 h-10 bg-${tool.color}-100 rounded-lg flex items-center justify-center group-hover:bg-${tool.color}-200 transition-colors`}>
+                    <tool.icon size={20} className={`text-${tool.color}-600`} />
+                  </div>
+                  <span className="font-medium text-gray-700">{tool.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          {/* Creator Tools Content */}
+          <div className="flex-1 p-6 overflow-y-auto">
+            <div className="max-w-3xl mx-auto">
+              <div className="text-center mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Crown className="text-white" size={32} />
+                </div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Creator Tools Hub</h1>
+                <p className="text-gray-600 text-lg">Access all your course creation and management tools in one place</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Quick Stats */}
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Active Courses</span>
+                      <span className="font-semibold text-gray-900">8</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Total Students</span>
+                      <span className="font-semibold text-gray-900">1,247</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600">Monthly Revenue</span>
+                      <span className="font-semibold text-gray-900">$12,450</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Recent Activity */}
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                      <span className="text-sm text-gray-600">New student enrolled in Web Development</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                      <span className="text-sm text-gray-600">Course review submitted</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                      <span className="text-sm text-gray-600">Payment received</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="md:col-span-2 bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button className="flex flex-col items-center p-4 bg-white rounded-lg hover:bg-green-100 transition-colors border border-green-200">
+                      <BookOpen className="text-green-600 mb-2" size={24} />
+                      <span className="text-sm font-medium text-gray-700">Create Course</span>
+                    </button>
+                    <button className="flex flex-col items-center p-4 bg-white rounded-lg hover:bg-green-100 transition-colors border border-green-200">
+                      <Users className="text-green-600 mb-2" size={24} />
+                      <span className="text-sm font-medium text-gray-700">View Students</span>
+                    </button>
+                    <button className="flex flex-col items-center p-4 bg-white rounded-lg hover:bg-green-100 transition-colors border border-green-200">
+                      <BarChart3 className="text-green-600 mb-2" size={24} />
+                      <span className="text-sm font-medium text-gray-700">Analytics</span>
+                    </button>
+                    <button className="flex flex-col items-center p-4 bg-white rounded-lg hover:bg-green-100 transition-colors border border-green-200">
+                      <DollarSign className="text-green-600 mb-2" size={24} />
+                      <span className="text-sm font-medium text-gray-700">Earnings</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className={`h-screen flex ${
       settings.theme === 'dark' ? 'bg-gray-900 text-white' : 
@@ -470,6 +594,20 @@ export default function CreatorCampus() {
               <p className="text-xs text-gray-400">guidix.io</p>
             </div>
           </div>
+        </div>
+
+        {/* Creator Tools Button */}
+        <div className="p-4 border-b border-gray-600">
+          <button
+            onClick={() => setShowCreatorToolsModal(true)}
+            className="group relative flex items-center justify-center w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 mx-auto"
+          >
+            <Crown className="text-white" size={20} />
+            {/* Hover Tooltip */}
+            <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
+              Creator Tools
+            </div>
+          </button>
         </div>
 
         {/* Channels */}
@@ -758,14 +896,7 @@ export default function CreatorCampus() {
               </div>
             </div>
             
-            {/* Creator Tools Button */}
-            <Link
-              to="/org/admin"
-              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 ml-4"
-            >
-              <Crown size={16} />
-              <span>Creator Tools</span>
-            </Link>
+
           </div>
         </div>
         {/* Chat Area */}
@@ -922,6 +1053,9 @@ export default function CreatorCampus() {
 
       {/* Settings Modal */}
       {showSettingsModal && <SettingsModal />}
+      
+      {/* Creator Tools Modal */}
+      {showCreatorToolsModal && <CreatorToolsModal />}
     </div>
   );
 }
