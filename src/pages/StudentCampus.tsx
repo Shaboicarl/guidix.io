@@ -507,7 +507,9 @@ export default function StudentCampus() {
 
   const CourseStudiesModal = () => {
     const [activeView, setActiveView] = useState('overview');
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCourse, setSelectedCourse] = useState(null);
+    
+    const currentStudies = courseStudies[selectedCourse] || [];
     
     const renderOverview = () => (
       <>
@@ -742,89 +744,253 @@ export default function StudentCampus() {
       </div>
     );
 
+    const renderCourseGrid = () => (
+      <>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl ${
+              appearance.theme === 'light' ? 'bg-blue-100' : 'bg-blue-900'
+            }`}>
+              {currentCourse?.icon}
+            </div>
+            <div>
+              <h2 className={`text-2xl font-bold ${
+                appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+              }`}>
+                {currentCourse?.name} - Course Studies
+              </h2>
+              <p className={`text-sm ${
+                appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+              }`}>
+                Track your progress through the learning path
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowCourseStudies(false)}
+            className={`p-2 rounded-lg transition-colors ${
+              appearance.theme === 'light' 
+                ? 'hover:bg-gray-100 text-gray-600' 
+                : 'hover:bg-gray-700 text-gray-300'
+            }`}
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Progress Overview */}
+        <div className={`mb-8 p-4 rounded-xl border ${
+          appearance.theme === 'light' 
+            ? 'bg-blue-50 border-blue-200' 
+            : 'bg-blue-900 border-blue-700'
+        }`}>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className={`font-semibold ${
+              appearance.theme === 'light' ? 'text-blue-900' : 'text-blue-100'
+            }`}>
+              Overall Progress
+            </h3>
+            <span className={`text-2xl font-bold ${
+              appearance.theme === 'light' ? 'text-blue-700' : 'text-blue-300'
+            }`}>
+              {Math.round(currentStudies.reduce((acc, study) => acc + study.progress, 0) / currentStudies.length)}%
+            </span>
+          </div>
+          <div className={`w-full bg-blue-200 rounded-full h-3 ${
+            appearance.theme === 'light' ? 'bg-blue-200' : 'bg-blue-700'
+          }`}>
+            <div 
+              className="bg-blue-600 h-3 rounded-full transition-all duration-500"
+              style={{ 
+                width: `${Math.round(currentStudies.reduce((acc, study) => acc + study.progress, 0) / currentStudies.length)}%` 
+              }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Course Studies Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {currentStudies.map((study, index) => (
+            <div
+              key={study.id}
+              className={`relative p-6 rounded-xl border transition-all duration-200 hover:shadow-lg ${
+                study.status === 'completed'
+                  ? appearance.theme === 'light'
+                    ? 'bg-green-50 border-green-200'
+                    : 'bg-green-900 border-green-700'
+                  : study.status === 'in-progress'
+                  ? appearance.theme === 'light'
+                    ? 'bg-blue-50 border-blue-200'
+                    : 'bg-blue-900 border-blue-700'
+                  : appearance.theme === 'light'
+                    ? 'bg-gray-50 border-gray-200'
+                    : 'bg-gray-700 border-gray-600'
+              }`}
+            >
+              {/* Status Badge */}
+              <div className="absolute top-3 right-3">
+                {study.status === 'completed' && (
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">✓</span>
+                  </div>
+                )}
+                {study.status === 'in-progress' && (
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">▶</span>
+                  </div>
+                )}
+                {study.status === 'locked' && (
+                  <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">🔒</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Course Icon */}
+              <div className="text-4xl mb-4">{study.icon}</div>
+
+              {/* Course Info */}
+              <h3 className={`text-lg font-semibold mb-2 ${
+                appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+              }`}>
+                {study.name}
+              </h3>
+              
+              <p className={`text-sm mb-4 ${
+                appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+              }`}>
+                {study.description}
+              </p>
+
+              {/* Duration */}
+              <div className={`text-xs mb-3 ${
+                appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+              }`}>
+                Duration: {study.duration}
+              </div>
+
+              {/* Progress Bar */}
+              {study.status !== 'locked' && (
+                <div className="mb-4">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className={`text-xs ${
+                      appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                    }`}>
+                      Progress
+                    </span>
+                    <span className={`text-xs font-medium ${
+                      appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
+                      {study.progress}%
+                    </span>
+                  </div>
+                  <div className={`w-full rounded-full h-2 ${
+                    appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
+                  }`}>
+                    <div 
+                      className={`h-2 rounded-full transition-all duration-500 ${
+                        study.status === 'completed' ? 'bg-green-500' : 'bg-blue-500'
+                      }`}
+                      style={{ width: `${study.progress}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Button */}
+              <button
+                className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
+                  study.status === 'completed'
+                    ? appearance.theme === 'light'
+                      ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                      : 'bg-green-800 text-green-300 hover:bg-green-700'
+                    : study.status === 'in-progress'
+                    ? appearance.theme === 'light'
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-blue-500 text-white hover:bg-blue-600'
+                    : appearance.theme === 'light'
+                      ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                      : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                }`}
+                disabled={study.status === 'locked'}
+                onClick={() => {
+                  if (study.status === 'completed') {
+                    setActiveView('review');
+                  } else if (study.status === 'in-progress') {
+                    setActiveView('continue');
+                  }
+                }}
+              >
+                {study.status === 'completed' && 'Review Course'}
+                {study.status === 'in-progress' && 'Continue Learning'}
+                {study.status === 'locked' && 'Locked'}
+              </button>
+
+              {/* Connection Line */}
+              {index < currentStudies.length - 1 && (
+                <div className={`absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0.5 h-6 ${
+                  appearance.theme === 'light' ? 'bg-gray-300' : 'bg-gray-500'
+                }`}></div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Learning Path Visualization */}
+        <div className="mt-8">
+          <h3 className={`text-lg font-semibold mb-4 ${
+            appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+          }`}>
+            Learning Path
+          </h3>
+          <div className="flex items-center justify-center space-x-4 overflow-x-auto p-4">
+            {currentStudies.map((study, index) => (
+              <div key={study.id} className="flex items-center">
+                <div className={`flex flex-col items-center ${
+                  study.status === 'completed'
+                    ? 'text-green-600'
+                    : study.status === 'in-progress'
+                    ? 'text-blue-600'
+                    : 'text-gray-400'
+                }`}>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-2 ${
+                    study.status === 'completed'
+                      ? 'bg-green-100'
+                      : study.status === 'in-progress'
+                      ? 'bg-blue-100'
+                      : 'bg-gray-100'
+                  }`}>
+                    {study.icon}
+                  </div>
+                  <span className="text-xs text-center max-w-20">{study.name}</span>
+                </div>
+                {index < currentStudies.length - 1 && (
+                  <div className={`w-8 h-1 mx-2 ${
+                    study.status === 'completed'
+                      ? 'bg-green-300'
+                      : study.status === 'in-progress'
+                      ? 'bg-blue-300'
+                      : 'bg-gray-300'
+                  }`}></div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </>
+    );
+
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div className={`rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden animate-bounce-in ${
           appearance.theme === 'light' ? 'bg-white' : 'bg-gray-800'
         }`}>
-          <div className="flex h-[700px]">
-            {/* Course Studies Sidebar */}
-            <div className={`w-80 p-6 border-r transition-colors duration-300 ${
-              appearance.theme === 'light' ? 'bg-gray-50 border-gray-200' : 'bg-gray-700 border-gray-600'
-            }`}>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className={`text-xl font-bold transition-colors duration-300 ${
-                  appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-                }`}>Course Studies</h2>
-                <button
-                  onClick={() => setShowCourseStudies(false)}
-                  className={`p-2 rounded-lg transition-colors duration-300 ${
-                    appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
-                  }`}
-                >
-                  <X size={20} className={appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'} />
-                </button>
-              </div>
-              
-              <div className="space-y-4">
-                {Object.entries(courseStudies).map(([category, courses]) => (
-                  <div key={category} className="space-y-2">
-                    <h3 className={`text-sm font-semibold uppercase tracking-wider transition-colors duration-300 ${
-                      appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                    }`}>
-                      {category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    </h3>
-                    {courses.map((course) => (
-                      <div
-                        key={course.id}
-                        className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                          course.status === 'completed'
-                            ? appearance.theme === 'light' ? 'bg-green-50 border border-green-200' : 'bg-green-900/20 border border-green-700'
-                            : course.status === 'in-progress'
-                            ? appearance.theme === 'light' ? 'bg-blue-50 border border-blue-200' : 'bg-blue-900/20 border border-blue-700'
-                            : appearance.theme === 'light' ? 'bg-gray-50 border border-gray-200' : 'bg-gray-700 border border-gray-600'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            <span className="text-2xl">{course.icon}</span>
-                            <div>
-                              <h4 className={`font-medium transition-colors duration-300 ${
-                                appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-                              }`}>{course.name}</h4>
-                              <p className={`text-sm transition-colors duration-300 ${
-                                appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                              }`}>{course.duration}</p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className={`text-sm font-medium transition-colors duration-300 ${
-                              course.status === 'completed' ? 'text-green-600' : 
-                              course.status === 'in-progress' ? 'text-blue-600' : 'text-gray-500'
-                            }`}>
-                              {course.status === 'completed' ? '✓' : 
-                               course.status === 'in-progress' ? '●' : '○'}
-                            </div>
-                            {course.status === 'in-progress' && (
-                              <div className="text-xs text-gray-500">{course.progress}%</div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Main Content Area */}
-            <div className="flex-1 p-6 overflow-y-auto">
-              <div className="max-w-4xl mx-auto">
-                {activeView === 'overview' && renderOverview()}
-                {activeView === 'review' && renderReviewCourses()}
-                {activeView === 'continue' && renderContinueLearning()}
-              </div>
-            </div>
+          <div className="p-6">
+            {activeView === 'overview' && renderOverview()}
+            {activeView === 'review' && renderReviewCourses()}
+            {activeView === 'continue' && renderContinueLearning()}
+            {activeView === 'grid' && renderCourseGrid()}
           </div>
         </div>
       </div>
@@ -1392,7 +1558,10 @@ export default function StudentCampus() {
             {/* Course Studies Button */}
             {!showDMs && currentCourse && (
               <button
-                onClick={() => setShowCourseStudies(true)}
+                onClick={() => {
+                  setShowCourseStudies(true);
+                  setActiveView('grid');
+                }}
                 className={`mt-3 w-full flex items-center justify-center px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 ${
                   appearance.theme === 'light'
                     ? 'bg-blue-600 hover:bg-blue-700 text-white'

@@ -50,7 +50,7 @@ const MainHeader = () => {
             <Link to="/courses" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               Courses
             </Link>
-            <Link to="/demo" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+            <Link to="/campus-select" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               Demo
             </Link>
             <Link to="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
@@ -83,7 +83,7 @@ const MainHeader = () => {
               <Link to="/courses" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                 Courses
               </Link>
-              <Link to="/demo" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              <Link to="/campus-select" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                 Demo
               </Link>
               <Link to="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
@@ -140,7 +140,7 @@ const MainFooter = () => {
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
               <li><Link to="/courses" className="text-gray-300 hover:text-white transition-colors">Courses</Link></li>
-              <li><Link to="/demo" className="text-gray-300 hover:text-white transition-colors">Demo</Link></li>
+              <li><Link to="/campus-select" className="text-gray-300 hover:text-white transition-colors">Demo</Link></li>
               <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
               <li><Link to="/campus-select" className="text-gray-300 hover:text-white transition-colors">Get Started</Link></li>
             </ul>

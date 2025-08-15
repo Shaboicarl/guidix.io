@@ -50,7 +50,7 @@ export default function Home() {
   ];
 
   const handleWatchDemo = () => {
-    navigate('/demo');
+    navigate('/campus-select');
   };
 
   return (
