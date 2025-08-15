@@ -517,12 +517,12 @@ export default function StudentCampus() {
           <h1 className={`text-3xl font-bold mb-4 transition-colors duration-300 ${
             appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
           }`}>
-            Welcome to Your Learning Journey
+            {currentCourse?.name} Learning Journey
           </h1>
           <p className={`text-lg transition-colors duration-300 ${
             appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
           }`}>
-            Track your progress and discover new courses to advance your skills
+            Track your progress and discover new courses to advance your {currentCourse?.name.toLowerCase()} skills
           </p>
         </div>
         
@@ -571,32 +571,49 @@ export default function StudentCampus() {
         }`}>
           <h3 className={`text-xl font-semibold mb-4 transition-colors duration-300 ${
             appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-          }`}>Learning Progress Overview</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {Object.entries(courseStudies).map(([category, courses]) => {
-              const completed = courses.filter(c => c.status === 'completed').length;
-              const total = courses.length;
+          }`}>{currentCourse?.name} Progress Overview</h3>
+          <div className="text-center">
+            {(() => {
+              const completed = currentStudies.filter(c => c.status === 'completed').length;
+              const total = currentStudies.length;
               const percentage = Math.round((completed / total) * 100);
               
               return (
-                <div key={category} className="text-center">
-                  <div className={`text-2xl font-bold mb-1 transition-colors duration-300 ${
+                <div>
+                  <div className={`text-4xl font-bold mb-2 transition-colors duration-300 ${
                     appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
                   }`}>{percentage}%</div>
-                  <div className={`text-sm transition-colors duration-300 ${
+                  <div className={`text-lg transition-colors duration-300 ${
                     appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                   }`}>
-                    {category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    {completed}/{total} courses completed
                   </div>
-                  <div className={`text-xs transition-colors duration-300 ${
-                    appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-500'
+                  <div className={`w-full bg-gray-200 rounded-full h-3 mt-4 ${
+                    appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
                   }`}>
-                    {completed}/{total} completed
+                    <div 
+                      className="bg-blue-600 h-3 rounded-full transition-all duration-500"
+                      style={{ width: `${percentage}%` }}
+                    ></div>
                   </div>
                 </div>
               );
-            })}
+            })()}
           </div>
+        </div>
+        
+        {/* Exit to Chat Button */}
+        <div className="text-center mt-8">
+          <button
+            onClick={() => setShowCourseStudies(false)}
+            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+              appearance.theme === 'light'
+                ? 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                : 'bg-gray-600 hover:bg-gray-500 text-gray-300'
+            }`}
+          >
+            ← Exit to Chat
+          </button>
         </div>
       </>
     );
@@ -607,14 +624,24 @@ export default function StudentCampus() {
           <h2 className={`text-2xl font-bold transition-colors duration-300 ${
             appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
           }`}>Review Completed Courses - {currentCourse?.name}</h2>
-          <button 
-            onClick={() => setActiveView('grid')}
-            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
-              appearance.theme === 'light' ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-600 hover:bg-gray-500'
-            }`}
-          >
-            ← Back to Course Grid
-          </button>
+          <div className="flex space-x-3">
+            <button 
+              onClick={() => setActiveView('grid')}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-600 hover:bg-gray-500'
+              }`}
+            >
+              ← Back to Course Grid
+            </button>
+            <button
+              onClick={() => setShowCourseStudies(false)}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'bg-red-100 hover:bg-red-200 text-red-700' : 'bg-red-800 hover:bg-red-700 text-red-300'
+              }`}
+            >
+              Exit to Chat
+            </button>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -683,14 +710,24 @@ export default function StudentCampus() {
           <h2 className={`text-2xl font-bold transition-colors duration-300 ${
             appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
           }`}>Continue Your Learning - {currentCourse?.name}</h2>
-          <button 
-            onClick={() => setActiveView('grid')}
-            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
-              appearance.theme === 'light' ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-600 hover:bg-gray-500'
-            }`}
-          >
-            ← Back to Course Grid
-          </button>
+          <div className="flex space-x-3">
+            <button 
+              onClick={() => setActiveView('grid')}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-600 hover:bg-gray-500'
+              }`}
+            >
+              ← Back to Course Grid
+            </button>
+            <button
+              onClick={() => setShowCourseStudies(false)}
+              className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'bg-red-100 hover:bg-red-200 text-red-700' : 'bg-red-800 hover:bg-red-700 text-red-300'
+              }`}
+            >
+              Exit to Chat
+            </button>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -774,24 +811,34 @@ export default function StudentCampus() {
     const renderCourseGrid = () => (
       <>
         {/* Header */}
-        <div className="flex items-center space-x-3 mb-6">
-          <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl ${
-            appearance.theme === 'light' ? 'bg-blue-100' : 'bg-blue-900'
-          }`}>
-            {currentCourse?.icon}
-          </div>
-          <div>
-            <h2 className={`text-2xl font-bold ${
-              appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl ${
+              appearance.theme === 'light' ? 'bg-blue-100' : 'bg-blue-900'
             }`}>
-              {currentCourse?.name} Studies
-            </h2>
-            <p className={`text-sm ${
-              appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-            }`}>
-              Track your progress through the learning path
-            </p>
+              {currentCourse?.icon}
+            </div>
+            <div>
+              <h2 className={`text-2xl font-bold ${
+                appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+              }`}>
+                {currentCourse?.name} Studies
+              </h2>
+              <p className={`text-sm ${
+                appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+              }`}>
+                Track your progress through the learning path
+              </p>
+            </div>
           </div>
+          <button
+            onClick={() => setShowCourseStudies(false)}
+            className={`px-4 py-2 rounded-lg transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'bg-red-100 hover:bg-red-200 text-red-700' : 'bg-red-800 hover:bg-red-700 text-red-300'
+            }`}
+          >
+            Exit to Chat
+          </button>
         </div>
 
         {/* Progress Overview */}
