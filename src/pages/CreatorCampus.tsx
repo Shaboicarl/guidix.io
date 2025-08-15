@@ -1022,13 +1022,10 @@ export default function CreatorCampus() {
         <div className="p-4 border-b border-gray-600">
           <button
             onClick={() => setShowCreatorToolsModal(true)}
-            className="group relative flex items-center justify-center w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 mx-auto"
+            className="group relative flex items-center justify-center w-full h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105 mx-auto"
           >
             <Crown className="text-white" size={20} />
-            {/* Hover Tooltip */}
-            <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
-              Creator Tools
-            </div>
+            <span className="text-white font-semibold ml-2">Creator Tools</span>
           </button>
         </div>
 

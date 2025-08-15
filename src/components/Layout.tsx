@@ -281,16 +281,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     navigate('/');
   };
 
-  // Don't render Layout for main website pages
+  // Render marketing site chrome for main website pages only (exclude campus routes)
   if (location.pathname === '/' || 
       location.pathname === '/demo' || 
       location.pathname === '/contact' || 
       location.pathname === '/privacy' || 
       location.pathname === '/terms' || 
       location.pathname === '/courses' || 
-      location.pathname === '/campus-select' ||
-      location.pathname === '/student-campus' || 
-      location.pathname === '/creator-campus') {
+      location.pathname === '/campus-select') {
     return (
       <>
         <MainHeader />
