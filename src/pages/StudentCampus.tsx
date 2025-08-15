@@ -11,6 +11,7 @@ export default function StudentCampus() {
   const [connectedVoiceChannel, setConnectedVoiceChannel] = useState(null);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showCourseStudies, setShowCourseStudies] = useState(false);
   
   // Appearance settings state
   const [appearance, setAppearance] = useState(() => {
@@ -170,6 +171,228 @@ export default function StudentCampus() {
   const currentCourse = courses.find(course => course.id === selectedCourse);
   const currentChannel = currentCourse?.channels.find(channel => channel.id === selectedChannel);
 
+  // Course Studies data with progression tracking
+  const courseStudies = {
+    'web-development': [
+      {
+        id: 'html-fundamentals',
+        name: 'HTML Fundamentals',
+        description: 'Learn the basics of HTML markup',
+        progress: 85,
+        status: 'completed',
+        icon: '🌐',
+        duration: '2 weeks',
+        nextCourse: 'css-styling'
+      },
+      {
+        id: 'css-styling',
+        name: 'CSS Styling',
+        description: 'Master CSS for beautiful web design',
+        progress: 60,
+        status: 'in-progress',
+        icon: '🎨',
+        duration: '3 weeks',
+        nextCourse: 'javascript-basics'
+      },
+      {
+        id: 'javascript-basics',
+        name: 'JavaScript Basics',
+        description: 'Learn programming fundamentals',
+        progress: 0,
+        status: 'locked',
+        icon: '⚡',
+        duration: '4 weeks',
+        nextCourse: 'dom-manipulation'
+      },
+      {
+        id: 'dom-manipulation',
+        name: 'DOM Manipulation',
+        description: 'Interactive web pages with JavaScript',
+        progress: 0,
+        status: 'locked',
+        icon: '🔧',
+        duration: '3 weeks',
+        nextCourse: 'react-intro'
+      },
+      {
+        id: 'react-intro',
+        name: 'React Introduction',
+        description: 'Modern UI development with React',
+        progress: 0,
+        status: 'locked',
+        icon: '⚛️',
+        duration: '5 weeks',
+        nextCourse: 'advanced-react'
+      },
+      {
+        id: 'advanced-react',
+        name: 'Advanced React',
+        description: 'State management and advanced patterns',
+        progress: 0,
+        status: 'locked',
+        icon: '🚀',
+        duration: '4 weeks',
+        nextCourse: null
+      }
+    ],
+    'data-science': [
+      {
+        id: 'python-intro',
+        name: 'Python Introduction',
+        description: 'Learn Python programming basics',
+        progress: 90,
+        status: 'completed',
+        icon: '🐍',
+        duration: '3 weeks',
+        nextCourse: 'data-analysis'
+      },
+      {
+        id: 'data-analysis',
+        name: 'Data Analysis',
+        description: 'Pandas and NumPy fundamentals',
+        progress: 45,
+        status: 'in-progress',
+        icon: '📊',
+        duration: '4 weeks',
+        nextCourse: 'visualization'
+      },
+      {
+        id: 'visualization',
+        name: 'Data Visualization',
+        description: 'Create compelling charts and graphs',
+        progress: 0,
+        status: 'locked',
+        icon: '📈',
+        duration: '3 weeks',
+        nextCourse: 'machine-learning'
+      },
+      {
+        id: 'machine-learning',
+        name: 'Machine Learning',
+        description: 'Introduction to ML algorithms',
+        progress: 0,
+        status: 'locked',
+        icon: '🤖',
+        duration: '6 weeks',
+        nextCourse: 'deep-learning'
+      },
+      {
+        id: 'deep-learning',
+        name: 'Deep Learning',
+        description: 'Neural networks and AI',
+        progress: 0,
+        status: 'locked',
+        icon: '🧠',
+        duration: '8 weeks',
+        nextCourse: null
+      }
+    ],
+    'digital-marketing': [
+      {
+        id: 'marketing-basics',
+        name: 'Marketing Fundamentals',
+        description: 'Core marketing principles',
+        progress: 100,
+        status: 'completed',
+        icon: '📚',
+        duration: '2 weeks',
+        nextCourse: 'seo-basics'
+      },
+      {
+        id: 'seo-basics',
+        name: 'SEO Basics',
+        description: 'Search engine optimization',
+        progress: 75,
+        status: 'in-progress',
+        icon: '🔍',
+        duration: '3 weeks',
+        nextCourse: 'social-media'
+      },
+      {
+        id: 'social-media',
+        name: 'Social Media Marketing',
+        description: 'Platform strategies and content',
+        progress: 0,
+        status: 'locked',
+        icon: '📱',
+        duration: '4 weeks',
+        nextCourse: 'content-marketing'
+      },
+      {
+        id: 'content-marketing',
+        name: 'Content Marketing',
+        description: 'Creating valuable content',
+        progress: 0,
+        status: 'locked',
+        icon: '✍️',
+        duration: '3 weeks',
+        nextCourse: 'analytics'
+      },
+      {
+        id: 'analytics',
+        name: 'Marketing Analytics',
+        description: 'Measure and optimize campaigns',
+        progress: 0,
+        status: 'locked',
+        icon: '📊',
+        duration: '4 weeks',
+        nextCourse: null
+      }
+    ],
+    'ux-design': [
+      {
+        id: 'design-principles',
+        name: 'Design Principles',
+        description: 'Fundamental design concepts',
+        progress: 95,
+        status: 'completed',
+        icon: '✨',
+        duration: '2 weeks',
+        nextCourse: 'user-research'
+      },
+      {
+        id: 'user-research',
+        name: 'User Research',
+        description: 'Understanding user needs',
+        progress: 30,
+        status: 'in-progress',
+        icon: '🔍',
+        duration: '3 weeks',
+        nextCourse: 'wireframing'
+      },
+      {
+        id: 'wireframing',
+        name: 'Wireframing & Prototyping',
+        description: 'Create design mockups',
+        progress: 0,
+        status: 'locked',
+        icon: '📝',
+        duration: '3 weeks',
+        nextCourse: 'ui-design'
+      },
+      {
+        id: 'ui-design',
+        name: 'UI Design',
+        description: 'Visual design and aesthetics',
+        progress: 0,
+        status: 'locked',
+        icon: '🎨',
+        duration: '4 weeks',
+        nextCourse: 'usability-testing'
+      },
+      {
+        id: 'usability-testing',
+        name: 'Usability Testing',
+        description: 'Test and iterate designs',
+        progress: 0,
+        status: 'locked',
+        icon: '🧪',
+        duration: '3 weeks',
+        nextCourse: null
+      }
+    ]
+  };
+
   const profileDataMap = {
     'Sarah Johnson': {
       name: 'Sarah Johnson',
@@ -281,6 +504,246 @@ export default function StudentCampus() {
       </div>
     </div>
   );
+
+  const CourseStudiesModal = () => {
+    const currentStudies = courseStudies[selectedCourse] || [];
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className={`rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden animate-bounce-in ${
+          appearance.theme === 'light' ? 'bg-white' : 'bg-gray-800'
+        }`}>
+          <div className="p-6">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl ${
+                  appearance.theme === 'light' ? 'bg-blue-100' : 'bg-blue-900'
+                }`}>
+                  {currentCourse?.icon}
+                </div>
+                <div>
+                  <h2 className={`text-2xl font-bold ${
+                    appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}>
+                    {currentCourse?.name} - Course Studies
+                  </h2>
+                  <p className={`text-sm ${
+                    appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                  }`}>
+                    Track your progress through the learning path
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowCourseStudies(false)}
+                className={`p-2 rounded-lg transition-colors ${
+                  appearance.theme === 'light' 
+                    ? 'hover:bg-gray-100 text-gray-600' 
+                    : 'hover:bg-gray-700 text-gray-300'
+                }`}
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Progress Overview */}
+            <div className={`mb-8 p-4 rounded-xl border ${
+              appearance.theme === 'light' 
+                ? 'bg-blue-50 border-blue-200' 
+                : 'bg-blue-900 border-blue-700'
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className={`font-semibold ${
+                  appearance.theme === 'light' ? 'text-blue-900' : 'text-blue-100'
+                }`}>
+                  Overall Progress
+                </h3>
+                <span className={`text-2xl font-bold ${
+                  appearance.theme === 'light' ? 'text-blue-700' : 'text-blue-300'
+                }`}>
+                  {Math.round(currentStudies.reduce((acc, study) => acc + study.progress, 0) / currentStudies.length)}%
+                </span>
+              </div>
+              <div className={`w-full bg-blue-200 rounded-full h-3 ${
+                appearance.theme === 'light' ? 'bg-blue-200' : 'bg-blue-700'
+              }`}>
+                <div 
+                  className="bg-blue-600 h-3 rounded-full transition-all duration-500"
+                  style={{ 
+                    width: `${Math.round(currentStudies.reduce((acc, study) => acc + study.progress, 0) / currentStudies.length)}%` 
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Course Studies Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentStudies.map((study, index) => (
+                <div
+                  key={study.id}
+                  className={`relative p-6 rounded-xl border transition-all duration-200 hover:shadow-lg ${
+                    study.status === 'completed'
+                      ? appearance.theme === 'light'
+                        ? 'bg-green-50 border-green-200'
+                        : 'bg-green-900 border-green-700'
+                      : study.status === 'in-progress'
+                      ? appearance.theme === 'light'
+                        ? 'bg-blue-50 border-blue-200'
+                        : 'bg-blue-900 border-blue-700'
+                      : appearance.theme === 'light'
+                        ? 'bg-gray-50 border-gray-200'
+                        : 'bg-gray-700 border-gray-600'
+                  }`}
+                >
+                  {/* Status Badge */}
+                  <div className="absolute top-3 right-3">
+                    {study.status === 'completed' && (
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm">✓</span>
+                      </div>
+                    )}
+                    {study.status === 'in-progress' && (
+                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm">▶</span>
+                      </div>
+                    )}
+                    {study.status === 'locked' && (
+                      <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm">🔒</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Course Icon */}
+                  <div className="text-4xl mb-4">{study.icon}</div>
+
+                  {/* Course Info */}
+                  <h3 className={`text-lg font-semibold mb-2 ${
+                    appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}>
+                    {study.name}
+                  </h3>
+                  
+                  <p className={`text-sm mb-4 ${
+                    appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                  }`}>
+                    {study.description}
+                  </p>
+
+                  {/* Duration */}
+                  <div className={`text-xs mb-3 ${
+                    appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>
+                    Duration: {study.duration}
+                  </div>
+
+                  {/* Progress Bar */}
+                  {study.status !== 'locked' && (
+                    <div className="mb-4">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className={`text-xs ${
+                          appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                        }`}>
+                          Progress
+                        </span>
+                        <span className={`text-xs font-medium ${
+                          appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                        }`}>
+                          {study.progress}%
+                        </span>
+                      </div>
+                      <div className={`w-full rounded-full h-2 ${
+                        appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
+                      }`}>
+                        <div 
+                          className={`h-2 rounded-full transition-all duration-500 ${
+                            study.status === 'completed' ? 'bg-green-500' : 'bg-blue-500'
+                          }`}
+                          style={{ width: `${study.progress}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Action Button */}
+                  <button
+                    className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
+                      study.status === 'completed'
+                        ? appearance.theme === 'light'
+                          ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                          : 'bg-green-800 text-green-300 hover:bg-green-700'
+                        : study.status === 'in-progress'
+                        ? appearance.theme === 'light'
+                          ? 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-blue-500 text-white hover:bg-blue-600'
+                        : appearance.theme === 'light'
+                          ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                          : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                    }`}
+                    disabled={study.status === 'locked'}
+                  >
+                    {study.status === 'completed' && 'Review Course'}
+                    {study.status === 'in-progress' && 'Continue Learning'}
+                    {study.status === 'locked' && 'Locked'}
+                  </button>
+
+                  {/* Connection Line */}
+                  {index < currentStudies.length - 1 && (
+                    <div className={`absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0.5 h-6 ${
+                      appearance.theme === 'light' ? 'bg-gray-300' : 'bg-gray-500'
+                    }`}></div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Learning Path Visualization */}
+            <div className="mt-8">
+              <h3 className={`text-lg font-semibold mb-4 ${
+                appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+              }`}>
+                Learning Path
+              </h3>
+              <div className="flex items-center justify-center space-x-4 overflow-x-auto p-4">
+                {currentStudies.map((study, index) => (
+                  <div key={study.id} className="flex items-center">
+                    <div className={`flex flex-col items-center ${
+                      study.status === 'completed'
+                        ? 'text-green-600'
+                        : study.status === 'in-progress'
+                        ? 'text-blue-600'
+                        : 'text-gray-400'
+                    }`}>
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl mb-2 ${
+                        study.status === 'completed'
+                          ? 'bg-green-100'
+                          : study.status === 'in-progress'
+                          ? 'bg-blue-100'
+                          : 'bg-gray-100'
+                      }`}>
+                        {study.icon}
+                      </div>
+                      <span className="text-xs text-center max-w-20">{study.name}</span>
+                    </div>
+                    {index < currentStudies.length - 1 && (
+                      <div className={`w-8 h-1 mx-2 ${
+                        study.status === 'completed'
+                          ? 'bg-green-300'
+                          : study.status === 'in-progress'
+                          ? 'bg-blue-300'
+                          : 'bg-gray-300'
+                      }`}></div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const UserProfileDropdown = ({ onClose }: { onClose: () => void }) => (
     <div className="fixed inset-0 z-50" onClick={onClose}>
@@ -839,6 +1302,21 @@ export default function StudentCampus() {
             }`}>
               {showDMs ? 'Direct Messages' : currentCourse?.name}
             </h2>
+            
+            {/* Course Studies Button */}
+            {!showDMs && currentCourse && (
+              <button
+                onClick={() => setShowCourseStudies(true)}
+                className={`mt-3 w-full flex items-center justify-center px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 ${
+                  appearance.theme === 'light'
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                    : 'bg-blue-500 hover:bg-blue-600 text-white'
+                }`}
+              >
+                <span className="mr-2">📚</span>
+                <span className="font-medium">Course Studies</span>
+              </button>
+            )}
           </div>
 
           <div className="flex-1 overflow-y-auto">
@@ -1227,6 +1705,11 @@ export default function StudentCampus() {
       {/* Settings Modal */}
       {showSettings && (
         <SettingsModal onClose={() => setShowSettings(false)} />
+      )}
+
+      {/* Course Studies Modal */}
+      {showCourseStudies && (
+        <CourseStudiesModal />
       )}
     </div>
   );
