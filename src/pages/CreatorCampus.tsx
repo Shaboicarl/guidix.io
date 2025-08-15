@@ -39,6 +39,7 @@ export default function CreatorCampus() {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showCreatorToolsModal, setShowCreatorToolsModal] = useState(false);
   const [activeSettingsTab, setActiveSettingsTab] = useState('account');
+  const [activeCreatorToolsTab, setActiveCreatorToolsTab] = useState('dashboard');
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isDeafened, setIsDeafened] = useState(false);
@@ -448,22 +449,34 @@ export default function CreatorCampus() {
 
   const CreatorToolsModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-bounce-in">
+      <div className={`rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-bounce-in ${
+        settings.theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
+      }`}>
         <div className="flex h-[600px]">
           {/* Creator Tools Sidebar */}
-          <div className="w-64 bg-gradient-to-br from-yellow-50 to-orange-50 p-4 border-r border-yellow-200">
+          <div className={`w-64 p-4 border-r ${
+            settings.theme === 'dark' 
+              ? 'bg-gray-700 border-gray-600' 
+              : 'bg-gray-50 border-gray-200'
+          }`}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center">
                   <Crown className="text-white" size={20} />
                 </div>
-                <h2 className="text-lg font-bold text-gray-900">Creator Tools</h2>
+                <h2 className={`text-lg font-bold ${
+                  settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>Creator Tools</h2>
               </div>
               <button
                 onClick={() => setShowCreatorToolsModal(false)}
-                className="p-2 hover:bg-yellow-100 rounded-lg transition-colors"
+                className={`p-2 rounded-lg transition-colors ${
+                  settings.theme === 'dark' 
+                    ? 'hover:bg-gray-600 text-gray-300' 
+                    : 'hover:bg-gray-200 text-gray-600'
+                }`}
               >
-                <X size={20} className="text-gray-600" />
+                <X size={20} />
               </button>
             </div>
             
@@ -478,12 +491,33 @@ export default function CreatorCampus() {
               ].map((tool) => (
                 <button
                   key={tool.id}
-                  className="w-full flex items-center space-x-3 px-3 py-3 text-left rounded-lg transition-colors hover:bg-yellow-100 group"
+                  onClick={() => setActiveCreatorToolsTab(tool.id)}
+                  className={`w-full flex items-center space-x-3 px-3 py-3 text-left rounded-lg transition-colors group ${
+                    activeCreatorToolsTab === tool.id
+                      ? settings.theme === 'dark'
+                        ? 'bg-gray-600 text-white'
+                        : 'bg-yellow-100 text-yellow-700'
+                      : settings.theme === 'dark'
+                        ? 'text-gray-300 hover:bg-gray-600'
+                        : 'text-gray-700 hover:bg-gray-100'
+                  }`}
                 >
-                  <div className={`w-10 h-10 bg-${tool.color}-100 rounded-lg flex items-center justify-center group-hover:bg-${tool.color}-200 transition-colors`}>
-                    <tool.icon size={20} className={`text-${tool.color}-600`} />
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                    activeCreatorToolsTab === tool.id
+                      ? settings.theme === 'dark'
+                        ? 'bg-gray-500'
+                        : 'bg-yellow-200'
+                      : `bg-${tool.color}-100 group-hover:bg-${tool.color}-200`
+                  }`}>
+                    <tool.icon size={20} className={`${
+                      activeCreatorToolsTab === tool.id
+                        ? settings.theme === 'dark'
+                          ? 'text-white'
+                          : 'text-yellow-600'
+                        : `text-${tool.color}-600`
+                    }`} />
                   </div>
-                  <span className="font-medium text-gray-700">{tool.label}</span>
+                  <span className="font-medium">{tool.label}</span>
                 </button>
               ))}
             </nav>
@@ -491,78 +525,464 @@ export default function CreatorCampus() {
 
           {/* Creator Tools Content */}
           <div className="flex-1 p-6 overflow-y-auto">
-            <div className="max-w-3xl mx-auto">
-              <div className="text-center mb-8">
-                <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Crown className="text-white" size={32} />
+            {activeCreatorToolsTab === 'dashboard' && (
+              <div className="max-w-3xl mx-auto">
+                <div className="text-center mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Crown className="text-white" size={32} />
+                  </div>
+                  <h1 className={`text-3xl font-bold mb-2 ${
+                    settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Creator Tools Hub</h1>
+                  <p className={`text-lg ${
+                    settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>Access all your course creation and management tools in one place</p>
                 </div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Creator Tools Hub</h1>
-                <p className="text-gray-600 text-lg">Access all your course creation and management tools in one place</p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Quick Stats */}
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark'
+                      ? 'bg-gray-700 border-gray-600'
+                      : 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200'
+                  }`}>
+                    <h3 className={`text-lg font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Quick Stats</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Active Courses</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>8</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Total Students</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>1,247</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Monthly Revenue</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>$12,450</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Recent Activity */}
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark'
+                      ? 'bg-gray-700 border-gray-600'
+                      : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200'
+                  }`}>
+                    <h3 className={`text-lg font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Recent Activity</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <span className={`text-sm ${
+                          settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                        }`}>New student enrolled in Web Development</span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                        <span className={`text-sm ${
+                          settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                        }`}>Course review submitted</span>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                        <span className={`text-sm ${
+                          settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                        }`}>Payment received</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className={`md:col-span-2 p-6 rounded-xl border ${
+                    settings.theme === 'dark'
+                      ? 'bg-gray-700 border-gray-600'
+                      : 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200'
+                  }`}>
+                    <h3 className={`text-lg font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Quick Actions</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <button className={`flex flex-col items-center p-4 rounded-lg transition-colors border ${
+                        settings.theme === 'dark'
+                          ? 'bg-gray-600 border-gray-500 hover:bg-gray-500'
+                          : 'bg-white border-green-200 hover:bg-green-100'
+                      }`}>
+                        <BookOpen className={`mb-2 ${
+                          settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                        }`} size={24} />
+                        <span className={`text-sm font-medium ${
+                          settings.theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                        }`}>Create Course</span>
+                      </button>
+                      <button className={`flex flex-col items-center p-4 rounded-lg transition-colors border ${
+                        settings.theme === 'dark'
+                          ? 'bg-gray-600 border-gray-500 hover:bg-gray-500'
+                          : 'bg-white border-green-200 hover:bg-green-100'
+                      }`}>
+                        <Users className={`mb-2 ${
+                          settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                        }`} size={24} />
+                        <span className={`text-sm font-medium ${
+                          settings.theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                        }`}>View Students</span>
+                      </button>
+                      <button className={`flex flex-col items-center p-4 rounded-lg transition-colors border ${
+                        settings.theme === 'dark'
+                          ? 'bg-gray-600 border-gray-500 hover:bg-gray-500'
+                          : 'bg-white border-green-200 hover:bg-green-100'
+                      }`}>
+                        <BarChart3 className={`mb-2 ${
+                          settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                        }`} size={24} />
+                        <span className={`text-sm font-medium ${
+                          settings.theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                        }`}>Analytics</span>
+                      </button>
+                      <button className={`flex flex-col items-center p-4 rounded-lg transition-colors border ${
+                        settings.theme === 'dark'
+                          ? 'bg-gray-600 border-gray-500 hover:bg-gray-500'
+                          : 'bg-white border-green-200 hover:bg-green-100'
+                      }`}>
+                        <DollarSign className={`mb-2 ${
+                          settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                        }`} size={24} />
+                        <span className={`text-sm font-medium ${
+                          settings.theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                        }`}>Earnings</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
+            )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Quick Stats */}
-                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Active Courses</span>
-                      <span className="font-semibold text-gray-900">8</span>
+            {activeCreatorToolsTab === 'courses' && (
+              <div className="max-w-4xl mx-auto">
+                <div className="mb-8">
+                  <h1 className={`text-3xl font-bold mb-2 ${
+                    settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Course Management</h1>
+                  <p className={`text-lg ${
+                    settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>Create, edit, and manage your courses</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <div className="text-center">
+                      <BookOpen className={`mx-auto mb-4 ${
+                        settings.theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+                      }`} size={48} />
+                      <h3 className={`text-xl font-semibold mb-2 ${
+                        settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>Create New Course</h3>
+                      <p className={`mb-4 ${
+                        settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                      }`}>Start building your next successful course</p>
+                      <button className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                        settings.theme === 'dark'
+                          ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      }`}>
+                        Get Started
+                      </button>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Total Students</span>
-                      <span className="font-semibold text-gray-900">1,247</span>
+                  </div>
+
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <div className="text-center">
+                      <Edit2 className={`mx-auto mb-4 ${
+                        settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                      }`} size={48} />
+                      <h3 className={`text-xl font-semibold mb-2 ${
+                        settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>Edit Existing</h3>
+                      <p className={`mb-4 ${
+                        settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                      }`}>Update and improve your courses</p>
+                      <button className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                        settings.theme === 'dark'
+                          ? 'bg-green-600 hover:bg-green-700 text-white'
+                          : 'bg-green-600 hover:bg-green-700 text-white'
+                      }`}>
+                        Manage Courses
+                      </button>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-600">Monthly Revenue</span>
-                      <span className="font-semibold text-gray-900">$12,450</span>
+                  </div>
+
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <div className="text-center">
+                      <BarChart3 className={`mx-auto mb-4 ${
+                        settings.theme === 'dark' ? 'text-purple-400' : 'text-purple-600'
+                      }`} size={48} />
+                      <h3 className={`text-xl font-semibold mb-2 ${
+                        settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                      }`}>Course Analytics</h3>
+                      <p className={`mb-4 ${
+                        settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                      }`}>Track performance and engagement</p>
+                      <button className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                        settings.theme === 'dark'
+                          ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                          : 'bg-purple-600 hover:bg-purple-700 text-white'
+                      }`}>
+                        View Analytics
+                      </button>
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
 
-                {/* Recent Activity */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                      <span className="text-sm text-gray-600">New student enrolled in Web Development</span>
+            {activeCreatorToolsTab === 'students' && (
+              <div className="max-w-4xl mx-auto">
+                <div className="mb-8">
+                  <h1 className={`text-3xl font-bold mb-2 ${
+                    settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Student Analytics</h1>
+                  <p className={`text-lg ${
+                    settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>Monitor student progress and engagement</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Enrollment Trends</h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>This Month</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                        }`}>+23%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Last Month</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+                        }`}>+15%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Total Students</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                        }`}>1,247</span>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                      <span className="text-sm text-gray-600">Course review submitted</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
-                      <span className="text-sm text-gray-600">Payment received</span>
+                  </div>
+
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Completion Rates</h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Web Development</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                        }`}>87%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Data Science</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+                        }`}>92%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Marketing</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-purple-400' : 'text-purple-600'
+                        }`}>78%</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
 
-                {/* Quick Actions */}
-                <div className="md:col-span-2 bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <button className="flex flex-col items-center p-4 bg-white rounded-lg hover:bg-green-100 transition-colors border border-green-200">
-                      <BookOpen className="text-green-600 mb-2" size={24} />
-                      <span className="text-sm font-medium text-gray-700">Create Course</span>
+            {activeCreatorToolsTab === 'content' && (
+              <div className="max-w-4xl mx-auto">
+                <div className="mb-8">
+                  <h1 className={`text-3xl font-bold mb-2 ${
+                    settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Content Creation</h1>
+                  <p className={`text-lg ${
+                    settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>Tools to help you create amazing content</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Video Editor</h3>
+                    <p className={`mb-4 ${
+                      settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>Professional video editing tools with templates</p>
+                    <button className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                      settings.theme === 'dark'
+                        ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                        : 'bg-purple-600 hover:bg-purple-700 text-white'
+                    }`}>
+                      Open Editor
                     </button>
-                    <button className="flex flex-col items-center p-4 bg-white rounded-lg hover:bg-green-100 transition-colors border border-green-200">
-                      <Users className="text-green-600 mb-2" size={24} />
-                      <span className="text-sm font-medium text-gray-700">View Students</span>
-                    </button>
-                    <button className="flex flex-col items-center p-4 bg-white rounded-lg hover:bg-green-100 transition-colors border border-green-200">
-                      <BarChart3 className="text-green-600 mb-2" size={24} />
-                      <span className="text-sm font-medium text-gray-700">Analytics</span>
-                    </button>
-                    <button className="flex flex-col items-center p-4 bg-white rounded-lg hover:bg-green-100 transition-colors border border-green-200">
-                      <DollarSign className="text-green-600 mb-2" size={24} />
-                      <span className="text-sm font-medium text-gray-700">Earnings</span>
+                  </div>
+
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Quiz Builder</h3>
+                    <p className={`mb-4 ${
+                      settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>Create interactive quizzes and assessments</p>
+                    <button className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                      settings.theme === 'dark'
+                        ? 'bg-green-600 hover:bg-green-700 text-white'
+                        : 'bg-green-600 hover:bg-green-700 text-white'
+                    }`}>
+                      Build Quiz
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
+
+            {activeCreatorToolsTab === 'marketing' && (
+              <div className="max-w-4xl mx-auto">
+                <div className="mb-8">
+                  <h1 className={`text-3xl font-bold mb-2 ${
+                    settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Marketing Tools</h1>
+                  <p className={`text-lg ${
+                    settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>Promote your courses and grow your audience</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Email Campaigns</h3>
+                    <p className={`mb-4 ${
+                      settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>Create and send email marketing campaigns</p>
+                    <button className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                      settings.theme === 'dark'
+                        ? 'bg-red-600 hover:bg-red-700 text-white'
+                        : 'bg-red-600 hover:bg-red-700 text-white'
+                    }`}>
+                      Create Campaign
+                    </button>
+                  </div>
+
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Social Media</h3>
+                    <p className={`mb-4 ${
+                      settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>Schedule and manage social media posts</p>
+                    <button className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                      settings.theme === 'dark'
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    }`}>
+                      Manage Posts
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeCreatorToolsTab === 'monetization' && (
+              <div className="max-w-4xl mx-auto">
+                <div className="mb-8">
+                  <h1 className={`text-3xl font-bold mb-2 ${
+                    settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Monetization</h1>
+                  <p className={`text-lg ${
+                    settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>Track earnings and optimize revenue</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Revenue Overview</h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>This Month</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                        }`}>$12,450</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Last Month</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-blue-400' : 'text-blue-600'
+                        }`}>$10,200</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className={settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Growth</span>
+                        <span className={`font-semibold ${
+                          settings.theme === 'dark' ? 'text-green-400' : 'text-green-600'
+                        }`}>+22%</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`p-6 rounded-xl border ${
+                    settings.theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                  }`}>
+                    <h3 className={`text-xl font-semibold mb-4 ${
+                      settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+                    }`}>Pricing Strategy</h3>
+                    <p className={`mb-4 ${
+                      settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                    }`}>Optimize your course pricing for maximum revenue</p>
+                    <button className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                      settings.theme === 'dark'
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                        : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                    }`}>
+                      Optimize Pricing
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
