@@ -28,7 +28,9 @@ import {
   UserPlus,
   Shield,
   Pin,
-  MoreHorizontal
+  MoreHorizontal,
+  TrendingUp,
+  DollarSign
 } from 'lucide-react';
 
 export default function CreatorCampus() {
