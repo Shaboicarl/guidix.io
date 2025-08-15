@@ -13,7 +13,7 @@ export default function StudentCampus() {
   const [showSettings, setShowSettings] = useState(false);
   const [showCourseStudies, setShowCourseStudies] = useState(false);
   const [showCourseSidebar, setShowCourseSidebar] = useState(false);
-  const [expandedCategories, setExpandedCategories] = useState<string[]>(['web-development']);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   
   // Appearance settings state
   const [appearance, setAppearance] = useState(() => {
@@ -503,12 +503,8 @@ export default function StudentCampus() {
   };
 
   // Course sidebar helper functions
-  const toggleCategory = (categoryId: string) => {
-    setExpandedCategories(prev => 
-      prev.includes(categoryId) 
-        ? prev.filter(id => id !== categoryId)
-        : [...prev, categoryId]
-    );
+  const selectCategory = (categoryId: string) => {
+    setSelectedCategory(categoryId);
   };
 
   const getCategoryProgress = (categoryId: string) => {
@@ -545,127 +541,239 @@ export default function StudentCampus() {
         </div>
       </div>
 
-      {/* Course Categories */}
+      {/* Course Categories Navigation */}
       <div className="flex-1 overflow-y-auto p-2">
         {Object.entries(courseCategories).map(([categoryId, category]) => {
-          const isExpanded = expandedCategories.includes(categoryId);
+          const isSelected = selectedCategory === categoryId;
           const categoryProgress = getCategoryProgress(categoryId);
           
           return (
-            <div key={categoryId} className="mb-3">
-              {/* Category Header */}
-              <button
-                onClick={() => toggleCategory(categoryId)}
-                className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 hover:shadow-md ${
-                  appearance.theme === 'light' 
+            <button
+              key={categoryId}
+              onClick={() => selectCategory(categoryId)}
+              className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 hover:shadow-md mb-3 ${
+                isSelected
+                  ? appearance.theme === 'light'
+                    ? 'bg-blue-50 border border-blue-200 shadow-md'
+                    : 'bg-blue-900/20 border border-blue-600 shadow-md'
+                  : appearance.theme === 'light' 
                     ? 'bg-white border border-gray-200 hover:border-gray-300' 
                     : 'bg-gray-700 border border-gray-600 hover:border-gray-500'
-                }`}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl bg-gradient-to-r ${category.color}`}>
-                    {category.icon}
-                  </div>
-                  <div className="text-left">
-                    <h3 className={`font-semibold transition-colors duration-300 ${
-                      appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+              }`}
+            >
+              <div className="flex items-center space-x-3">
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl bg-gradient-to-r ${category.color}`}>
+                  {category.icon}
+                </div>
+                <div className="text-left">
+                  <h3 className={`font-semibold transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}>
+                    {category.name}
+                  </h3>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-16 bg-gray-200 rounded-full h-1.5">
+                      <div 
+                        className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
+                        style={{ width: `${categoryProgress}%` }}
+                      ></div>
+                    </div>
+                    <span className={`text-xs transition-colors duration-300 ${
+                      appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
                     }`}>
-                      {category.name}
-                    </h3>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-16 bg-gray-200 rounded-full h-1.5">
-                        <div 
-                          className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
-                          style={{ width: `${categoryProgress}%` }}
-                        ></div>
-                      </div>
-                      <span className={`text-xs transition-colors duration-300 ${
-                        appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                      }`}>
-                        {categoryProgress}%
-                      </span>
-                    </div>
+                      {categoryProgress}%
+                    </span>
                   </div>
                 </div>
-                <div className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </button>
-
-              {/* Course List */}
-              {isExpanded && (
-                <div className={`mt-2 ml-4 space-y-2 transition-all duration-200 ${
-                  appearance.theme === 'light' ? 'border-l-2 border-gray-200' : 'border-l-2 border-gray-600'
-                }`}>
-                  {category.courses.map((course) => (
-                    <div
-                      key={course.id}
-                      className={`p-3 rounded-lg transition-colors duration-200 ${
-                        appearance.theme === 'light' 
-                          ? 'bg-white border border-gray-200 hover:border-gray-300' 
-                          : 'bg-gray-700 border border-gray-600 hover:border-gray-500'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className={`font-medium text-sm transition-colors duration-300 ${
-                          appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-                        }`}>
-                          {course.name}
-                        </h4>
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          course.status === 'completed'
-                            ? 'bg-green-100 text-green-700'
-                            : course.status === 'in-progress'
-                            ? 'bg-blue-100 text-blue-700'
-                            : 'bg-gray-100 text-gray-600'
-                        }`}>
-                          {course.status === 'completed' ? 'Completed' : 
-                           course.status === 'in-progress' ? 'In Progress' : 'Not Started'}
-                        </span>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className={`text-xs transition-colors duration-300 ${
-                            appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                          }`}>
-                            Progress
-                          </span>
-                          <span className={`text-xs font-medium transition-colors duration-300 ${
-                            appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-                          }`}>
-                            {course.progress}%
-                          </span>
-                        </div>
-                        <div className={`w-full rounded-full h-1.5 ${
-                          appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
-                        }`}>
-                          <div 
-                            className={`h-1.5 rounded-full transition-all duration-300 ${
-                              course.status === 'completed' ? 'bg-green-500' : 
-                              course.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-400'
-                            }`}
-                            style={{ width: `${course.progress}%` }}
-                          ></div>
-                        </div>
-                        <div className={`text-xs transition-colors duration-300 ${
-                          appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-500'
-                        }`}>
-                          Duration: {course.duration}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+              </div>
+              <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                isSelected ? 'bg-blue-600' : 'bg-gray-300'
+              }`}></div>
+            </button>
           );
         })}
       </div>
     </div>
   );
+
+  const CourseCategoryView = () => {
+    if (!selectedCategory) {
+      return (
+        <div className={`flex-1 flex flex-col items-center justify-center transition-colors duration-300 ${
+          appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-800'
+        }`}>
+          <div className={`text-center p-8 rounded-xl ${
+            appearance.theme === 'light' ? 'bg-white shadow-lg' : 'bg-gray-700 shadow-lg'
+          }`}>
+            <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl ${
+              appearance.theme === 'light' ? 'bg-blue-100' : 'bg-blue-900'
+            }`}>
+              📚
+            </div>
+            <h2 className={`text-2xl font-bold mb-2 transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+            }`}>
+              Select a Course Category
+            </h2>
+            <p className={`text-lg transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+            }`}>
+              Choose a category from the sidebar to view available courses
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    const category = courseCategories[selectedCategory as keyof typeof courseCategories];
+    const categoryProgress = getCategoryProgress(selectedCategory);
+
+    return (
+      <div className={`flex-1 flex flex-col transition-colors duration-300 ${
+        appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-800'
+      }`}>
+        {/* Header */}
+        <div className={`p-6 border-b transition-colors duration-300 ${
+          appearance.theme === 'light' ? 'bg-white border-gray-200' : 'bg-gray-900 border-gray-700'
+        }`}>
+          <div className="flex items-center space-x-4">
+            <div className={`w-16 h-16 rounded-xl flex items-center justify-center text-3xl bg-gradient-to-r ${category.color}`}>
+              {category.icon}
+            </div>
+            <div>
+              <h1 className={`text-3xl font-bold transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+              }`}>
+                {category.name} Courses
+              </h1>
+              <p className={`text-lg transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+              }`}>
+                Master the fundamentals and advance your skills
+              </p>
+            </div>
+          </div>
+          
+          {/* Overall Progress */}
+          <div className={`mt-6 p-4 rounded-lg ${
+            appearance.theme === 'light' ? 'bg-blue-50 border border-blue-200' : 'bg-blue-900/20 border border-blue-700'
+          }`}>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className={`font-semibold transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'text-blue-900' : 'text-blue-100'
+              }`}>
+                Overall Progress
+              </h3>
+              <span className={`text-2xl font-bold transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'text-blue-700' : 'text-blue-300'
+              }`}>
+                {categoryProgress}%
+              </span>
+            </div>
+            <div className={`w-full bg-blue-200 rounded-full h-3 ${
+              appearance.theme === 'light' ? 'bg-blue-200' : 'bg-blue-700'
+            }`}>
+              <div 
+                className="bg-blue-600 h-3 rounded-full transition-all duration-500"
+                style={{ width: `${categoryProgress}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Course List */}
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {category.courses.map((course) => (
+              <div
+                key={course.id}
+                className={`p-6 rounded-xl border transition-all duration-200 hover:shadow-lg ${
+                  appearance.theme === 'light' 
+                    ? 'bg-white border-gray-200 hover:border-gray-300' 
+                    : 'bg-gray-700 border-gray-600 hover:border-gray-500'
+                }`}
+              >
+                {/* Course Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className={`text-lg font-semibold transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                  }`}>
+                    {course.name}
+                  </h3>
+                  <span className={`text-xs px-3 py-1 rounded-full font-medium ${
+                    course.status === 'completed'
+                      ? 'bg-green-100 text-green-700'
+                      : course.status === 'in-progress'
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'bg-gray-100 text-gray-600'
+                  }`}>
+                    {course.status === 'completed' ? 'Completed' : 
+                     course.status === 'in-progress' ? 'In Progress' : 'Not Started'}
+                  </span>
+                </div>
+
+                {/* Progress Section */}
+                <div className="space-y-3 mb-4">
+                  <div className="flex justify-between items-center">
+                    <span className={`text-sm transition-colors duration-300 ${
+                      appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                    }`}>
+                      Progress
+                    </span>
+                    <span className={`text-sm font-semibold transition-colors duration-300 ${
+                      appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
+                      {course.progress}%
+                    </span>
+                  </div>
+                  <div className={`w-full rounded-full h-2 ${
+                    appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
+                  }`}>
+                    <div 
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        course.status === 'completed' ? 'bg-green-500' : 
+                        course.status === 'in-progress' ? 'bg-blue-500' : 'bg-gray-400'
+                      }`}
+                      style={{ width: `${course.progress}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Course Details */}
+                <div className={`text-sm transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                }`}>
+                  Duration: {course.duration}
+                </div>
+
+                {/* Action Button */}
+                <button
+                  className={`w-full mt-4 py-2 px-4 rounded-lg font-medium transition-colors ${
+                    course.status === 'completed'
+                      ? appearance.theme === 'light'
+                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                        : 'bg-green-800 text-green-300 hover:bg-green-700'
+                      : course.status === 'in-progress'
+                      ? appearance.theme === 'light'
+                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        : 'bg-blue-500 text-white hover:bg-blue-600'
+                      : appearance.theme === 'light'
+                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  }`}
+                  disabled={course.status === 'locked'}
+                >
+                  {course.status === 'completed' && 'Review Course'}
+                  {course.status === 'in-progress' && 'Continue Learning'}
+                  {course.status === 'locked' && 'Locked'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const ProfileModal = ({ profile, onClose }: { profile: typeof profileDataMap[keyof typeof profileDataMap]; onClose: () => void }) => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -2002,10 +2110,13 @@ export default function StudentCampus() {
           </div>
         </div>
 
-        {/* Main Chat Area */}
-        <div className={`flex-1 flex flex-col transition-colors duration-300 ${
-          appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
-        }`}>
+                 {/* Main Content Area */}
+         {showCourseSidebar ? (
+           <CourseCategoryView />
+         ) : (
+           <div className={`flex-1 flex flex-col transition-colors duration-300 ${
+             appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
+           }`}>
           {/* Chat Header */}
           <div className={`p-4 border-b transition-colors duration-300 ${
             appearance.theme === 'light' 
@@ -2173,12 +2284,12 @@ export default function StudentCampus() {
           </div>
         </div>
 
-        {/* Members List */}
-        <div className={`w-60 border-l transition-colors duration-300 ${
-          appearance.theme === 'light' 
-            ? 'bg-gray-50 border-gray-200' 
-            : 'bg-gray-700 border-gray-600'
-        }`}>
+                   {/* Members List */}
+           <div className={`w-60 border-l transition-colors duration-300 ${
+             appearance.theme === 'light' 
+               ? 'bg-gray-50 border-gray-200' 
+               : 'bg-gray-700 border-gray-600'
+           }`}>
           <div className="p-4">
             <h3 className={`font-semibold mb-4 transition-colors duration-300 ${
               appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
@@ -2249,9 +2360,10 @@ export default function StudentCampus() {
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Profile Modal */}
+      )}
+    </div>
+    
+    {/* Profile Modal */}
       {selectedProfile && (
         <ProfileModal 
           profile={selectedProfile} 
