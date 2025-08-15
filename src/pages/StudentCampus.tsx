@@ -505,10 +505,10 @@ export default function StudentCampus() {
     </div>
   );
 
-  const CourseStudiesModal = () => {
+    const CourseStudiesModal = () => {
     const [activeView, setActiveView] = useState('overview');
-    const [selectedCourse, setSelectedCourse] = useState(null);
-    
+
+    // Get studies for the currently selected course category
     const currentStudies = courseStudies[selectedCourse] || [];
     
     const renderOverview = () => (
@@ -758,7 +758,7 @@ export default function StudentCampus() {
               <h2 className={`text-2xl font-bold ${
                 appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
               }`}>
-                {currentCourse?.name} - Course Studies
+                {currentCourse?.name} Studies
               </h2>
               <p className={`text-sm ${
                 appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-400'
@@ -1569,7 +1569,7 @@ export default function StudentCampus() {
                 }`}
               >
                 <span className="mr-2">📚</span>
-                <span className="font-medium">Course Studies</span>
+                <span className="font-medium">{currentCourse?.name} Studies</span>
               </button>
             )}
           </div>

@@ -43,6 +43,8 @@ export default function CreatorCampus() {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isDeafened, setIsDeafened] = useState(false);
+  const [showCourseCategories, setShowCourseCategories] = useState(false);
+  const [showCourseCreation, setShowCourseCreation] = useState(false);
   
   const profileDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -447,6 +449,102 @@ export default function CreatorCampus() {
     </div>
   );
 
+  const CourseCreationModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className={`rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden animate-bounce-in ${
+        settings.theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
+      }`}>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className={`text-2xl font-bold ${
+              settings.theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>Create New Course</h2>
+            <button
+              onClick={() => setShowCourseCreation(false)}
+              className={`p-2 rounded-lg transition-colors ${
+                settings.theme === 'dark' ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-200 text-gray-600'
+              }`}
+            >
+              <X size={20} />
+            </button>
+          </div>
+          
+          <div className="space-y-6">
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${
+                settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+              }`}>Course Title</label>
+              <input
+                type="text"
+                placeholder="Enter course title"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent ${
+                  settings.theme === 'dark' 
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                }`}
+              />
+            </div>
+            
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${
+                settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+              }`}>Category</label>
+              <select className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent ${
+                settings.theme === 'dark' 
+                  ? 'bg-gray-700 border-gray-600 text-white' 
+                  : 'bg-white border-gray-300 text-gray-900'
+              }`}>
+                <option>Web Development</option>
+                <option>Data Science</option>
+                <option>Digital Marketing</option>
+                <option>Design</option>
+                <option>Mobile Development</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${
+                settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+              }`}>Description</label>
+              <textarea
+                rows={4}
+                placeholder="Describe your course"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-300 focus:border-transparent resize-none ${
+                  settings.theme === 'dark' 
+                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                }`}
+              />
+            </div>
+            
+            <div className="flex space-x-3 pt-4">
+              <button
+                onClick={() => setShowCourseCreation(false)}
+                className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                  settings.theme === 'dark'
+                    ? 'bg-gray-600 hover:bg-gray-500 text-white'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  // Handle course creation
+                  alert('Course created successfully!');
+                  setShowCourseCreation(false);
+                }}
+                className="px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-lg transition-colors"
+              >
+                Create Course
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const CreatorToolsModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className={`rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden animate-bounce-in ${
@@ -711,19 +809,18 @@ export default function CreatorCampus() {
                       <p className={`mb-4 ${
                         settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                       }`}>Start building your next successful course</p>
-                      <button 
-                        onClick={() => {
-                          // Open course creation wizard
-                          alert('Course Creation Wizard - Coming Soon!');
-                        }}
-                        className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                          settings.theme === 'dark'
-                            ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                            : 'bg-blue-600 hover:bg-blue-700 text-white'
-                        }`}
-                      >
-                        Get Started
-                      </button>
+                                             <button 
+                         onClick={() => {
+                           setShowCourseCreation(true);
+                         }}
+                         className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                           settings.theme === 'dark'
+                             ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                             : 'bg-blue-600 hover:bg-blue-700 text-white'
+                         }`}
+                       >
+                         Get Started
+                       </button>
                     </div>
                   </div>
 
@@ -740,19 +837,19 @@ export default function CreatorCampus() {
                       <p className={`mb-4 ${
                         settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                       }`}>Update and improve your courses</p>
-                      <button 
-                        onClick={() => {
-                          // Open course management interface
-                          alert('Course Management Interface - Coming Soon!');
-                        }}
-                        className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                          settings.theme === 'dark'
-                            ? 'bg-green-600 hover:bg-green-700 text-white'
-                            : 'bg-green-600 hover:bg-green-700 text-white'
-                        }`}
-                      >
-                        Manage Courses
-                      </button>
+                                             <button 
+                         onClick={() => {
+                           // Open course management interface
+                           setActiveCreatorToolsTab('courses');
+                         }}
+                         className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                           settings.theme === 'dark'
+                             ? 'bg-green-600 hover:bg-green-700 text-white'
+                             : 'bg-green-600 hover:bg-green-700 text-white'
+                         }`}
+                       >
+                         Manage Courses
+                       </button>
                     </div>
                   </div>
 
@@ -769,19 +866,19 @@ export default function CreatorCampus() {
                       <p className={`mb-4 ${
                         settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                       }`}>Track performance and engagement</p>
-                      <button 
-                        onClick={() => {
-                          // Open analytics dashboard
-                          alert('Course Analytics Dashboard - Coming Soon!');
-                        }}
-                        className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                          settings.theme === 'dark'
-                            ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                            : 'bg-purple-600 hover:bg-purple-700 text-white'
-                        }`}
-                      >
-                        View Analytics
-                      </button>
+                                             <button 
+                         onClick={() => {
+                           // Open analytics dashboard
+                           setActiveCreatorToolsTab('students');
+                         }}
+                         className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                           settings.theme === 'dark'
+                             ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                             : 'bg-purple-600 hover:bg-purple-700 text-white'
+                         }`}
+                       >
+                         View Analytics
+                       </button>
                     </div>
                   </div>
                 </div>
@@ -880,19 +977,19 @@ export default function CreatorCampus() {
                     <p className={`mb-4 ${
                       settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}>Professional video editing tools with templates</p>
-                    <button 
-                      onClick={() => {
-                        // Open video editor
-                        alert('Video Editor - Coming Soon!');
-                      }}
-                      className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                        settings.theme === 'dark'
-                          ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                          : 'bg-purple-600 hover:bg-purple-700 text-white'
-                      }`}
-                    >
-                      Open Editor
-                    </button>
+                                         <button 
+                       onClick={() => {
+                         // Open video editor
+                         setActiveCreatorToolsTab('content');
+                       }}
+                       className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                         settings.theme === 'dark'
+                           ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                           : 'bg-purple-600 hover:bg-purple-700 text-white'
+                       }`}
+                     >
+                       Open Editor
+                     </button>
                   </div>
 
                   <div className={`p-6 rounded-xl border ${
@@ -904,19 +1001,19 @@ export default function CreatorCampus() {
                     <p className={`mb-4 ${
                       settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}>Create interactive quizzes and assessments</p>
-                    <button 
-                      onClick={() => {
-                        // Open quiz builder
-                        alert('Quiz Builder - Coming Soon!');
-                      }}
-                      className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                        settings.theme === 'dark'
-                          ? 'bg-green-600 hover:bg-green-700 text-white'
-                          : 'bg-green-600 hover:bg-green-700 text-white'
-                      }`}
-                    >
-                      Build Quiz
-                    </button>
+                                         <button 
+                       onClick={() => {
+                         // Open quiz builder
+                         setActiveCreatorToolsTab('content');
+                       }}
+                       className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                         settings.theme === 'dark'
+                           ? 'bg-green-600 hover:bg-green-700 text-white'
+                           : 'bg-green-600 hover:bg-green-700 text-white'
+                       }`}
+                     >
+                       Build Quiz
+                     </button>
                   </div>
                 </div>
               </div>
@@ -943,19 +1040,19 @@ export default function CreatorCampus() {
                     <p className={`mb-4 ${
                       settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}>Create and send email marketing campaigns</p>
-                    <button 
-                      onClick={() => {
-                        // Open email campaign creator
-                        alert('Email Campaign Creator - Coming Soon!');
-                      }}
-                      className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                        settings.theme === 'dark'
-                          ? 'bg-red-600 hover:bg-red-700 text-white'
-                          : 'bg-red-600 hover:bg-red-700 text-white'
-                      }`}
-                    >
-                      Create Campaign
-                    </button>
+                                         <button 
+                       onClick={() => {
+                         // Open email campaign creator
+                         setActiveCreatorToolsTab('marketing');
+                       }}
+                       className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                         settings.theme === 'dark'
+                           ? 'bg-red-600 hover:bg-red-700 text-white'
+                           : 'bg-red-600 hover:bg-red-700 text-white'
+                       }`}
+                     >
+                       Create Campaign
+                     </button>
                   </div>
 
                   <div className={`p-6 rounded-xl border ${
@@ -967,19 +1064,19 @@ export default function CreatorCampus() {
                     <p className={`mb-4 ${
                       settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}>Schedule and manage social media posts</p>
-                    <button 
-                      onClick={() => {
-                        // Open social media manager
-                        alert('Social Media Manager - Coming Soon!');
-                      }}
-                      className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                        settings.theme === 'dark'
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
-                      }`}
-                    >
-                      Manage Posts
-                    </button>
+                                         <button 
+                       onClick={() => {
+                         // Open social media manager
+                         setActiveCreatorToolsTab('marketing');
+                       }}
+                       className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                         settings.theme === 'dark'
+                           ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                           : 'bg-blue-600 hover:bg-blue-700 text-white'
+                       }`}
+                     >
+                       Manage Posts
+                     </button>
                   </div>
                 </div>
               </div>
@@ -1034,19 +1131,19 @@ export default function CreatorCampus() {
                     <p className={`mb-4 ${
                       settings.theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
                     }`}>Optimize your course pricing for maximum revenue</p>
-                    <button 
-                      onClick={() => {
-                        // Open pricing optimization tool
-                        alert('Pricing Optimization Tool - Coming Soon!');
-                      }}
-                      className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                        settings.theme === 'dark'
-                          ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                          : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                      }`}
-                    >
-                      Optimize Pricing
-                    </button>
+                                         <button 
+                       onClick={() => {
+                         // Open pricing optimization tool
+                         setActiveCreatorToolsTab('monetization');
+                       }}
+                       className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+                         settings.theme === 'dark'
+                           ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                           : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                       }`}
+                     >
+                       Optimize Pricing
+                     </button>
                   </div>
                 </div>
               </div>
@@ -1063,7 +1160,7 @@ export default function CreatorCampus() {
       settings.theme === 'light' ? 'bg-gray-100 text-gray-900' : 
       'bg-gray-600 text-gray-100'
     }`}>
-      {/* Sidebar */}
+      {/* Main Sidebar */}
       <div className={`w-64 flex flex-col ${
         settings.theme === 'dark' ? 'bg-gray-800 text-white' : 
         settings.theme === 'light' ? 'bg-white text-gray-900 border-r border-gray-200' : 
@@ -1094,6 +1191,21 @@ export default function CreatorCampus() {
           >
             <Crown className="text-white" size={20} />
             <span className="text-white font-semibold ml-2">Creator Tools</span>
+          </button>
+        </div>
+
+        {/* Course Categories Toggle */}
+        <div className="p-4 border-b border-gray-600">
+          <button
+            onClick={() => setShowCourseCategories(!showCourseCategories)}
+            className={`w-full flex items-center justify-center px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 ${
+              showCourseCategories
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+            }`}
+          >
+            <BookOpen size={18} className="mr-2" />
+            <span>Course Categories</span>
           </button>
         </div>
 
@@ -1148,35 +1260,7 @@ export default function CreatorCampus() {
             </div>
           </div>
 
-          {/* Course Categories */}
-          <div>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Course Categories</h3>
-            <div className="space-y-1">
-              {[
-                'All Courses',
-                'Web Development',
-                'Data Science',
-                'Digital Marketing',
-                'Design',
-                'Mobile Development',
-                'Cloud Computing',
-                'Business',
-                'Photography'
-              ].map((category) => (
-                <div
-                  key={category}
-                  className={`flex items-center p-2 rounded cursor-pointer group ${
-                    settings.theme === 'dark' ? 'hover:bg-gray-700' : 
-                    settings.theme === 'light' ? 'hover:bg-gray-100' : 
-                    'hover:bg-gray-600'
-                  }`}
-                >
-                  <BookOpen size={16} className="text-gray-400 mr-2" />
-                  <span className="text-sm">{category}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+
         </div>
 
         {/* User Panel */}
@@ -1238,6 +1322,65 @@ export default function CreatorCampus() {
           </div>
         </div>
       </div>
+
+      {/* Course Categories Sidebar */}
+      {showCourseCategories && (
+        <div className={`w-64 flex flex-col ${
+          settings.theme === 'dark' ? 'bg-gray-700 text-white' : 
+          settings.theme === 'light' ? 'bg-gray-50 text-gray-900 border-r border-gray-200' : 
+          'bg-gray-600 text-gray-100'
+        }`}>
+          {/* Course Categories Header */}
+          <div className={`p-4 border-b ${
+            settings.theme === 'dark' ? 'border-gray-600' : 
+            settings.theme === 'light' ? 'border-gray-200' : 
+            'border-gray-500'
+          }`}>
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-lg">Course Categories</h3>
+              <button
+                onClick={() => setShowCourseCategories(false)}
+                className={`p-2 rounded transition-colors ${
+                  settings.theme === 'dark' ? 'hover:bg-gray-600 text-gray-300' : 
+                  settings.theme === 'light' ? 'hover:bg-gray-200 text-gray-600' : 
+                  'hover:bg-gray-500 text-gray-300'
+                }`}
+              >
+                <X size={20} />
+              </button>
+            </div>
+          </div>
+
+          {/* Course Categories List */}
+          <div className="flex-1 overflow-y-auto p-4">
+            <div className="space-y-2">
+              {[
+                'All Courses',
+                'Web Development',
+                'Data Science',
+                'Digital Marketing',
+                'Design',
+                'Mobile Development',
+                'Cloud Computing',
+                'Business',
+                'Photography'
+              ].map((category) => (
+                <div
+                  key={category}
+                  className={`flex items-center p-3 rounded cursor-pointer transition-colors ${
+                    settings.theme === 'dark' ? 'hover:bg-gray-600' : 
+                    settings.theme === 'light' ? 'hover:bg-gray-100' : 
+                    'hover:bg-gray-500'
+                  }`}
+                >
+                  <BookOpen size={16} className="text-gray-400 mr-3" />
+                  <span className="text-sm">{category}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
@@ -1534,6 +1677,9 @@ export default function CreatorCampus() {
       
       {/* Creator Tools Modal */}
       {showCreatorToolsModal && <CreatorToolsModal />}
+      
+      {/* Course Creation Modal */}
+      {showCourseCreation && <CourseCreationModal />}
     </div>
   );
 }
