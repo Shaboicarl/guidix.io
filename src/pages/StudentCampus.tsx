@@ -57,8 +57,8 @@ export default function StudentCampus() {
     }
   }, []);
 
-  const updateAppearance = (updates) => {
-    setAppearance(prev => ({ ...prev, ...updates }));
+  const updateAppearance = (updates: Partial<typeof appearance>) => {
+    setAppearance((prev: typeof appearance) => ({ ...prev, ...updates }));
   };
 
   const courses = [
@@ -418,7 +418,7 @@ export default function StudentCampus() {
     }
   };
 
-  const handleChannelClick = (channel) => {
+  const handleChannelClick = (channel: { type: string; id: string }) => {
     if (channel.type === 'voice') {
       setIsInVoiceChannel(true);
       setConnectedVoiceChannel(channel.id);
@@ -432,11 +432,11 @@ export default function StudentCampus() {
     setConnectedVoiceChannel(null);
   };
 
-  const handleProfileClick = (userName) => {
-    setSelectedProfile(profileDataMap[userName] || null);
+  const handleProfileClick = (userName: string) => {
+    setSelectedProfile(profileDataMap[userName as keyof typeof profileDataMap] || null);
   };
 
-  const ProfileModal = ({ profile, onClose }: { profile: any; onClose: () => void }) => (
+  const ProfileModal = ({ profile, onClose }: { profile: typeof profileDataMap[keyof typeof profileDataMap]; onClose: () => void }) => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-8 w-full max-w-md relative animate-bounce-in">
         <button
