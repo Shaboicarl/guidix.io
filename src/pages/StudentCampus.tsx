@@ -2110,257 +2110,260 @@ export default function StudentCampus() {
           </div>
         </div>
 
-                 {/* Main Content Area */}
-         {showCourseSidebar ? (
-           <CourseCategoryView />
-         ) : (
-           <div className={`flex-1 flex flex-col transition-colors duration-300 ${
-             appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
-           }`}>
-          {/* Chat Header */}
-          <div className={`p-4 border-b transition-colors duration-300 ${
-            appearance.theme === 'light' 
-              ? 'border-gray-300 bg-white' 
-              : 'border-gray-500 bg-gray-700'
-          }`}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                {showDMs ? (
-                  <MessageCircle className={`mr-2 transition-colors duration-300 ${
-                    appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-                  }`} size={20} />
-                ) : (
-                  <Hash className={`mr-2 transition-colors duration-300 ${
-                    appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-                  }`} size={20} />
-                )}
-                <h3 className={`font-semibold transition-colors duration-300 ${
-                  appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-                }`}>
-                  {showDMs ? 'Direct Messages' : currentChannel?.name}
-                </h3>
-                {!showDMs && (
-                  <div className={`ml-4 text-sm transition-colors duration-300 ${
-                    appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                  }`}>
-                    Course discussion and help
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center space-x-2">
-                <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                  <Phone size={18} />
-                </button>
-                <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                  <Video size={18} />
-                </button>
-                <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                  <Bell size={18} />
-                </button>
-                <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                  <Users size={18} />
-                </button>
-                <button className="p-2 text-gray-400 hover:text-white transition-colors">
-                  <Search size={18} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Messages */}
-          <div className={`flex-1 overflow-y-auto p-4 ${
-            appearance.compactMode ? 'space-y-1' : 'space-y-4'
-          }`}>
-            {!showDMs && messages.map((message) => (
-              <div key={message.id} className={`flex items-start space-x-3 p-2 rounded transition-colors ${
+        {/* Main Content Area */}
+        {showCourseSidebar ? (
+          <CourseCategoryView />
+        ) : (
+          <div className="flex-1 flex">
+            {/* Chat Area */}
+            <div className={`flex-1 flex flex-col transition-colors duration-300 ${
+              appearance.theme === 'light' ? 'bg-gray-200' : 'bg-gray-600'
+            }`}>
+              {/* Chat Header */}
+              <div className={`p-4 border-b transition-colors duration-300 ${
                 appearance.theme === 'light' 
-                  ? 'hover:bg-gray-100' 
-                  : 'hover:bg-gray-700 hover:bg-opacity-30'
-              } ${appearance.compactMode ? 'py-1' : 'py-2'}`}>
-                <img
-                  src={message.avatar}
-                  alt={message.user}
-                  className={`rounded-full ${
-                    appearance.compactMode ? 'w-8 h-8' : 'w-10 h-10'
-                  }`}
-                />
-                <div className="flex-1">
-                  <div className={`flex items-center space-x-2 ${appearance.compactMode ? 'mb-0' : 'mb-1'}`}>
-                    <span className={`font-semibold ${
-                      message.role === 'instructor' ? 'text-yellow-400' : appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-                    }`}>
-                      {message.user}
-                    </span>
-                    {message.role === 'instructor' && (
-                      <span className="bg-yellow-500 text-black text-xs px-2 py-0.5 rounded font-bold">
-                        INSTRUCTOR
-                      </span>
+                  ? 'border-gray-300 bg-white' 
+                  : 'border-gray-500 bg-gray-700'
+              }`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    {showDMs ? (
+                      <MessageCircle className={`mr-2 transition-colors duration-300 ${
+                        appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                      }`} size={20} />
+                    ) : (
+                      <Hash className={`mr-2 transition-colors duration-300 ${
+                        appearance.theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                      }`} size={20} />
                     )}
-                    {appearance.showTimestamps && (
-                      <span className={`text-xs transition-colors duration-300 ${
+                    <h3 className={`font-semibold transition-colors duration-300 ${
+                      appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
+                      {showDMs ? 'Direct Messages' : currentChannel?.name}
+                    </h3>
+                    {!showDMs && (
+                      <div className={`ml-4 text-sm transition-colors duration-300 ${
                         appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                      }`}>{message.time}</span>
+                      }`}>
+                        Course discussion and help
+                      </div>
                     )}
                   </div>
-                  <div className={`leading-relaxed transition-colors duration-300 ${
-                    appearance.theme === 'light' ? 'text-gray-800' : 'text-gray-300'
-                  }`}>
-                    {message.content}
+                  <div className="flex items-center space-x-2">
+                    <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                      <Phone size={18} />
+                    </button>
+                    <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                      <Video size={18} />
+                    </button>
+                    <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                      <Bell size={18} />
+                    </button>
+                    <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                      <Users size={18} />
+                    </button>
+                    <button className="p-2 text-gray-400 hover:text-white transition-colors">
+                      <Search size={18} />
+                    </button>
                   </div>
                 </div>
               </div>
-            ))}
-            
-            {showDMs && (
-              <div className={`text-center py-8 transition-colors duration-300 ${
-                appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-              }`}>
-                <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
-                <p>Select a conversation to start messaging</p>
-              </div>
-            )}
-          </div>
 
-          {/* Message Input */}
-          <div className={`p-4 transition-colors duration-300 ${
-            appearance.theme === 'light' ? 'bg-white' : 'bg-gray-700'
-          }`}>
-            <div className={`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
-              appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-600'
-            }`}>
-              <button className={`mr-3 transition-colors ${
-                appearance.theme === 'light' 
-                  ? 'text-gray-600 hover:text-gray-900' 
-                  : 'text-gray-400 hover:text-white'
+              {/* Messages */}
+              <div className={`flex-1 overflow-y-auto p-4 ${
+                appearance.compactMode ? 'space-y-1' : 'space-y-4'
               }`}>
-                <Plus size={20} />
-              </button>
-              <input
-                type="text"
-                value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
-                className={`flex-1 bg-transparent outline-none transition-colors duration-300 ${
-                  appearance.theme === 'light' 
-                    ? 'text-gray-900 placeholder-gray-500' 
-                    : 'text-white placeholder-gray-400'
-                }`}
-              />
-              <div className="flex items-center space-x-2 ml-3">
-                <button className={`transition-colors ${
-                  appearance.theme === 'light' 
-                    ? 'text-gray-600 hover:text-gray-900' 
-                    : 'text-gray-400 hover:text-white'
+                {!showDMs && messages.map((message) => (
+                  <div key={message.id} className={`flex items-start space-x-3 p-2 rounded transition-colors ${
+                    appearance.theme === 'light' 
+                      ? 'hover:bg-gray-100' 
+                      : 'hover:bg-gray-700 hover:bg-opacity-30'
+                  } ${appearance.compactMode ? 'py-1' : 'py-2'}`}>
+                    <img
+                      src={message.avatar}
+                      alt={message.user}
+                      className={`rounded-full ${
+                        appearance.compactMode ? 'w-8 h-8' : 'w-10 h-10'
+                      }`}
+                    />
+                    <div className="flex-1">
+                      <div className={`flex items-center space-x-2 ${appearance.compactMode ? 'mb-0' : 'mb-1'}`}>
+                        <span className={`font-semibold ${
+                          message.role === 'instructor' ? 'text-yellow-400' : appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                        }`}>
+                          {message.user}
+                        </span>
+                        {message.role === 'instructor' && (
+                          <span className="bg-yellow-500 text-black text-xs px-2 py-0.5 rounded font-bold">
+                            INSTRUCTOR
+                          </span>
+                        )}
+                        {appearance.showTimestamps && (
+                          <span className={`text-xs transition-colors duration-300 ${
+                            appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                          }`}>{message.time}</span>
+                        )}
+                      </div>
+                      <div className={`leading-relaxed transition-colors duration-300 ${
+                        appearance.theme === 'light' ? 'text-gray-800' : 'text-gray-300'
+                      }`}>
+                        {message.content}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {showDMs && (
+                  <div className={`text-center py-8 transition-colors duration-300 ${
+                    appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                  }`}>
+                    <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
+                    <p>Select a conversation to start messaging</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Message Input */}
+              <div className={`p-4 transition-colors duration-300 ${
+                appearance.theme === 'light' ? 'bg-white' : 'bg-gray-700'
+              }`}>
+                <div className={`flex items-center rounded-lg px-4 py-3 transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'bg-gray-100' : 'bg-gray-600'
                 }`}>
-                  <Gift size={20} />
-                </button>
-                <button className={`transition-colors ${
-                  appearance.theme === 'light' 
-                    ? 'text-gray-600 hover:text-gray-900' 
-                    : 'text-gray-400 hover:text-white'
-                }`}>
-                  <Paperclip size={20} />
-                </button>
-                <button className={`transition-colors ${
-                  appearance.theme === 'light' 
-                    ? 'text-gray-600 hover:text-gray-900' 
-                    : 'text-gray-400 hover:text-white'
-                }`}>
-                  <Smile size={20} />
-                </button>
-                <button
-                  onClick={handleSendMessage}
-                  className={`transition-colors ${
+                  <button className={`mr-3 transition-colors ${
                     appearance.theme === 'light' 
                       ? 'text-gray-600 hover:text-gray-900' 
                       : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  <Send size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-                   {/* Members List */}
-           <div className={`w-60 border-l transition-colors duration-300 ${
-             appearance.theme === 'light' 
-               ? 'bg-gray-50 border-gray-200' 
-               : 'bg-gray-700 border-gray-600'
-           }`}>
-          <div className="p-4">
-            <h3 className={`font-semibold mb-4 transition-colors duration-300 ${
-              appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
-            }`}>
-              {showDMs ? 'Friends' : `${currentCourse?.name} Members`}
-            </h3>
-            
-            <div className="space-y-4">
-              <div>
-                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
-                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                }`}>INSTRUCTORS — 1</div>
-                <div 
-                  onClick={() => handleProfileClick('Sarah Johnson')}
-                  className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
-                    appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
-                  }`}
-                >
-                  <div className="relative">
-                    <img
-                      src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100"
-                      alt="Sarah Johnson"
-                      className="w-8 h-8 rounded-full hover:ring-2 hover:ring-yellow-400 transition-all"
-                    />
-                    <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-700"></div>
+                  }`}>
+                    <Plus size={20} />
+                  </button>
+                  <input
+                    type="text"
+                    value={messageInput}
+                    onChange={(e) => setMessageInput(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                    placeholder={`Message ${showDMs ? 'Direct Messages' : `#${currentChannel?.name}`}`}
+                    className={`flex-1 bg-transparent outline-none transition-colors duration-300 ${
+                      appearance.theme === 'light' 
+                        ? 'text-gray-900 placeholder-gray-500' 
+                        : 'text-white placeholder-gray-400'
+                    }`}
+                  />
+                  <div className="flex items-center space-x-2 ml-3">
+                    <button className={`transition-colors ${
+                      appearance.theme === 'light' 
+                        ? 'text-gray-600 hover:text-gray-900' 
+                        : 'text-gray-400 hover:text-white'
+                    }`}>
+                      <Gift size={20} />
+                    </button>
+                    <button className={`transition-colors ${
+                      appearance.theme === 'light' 
+                        ? 'text-gray-600 hover:text-gray-900' 
+                        : 'text-gray-400 hover:text-white'
+                    }`}>
+                      <Paperclip size={20} />
+                    </button>
+                    <button className={`transition-colors ${
+                      appearance.theme === 'light' 
+                        ? 'text-gray-600 hover:text-gray-900' 
+                        : 'text-gray-400 hover:text-white'
+                    }`}>
+                      <Smile size={20} />
+                    </button>
+                    <button
+                      onClick={handleSendMessage}
+                      className={`transition-colors ${
+                        appearance.theme === 'light' 
+                          ? 'text-gray-600 hover:text-gray-900' 
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      <Send size={20} />
+                    </button>
                   </div>
-                  <span className="text-yellow-400 text-sm font-medium">Sarah Johnson</span>
                 </div>
               </div>
+            </div>
 
-              <div>
-                <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
-                  appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                }`}>STUDENTS — 24</div>
-                <div className="space-y-1">
-                  {[
-                    { name: 'Mike Student', status: 'online' },
-                    { name: 'Lisa Park', status: 'online' },
-                    { name: 'David Wilson', status: 'away' },
-                    { name: 'Emma Chen', status: 'online' },
-                    { name: 'Alex Rodriguez', status: 'offline' }
-                  ].map((student, index) => (
+            {/* Members List */}
+            <div className={`w-60 border-l transition-colors duration-300 ${
+              appearance.theme === 'light' 
+                ? 'bg-gray-50 border-gray-200' 
+                : 'bg-gray-700 border-gray-600'
+            }`}>
+              <div className="p-4">
+                <h3 className={`font-semibold mb-4 transition-colors duration-300 ${
+                  appearance.theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`}>
+                  {showDMs ? 'Friends' : `${currentCourse?.name} Members`}
+                </h3>
+                
+                <div className="space-y-4">
+                  <div>
+                    <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                      appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                    }`}>INSTRUCTORS — 1</div>
                     <div 
-                      key={index} 
-                      onClick={() => handleProfileClick(student.name)}
+                      onClick={() => handleProfileClick('Sarah Johnson')}
                       className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
                         appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
                       }`}
                     >
                       <div className="relative">
-                        <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">
-                            {student.name.split(' ').map(n => n[0]).join('')}
-                          </span>
-                        </div>
-                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
-                          student.status === 'online' ? 'bg-green-400' : 
-                          student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
-                        }`}></div>
+                        <img
+                          src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100"
+                          alt="Sarah Johnson"
+                          className="w-8 h-8 rounded-full hover:ring-2 hover:ring-yellow-400 transition-all"
+                        />
+                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-700"></div>
                       </div>
-                      <span className={`text-sm transition-colors duration-300 ${
-                        appearance.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-                      }`}>{student.name}</span>
+                      <span className="text-yellow-400 text-sm font-medium">Sarah Johnson</span>
                     </div>
-                  ))}
+                  </div>
+
+                  <div>
+                    <div className={`text-xs font-semibold mb-2 transition-colors duration-300 ${
+                      appearance.theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                    }`}>STUDENTS — 24</div>
+                    <div className="space-y-1">
+                      {[
+                        { name: 'Mike Student', status: 'online' },
+                        { name: 'Lisa Park', status: 'online' },
+                        { name: 'David Wilson', status: 'away' },
+                        { name: 'Emma Chen', status: 'online' },
+                        { name: 'Alex Rodriguez', status: 'offline' }
+                      ].map((student, index) => (
+                        <div 
+                          key={index} 
+                          onClick={() => handleProfileClick(student.name)}
+                          className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
+                            appearance.theme === 'light' ? 'hover:bg-gray-200' : 'hover:bg-gray-600'
+                          }`}
+                        >
+                          <div className="relative">
+                            <div className="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">
+                                {student.name.split(' ').map(n => n[0]).join('')}
+                              </span>
+                            </div>
+                            <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-gray-700 ${
+                              student.status === 'online' ? 'bg-green-400' : 
+                              student.status === 'away' ? 'bg-yellow-400' : 'bg-gray-400'
+                            }`}></div>
+                          </div>
+                          <span className={`text-sm transition-colors duration-300 ${
+                            appearance.theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                          }`}>{student.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
     
     {/* Profile Modal */}
